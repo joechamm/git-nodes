@@ -1,0 +1,184 @@
+<!--
+  Copyright 2014 Tailored Cloud
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<script type="text/x-red" data-template-name="GitBlobNode">
+      <div class="form-row" id="node-input-row-git_command">
+        <label for="node-input-git_command">Command</label>
+        <select id="node-input-blob_command">
+        </select>
+      </div>
+
+      <div class="form-row" id="blob_command_arguments">
+
+      </div>
+
+      <div class="form-row" id="node-input-row-name">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="name">
+      </div>
+
+      <div class="form-row">
+        <label for="node-input-topic"><i class="icon-tasks"></i> Topic:</label>
+        <input type="text" id="node-input-topic" placeholder="topic">
+      </div>
+    </div>
+
+    <div class="form-tips" id="blob_command-comments">
+    </div>
+
+    <div class="form-tips" id="blob_command-help">
+      This node is used to interface with the libgit2 library throught the nodegit module.<br>
+    </div>
+  <style>
+    #blob_command_arguments label{
+      width:250px;
+    }
+    .form-row input.blob_command-argument {
+      width: 200px;
+      position: relative;
+      left: -150px;
+      top: 3px;
+    }
+    .small {
+      font-size: .8em;
+      display: inline;
+    }
+    p.msg-label {
+      position: relative;
+      top: 4px;
+    }
+    .spacer.caret {
+      margin-left: 10px;
+    }
+    .dropdown-toggle p {
+      float: left;
+      padding: 0px;
+      margin: 0px;
+    }
+    #git_node_container {
+      column-count: 2;
+    }
+    #git_comment_container {
+      max-width: 80%;
+    }
+  </style>
+</script>
+
+<script type="text/x-red" data-help-name="GitBlobNode">
+    <p>A node to integrate the libgit2 bindings via nodegit.</p>
+    <p>Choose the git repository command you wish to call from the dropdown, then configure the incoming msg.payload object to deliver the arguments.</p>
+    <p>The output will be the msg.payload object with key=Return Type</p>
+</script>
+
+<script type="text/javascript">
+	RED.nodes.registerType('GitBlobNode',{
+		category: 'web-nodes',
+		color:"#44bb11",
+		defaults : {
+      name : {value:"Blob"},
+      topic : {value:"Git"},
+      blob_command : {value:""},
+      blob_command_arguments : {value:[]}
+    },
+		inputs:1,
+		outputs:1,
+		icon: "leveldb.png",
+		label: function () {
+				return this.name||this.topic||this.payload||"GitBlobNode";
+		},
+		oneditprepare: function () {
+
+      var blob_command_list = {"Blob-content":{"Summary":"Retrieve the content of the blob.","arguments":[],"ReturnType":"Buffer","ReturnComment":"content"},"Blob-filemode":{"Summary":"Retrieve the blob's type.","arguments":[],"ReturnType":"undefined","ReturnComment":"undefined"},"Blob-isBinary":{"Summary":"Determine if the blob content is most certainly binary or not.","arguments":[],"ReturnType":"Boolean","ReturnComment":"1 if the content of the blob is detected as binary; 0 otherwise."},"Blob-oid":{"Summary":"Get the id of a blob.","arguments":[],"ReturnType":"Oid","ReturnComment":"SHA1 hash for this blob."},"Blob-size":{"Summary":"Get the size in bytes of the contents of a blob","arguments":[],"ReturnType":"Number","ReturnComment":"size on bytes"},"Blob-toString":{"Summary":"Retrieve the blob's content as String.","arguments":[],"ReturnType":"undefined","ReturnComment":"undefined"}};
+      var that = this;
+
+      for (var cmd in blob_command_list) {
+        $('<option '+((this.blob_command===cmd)?'selected ':'')+'value="'+cmd+'">'+cmd+'</option>').appendTo("#node-input-blob_command");
+      }
+
+      var buildGitCmdArgs = function () {
+
+      	if(!this || !this.value) {
+				  console.log('Error building git command arguments');
+      	}
+
+      	var val = this.value;
+
+        var cmd = blob_command_list[val];
+
+        var summary = cmd["Summary"],
+            return_comment = cmd["ReturnComment"],
+            return_type = cmd["ReturnType"];
+
+        if (summary !== 'undefined') {
+            $("#blob_command-help").html('<div><b>Summary:</b> '+summary+'</div>');
+        } else {
+            $("#blob_command-help").html('');
+        }
+
+        if (return_comment !== 'undefined' && return_type !== 'undefined') {
+            $("#blob_command-comments").html('<div>Returns '+return_comment+' (Type:<b>'+return_type+'</b>)</div>');
+        } else {
+            $("#blob_command-comments").html('');
+        }
+
+        $("#blob_command_arguments").html('');
+
+        cmd["arguments"].forEach(function(arg,index,array) {
+          var inputvalue = ((that.blob_command===val)?that.blob_command_arguments[index]:""),
+            argname = arg["name"],
+            argtype = arg["type"],
+            placeholder = ((inputvalue.length > 0)?inputvalue:argname),
+            inputid = 'node-input-argument_'+argname,
+            labelid = argname+'_label',
+            rowid = 'node-input-row-argument_'+argname;
+
+          $("<div>",{"class":"form-row","id":rowid}).appendTo("#blob_command_arguments");
+          rowid = '#'+rowid;
+          $("<label>",{"id":labelid,"for":inputid,"text":argname}).appendTo(rowid);
+          labelid = '#'+labelid;
+          $("<i>",{"class":"icon-tag"}).appendTo(labelid);
+          $("<p>",{"class":"small","text":'('+argtype+')'}).appendTo(labelid);
+          $("<p>",{"class":"msg-label","text":"msg.payload."}).appendTo(labelid);
+          $("<input>",{"id":inputid,"class":"blob_command-argument","type":"text",
+            "data-name":argname,"value":inputvalue,"placeholder":placeholder}).appendTo(rowid);
+
+        });
+
+      };
+
+      $("#node-input-blob_command").on("change", buildGitCmdArgs);
+
+		  console.log('calling buildGitCmdArgs');
+
+		  buildGitCmdArgs.call($("#node-input-blob_command")[0]);
+
+		},
+
+		oneditsave: function () {
+			console.log('oneditsave called');
+		  var that = this;
+		  this.blob_command_arguments = [];
+		  this.blob_command_argument_names = [];
+		  $(".blob_command-argument").each(function () {
+		    that.blob_command_argument_names.push($(this).attr("data-name"));
+		    that.blob_command_arguments.push($(this).val());
+		  });
+		},
+		labelStyle: function () {
+			return this.name?"node_label_italic":"";
+		}
+	});
+</script>
