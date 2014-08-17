@@ -42,11 +42,7 @@
       </div>
     </div>
 
-    <div class="form-tips" id="git_command-comments">
-    </div>
-
     <div class="form-tips" id="git_command-help">
-      This node is used to interface with the libgit2 library throught the nodegit module.<br>
     </div>
   <style>
  /*   #git_command_arguments label{
@@ -139,25 +135,34 @@ value specified below"}],"ReturnType":"Repository","ReturnComment":"pointer to t
 
         console.log('cmd = ' + cmd);
 
+        var summary = '<div><b>Summary:</b> '+(cmd["Summary"]||'Not Available')+'</div><div><b>Return Type</b>: '+cmd["ReturnType"]+'<br>Comments: '+cmd["ReturnComment"]+'</div>';
+        $("#git_command-help").html(summary);
+        /*
+        var rtncmt = '<div>Return Type:<b>'+cmd["ReturnType"]+'</b>';
         $("#git_command-help").html('<div><b>Summary:</b> '+(cmd["Summary"]||'Not Available')+'</div>');
         $("#git_command-comments").html('<div>Returns '+cmd["ReturnComment"]+' (Type:<b>'+cmd["ReturnType"]+'</b>)</div>');
+        $("#git_command-comments").html('<div>Return Type:<b>'+cmd["ReturnType"])
+        */
         $("#git_command_arguments").html('');
 
         if (intype === 'auto') {
           cmd["arguments"].forEach(function(arg,index,array) {
-            var argtype = arg["type"];
-            if (argtype !== "Function") {
-              var argname = arg["name"],
-                argcomment = arg["comment"],
-                argid = "argument_"+argname;
-              $("<div>",{"id":argid,"title":argcomment}).appendTo("#git_command_arguments");
-              argid = '#'+argid;
-              if (argtype === "CloneOptions") {
-                $("<p>",{"text":"("+argtype+") "+"msg.payload."+argname+" (Note: Clone options are currently not supported. Please pass in null to avoid unpredictable behavior."}).appendTo(argid);
-              } else {
+            var argname = arg["name"],
+              argtype = arg["type"],
+              argcomment = arg["comment"],
+              argid = "argument_"+argname;
+            $("<div>",{"id":argid,"title":argcomment}).appendTo("#git_command_arguments");
+            argid = '#'+argid;
+            switch (argtype) {
+              case "Function":
+                $("<p>",{"text":"("+argtype+") "+"msg.payload."+argname+" (Note: User defined callbacks are currently not supported."}).appendTo(argid);
+                break;
+              case "CloneOptions":
+                $("<p>",{"text":"("+argtype+") "+"msg.payload."+argname+" (Note: Clone options are currently not supported."}).appendTo(argid);
+                break;
+              default:
                 $("<p>",{"text":"("+argtype+") "+"msg.payload."+argname}).appendTo(argid);
-              }
-
+                break;
             }
           });
         } else {
@@ -167,31 +172,38 @@ value specified below"}],"ReturnType":"Repository","ReturnComment":"pointer to t
             if (argtype === "Buffer" || argtype === "Object" || argtype === "Array") {
               invalid_types.push(argtype);
             } else {
-              if (argtype !== "Function") {
-                var argname = arg["name"],
-                  argcomment = arg["comment"],
-                  inputid = 'node-input-argument_'+argname,
-                  rowid = 'node-input-row-argument_'+argname;
-                if (argtype === "Signature") {
+              var argname = arg["name"],
+                argcomment = arg["comment"],
+                inputid = 'node-input-argument_'+argname,
+                rowid = 'node-input-row-argument_'+argname;
+              switch (argtype) {
+                case "Signature":
                   $("<div>",{"class":"form-row","id":rowid}).appendTo("#git_command_arguments");
                   rowid = "#"+rowid;
                   $("<label>",{"for":inputid,"title":argcomment,"text":'('+argtype+') '+argname+':'}).appendTo(rowid);
                   $("<input>",{"id":inputid,"type":"text","data-name":argname,"placeholder":"{name},{email}"}).appendTo(rowid);
-                } else {
+                  break;
+                case "Function":
+                  $("<div>",{"class":"form-row","id":rowid}).appendTo("#git_command_arguments");
+                  rowid = "#"+rowid;
+                  $("<label>",{"for":inputid,"title":argcomment,"text":'('+argtype+') '+argname+':'}).appendTo(rowid);
+                  $("<input>",{"id":inputid,"type":"text","data-name":argname,"disabled":"true","value":"null"}).appendTo(rowid);
+                  break;
+                case "CloneOptions":
+                  $("<div>",{"class":"form-row","id":rowid}).appendTo("#git_command_arguments");
+                  rowid = "#"+rowid;
+                  $("<label>",{"for":inputid,"title":argcomment,"text":'('+argtype+') '+argname+':'}).appendTo(rowid);
+                  $("<input>",{"id":inputid,"type":"text","data-name":argname,"disabled":"true","value":"null"}).appendTo(rowid);
+                  break;
+                default:
                   if (argtype.indexOf('Oid') !== -1) {
                     argtype = 'String';
                   }
                   $("<div>",{"class":"form-row","id":rowid}).appendTo("#git_command_arguments");
                   rowid = "#"+rowid;
                   $("<label>",{"for":inputid,"title":argcomment,"text":'('+argtype+') '+argname+':'}).appendTo(rowid);
-                  if (argtype === "CloneOptions") {
-                    $("<input>",{"id":inputid,"type":"text","data-name":argname,"disabled":"true","value":"null"}).appendTo(rowid);
-                  } else {
-                    $("<input>",{"id":inputid,"type":"text","data-name":argname}).appendTo(rowid);
-                  }
-                }
-
-
+                  $("<input>",{"id":inputid,"type":"text","data-name":argname}).appendTo(rowid);
+                  break;
               }
             }
           });
