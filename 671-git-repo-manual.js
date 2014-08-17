@@ -187,7 +187,7 @@ module.exports = function(RED) {
       this.log('manual_repo: cronjob stopped');
       delete this.cronjob;
     }
-  }
+  };
 
   RED.httpAdmin.post('/manual_repo/:id',function(req,res) {
     var node = RED.nodes.getNode(req.params.id);
