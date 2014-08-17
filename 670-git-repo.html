@@ -18,47 +18,48 @@
       <div class="form-row" id="node-input-row-git_command">
         <label for="node-input-git_command">Command</label>
         <select id="node-input-git_command">
-        </select>        
+        </select>
       </div>
-      
-      <div id="input_method_container">
-        <label for="input_method">Set Command Arguments By:</label>        
-        <input type="radio" name="input_type" value="payload" id="input_type_payload" checked> msg.payload<br>
-        <input type="radio" name="input_type" value="user" id="input_type_user"> User Input<br>      
+
+      <div id="git_command_input">
+        <div id="input_method_container">
+          <span title="method by which to set the arguments to selected git command">Input Method: </span>
+          <input type="radio" name="input_type" value="auto" id="input_type_auto" checked><span title="from incoming msg.payload">Auto</span>
+          <input type="radio" name="input_type" value="manual" id="input_type_manual"><span title="from user input">Manual</span>
+        </div>
+        <label for="git_command_arguments">Git Command Arguments</label>
+        <div class="form-row" id="git_command_arguments"></div>
       </div>
-      
-      <div class="form-row" id="git_command_arguments">
-          
-      </div>
-           
+
       <div class="form-row" id="node-input-row-name">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="name">
-      </div>	
-      
+      </div>
+
       <div class="form-row">
         <label for="node-input-topic"><i class="icon-tasks"></i> Topic:</label>
         <input type="text" id="node-input-topic" placeholder="topic">
       </div>
     </div>
-    
-    <div class="form-tips" id="git_command-comments">        
+
+    <div class="form-tips" id="git_command-comments">
     </div>
-    
+
     <div class="form-tips" id="git_command-help">
       This node is used to interface with the libgit2 library throught the nodegit module.<br>
     </div>
   <style>
-    #git_command_arguments label{
+ /*   #git_command_arguments label{
       width:250px;
     }
+    */
     .form-row input.git_command-argument {
       width: 200px;
       position: relative;
       left: -150px;
       top: 3px;
     }
-    .small {
+/*    .small {
       font-size: .8em;
       display: inline;
     }
@@ -66,6 +67,7 @@
       position: relative;
       top: 4px;
     }
+    */
     .spacer.caret {
       margin-left: 10px;
     }
@@ -73,7 +75,7 @@
       float: left;
       padding: 0px;
       margin: 0px;
-    } 
+    }
 /*
     #git_node_container {
       column-count: 2;
@@ -81,14 +83,14 @@
     #git_comment_container {
       max-width: 80%;
     }
-    */    
+    */
   </style>
 </script>
 
 <script type="text/x-red" data-help-name="GitRepoNode">
     <p>A node to integrate the libgit2 bindings via nodegit.</p>
     <p>Choose the git repository command you wish to call from the dropdown, then configure the incoming msg.payload object to deliver the arguments as named.</p>
-    <p>The callback function 
+    <p>The callback function
     <p>The output will be the msg.payload object with key=Return Type</p>
 </script>
 
@@ -109,75 +111,118 @@
 				return this.name||this.topic||this.payload||"GitRepoNode";
 		},
 		oneditprepare: function () {
-				      
+
       var git_command_list = {"addRemote":{"Summary":"Add a remote with the default fetch refspec to the repository's configuration.  This calls git_remote_save before returning.",
         "arguments":[{"name":"name","type":"String","comment":"the remote's name"},{"name":"url","type":"String","comment":"the remote's url"},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"ReturnType":"Remote","ReturnComment":"the resulting remote"},
         "addSubmodule":{"Summary":"Set up a new git submodule for checkout.","arguments":[{"name":"url","type":"String","comment":"URL for the submodules remote"},{"name":"path","type":"String","comment":"Path at which the submodule should be created"},{"name":"use_gitlink","type":"Number","comment":"Should workdir contain a gitlink to the repo in .git/modules vs. repo directly in workdir."}],"ReturnType":"Submodule","ReturnComment":"The newly created submodule ready to open for clone"},"clone":{"Summary":"Clone a remote repository, and checkout the branch pointed to by the remote HEAD.","arguments":[{"name":"url","type":"String","comment":"the remote repository to clone"},{"name":"local_path","type":"String","comment":"local directory to clone to"},{"name":"options","type":"CloneOptions","comment":"configuration options for the clone. If NULL, the function works as though GIT_OPTIONS_INIT were passed."},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"ReturnType":"Repository","ReturnComment":"pointer that will receive the resulting repository object"},"createBlobFromBuffer":{"Summary":"Create a blob from a buffer","arguments":[{"name":"buffer","type":"Buffer","comment":""},{"name":"callback","type":"Function","comment":""}],"ReturnType":"Blob","ReturnComment":""},"createBlobFromFile":{"Summary":"Read a file from the filesystem and write its content to the Object Database as a loose blob","arguments":[{"name":"path","type":"String","comment":"file from which the blob will be created"},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"ReturnType":"Oid","ReturnComment":"return the id of the written blob"},"createCommit":{"Summary":"Create a commit","arguments":[{"name":"updateRef","type":"String","comment":""},{"name":"author","type":"Signature","comment":""},{"name":"commiter","type":"Signature","comment":""},{"name":"message","type":"String","comment":""},{"name":"Tree","type":"Tree, Oid, String","comment":""},{"name":"parents","type":"Array","comment":""},{"name":"callback","type":"Function","comment":""}],"ReturnType":"Oid","ReturnComment":"The oid of the commit"},"createLightweightTag":{"Summary":"Create a new lightweight tag pointing at a target object","arguments":[{"name":"tag_name","type":"String","comment":"Name for the tag; this name is validated for consistency. It should also not conflict with an already existing tag name"},{"name":"target","type":"Object","comment":"Object to which this tag points. This object must belong to the given `repo`."},{"name":"force","type":"Number","comment":"Overwrite existing references"},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"ReturnType":"Oid","ReturnComment":"Pointer where to store the OID of the provided target object. If the tag already exists, this parameter will be filled with the oid of the existing pointed object and the function will return a GIT_EEXISTS error code."},"createReference":{"Summary":"Create a new direct reference.","arguments":[{"name":"name","type":"String","comment":"The name of the reference"},{"name":"id","type":"Oid","comment":"The object id pointed to by the reference."},{"name":"force","type":"Number","comment":"Overwrite existing references"}],"ReturnType":"Reference","ReturnComment":"Pointer to the newly created reference"},"createRevWalk":{"Summary":"Instantiate a new revision walker for browsing the Repo's history.See also Commit.prototype.history()","arguments":[{"name":"String","type":"String, Oid","comment":"sha or Oid"},{"name":"callback","type":"Function","comment":""}],"ReturnType":"RevWalk","ReturnComment":""},"createSymbolicReference":{"Summary":"Create a new symbolic reference.","arguments":[{"name":"name","type":"String","comment":"The name of the reference"},{"name":"target","type":"String","comment":"The target of the reference"},{"name":"force","type":"Number","comment":"Overwrite existing references"}],"ReturnType":"Reference","ReturnComment":"Pointer to the newly created reference"},"createTag":{"Summary":"Create a new tag in the repository from an object","arguments":[{"name":"tag_name","type":"String","comment":"Name for the tag; this name is validated for consistency. It should also not conflict with an already existing tag name"},{"name":"target","type":"Object","comment":"Object to which this tag points. This object must belong to the given `repo`."},{"name":"tagger","type":"Signature","comment":"Signature of the tagger for this tag, and of the tagging time"},{"name":"message","type":"String","comment":"Full message for this tag"},{"name":"force","type":"Number","comment":"Overwrite existing references"},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"ReturnType":"Oid","ReturnComment":"Pointer where to store the OID of the newly created tag. If the tag already exists, this parameter will be the oid of the existing tag, and the function will return a GIT_EEXISTS error code."},"delete":{"Summary":"Delete an existing tag reference.","arguments":[{"name":"tag_name","type":"String","comment":"Name of the tag to be deleted; this name is validated for consistency."},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"ReturnType":"undefined","ReturnComment":"undefined"},"getBlob":{"Summary":"Retrieve the blob represented by the oid.","arguments":[{"name":"String","type":"String, Oid","comment":"sha or Oid"},{"name":"callback","type":"Function","comment":""}],"ReturnType":"Blob","ReturnComment":""},"getBranch":{"Summary":"Look up a branch's most recent commit.","arguments":[{"name":"name","type":"String","comment":"Branch name, e.g. 'master'"},{"name":"callback","type":"Function","comment":""}],"ReturnType":"Branch","ReturnComment":""},"getCommit":{"Summary":"Retrieve the commit identified by oid.","arguments":[{"name":"String","type":"String, Oid","comment":"sha or Oid"},{"name":"callback","type":"Function","comment":""}],"ReturnType":"Commit","ReturnComment":""},"getMaster":{"Summary":"Retrieve the master branch.","arguments":[{"name":"callback","type":"Function","comment":""}],"ReturnType":"Branch","ReturnComment":""},"getObject":{"Summary":"Lookup a reference to one of the objects in a repository.","arguments":[{"name":"id","type":"Oid","comment":"the unique identifier for the object"},{"name":"type","type":"Number","comment":"the type of the object"},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"ReturnType":"Object","ReturnComment":"pointer to the looked-up object"},"getReference":{"Summary":"Lookup the reference with the given name.","arguments":[{"name":"name","type":"String","comment":""},{"name":"callback","type":"Function","comment":""}],"ReturnType":"Reference","ReturnComment":""},"getReferences":{"Summary":"Fill a list with all the references that can be found in a repository.","arguments":[{"name":"list_flags","type":"Number","comment":""},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"ReturnType":"Array","ReturnComment":"Pointer to a git_strarray structure where the reference names will be stored"},"getRemote":{"Summary":"Get the information for a particular remote","arguments":[{"name":"name","type":"String","comment":"the remote's name"}],"ReturnType":"Remote","ReturnComment":"pointer to the new remote object"},"getRemotes":{"Summary":"Get a list of the configured remotes for a repo","arguments":[{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"ReturnType":"Array","ReturnComment":"a string array which receives the names of the remotes"},"getSubmodule":{"Summary":"Lookup submodule information by name or path.","arguments":[{"name":"name","type":"String","comment":"The name of the submodule. Trailing slashes will be ignored."}],"ReturnType":"Submodule","ReturnComment":"Pointer to submodule description object pointer.."},"getTag":{"Summary":"Retrieve the tag represented by the oid.","arguments":[{"name":"String","type":"String, Oid","comment":"sha or Oid"},{"name":"callback","type":"Function","comment":""}],"ReturnType":"Tag","ReturnComment":""},"getTree":{"Summary":"Retrieve the tree represented by the oid.","arguments":[{"name":"String","type":"String, Oid","comment":"sha or Oid"},{"name":"callback","type":"Function","comment":""}],"ReturnType":"Tree","ReturnComment":""},"init":{"Summary":"Creates a new Git repository in the given folder.","arguments":[{"name":"path","type":"String","comment":"the path to the repository"},{"name":"is_bare","type":"Boolean","comment":"if true, a Git repository without a working directory is created at the pointed path. If false, provided path will be considered as the working directory into which the .git directory will be created."},{"name":"callback","type":"Function","comment":"Takes error and the return
 value specified below"}],"ReturnType":"Repository","ReturnComment":"pointer to the repo which will be created or reinitialized"},"odb":{"Summary":"Get the Object Database for this repository.","arguments":[],"ReturnType":"Odb","ReturnComment":"Pointer to store the loaded ODB"},"open":{"Summary":"Open a git repository.","arguments":[{"name":"path","type":"String","comment":"the path to the repository"},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"ReturnType":"Repository","ReturnComment":"pointer to the repo which will be opened"},"openIndex":{"Summary":"Get the Index file for this repository.","arguments":[{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"ReturnType":"Index","ReturnComment":"Pointer to store the loaded index"},"path":{"Summary":"Get the path of this repository","arguments":[],"ReturnType":"String","ReturnComment":"the path to the repository"},"reloadSubmodules":{"Summary":"Reread all submodule info.","arguments":[{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"ReturnType":"undefined","ReturnComment":"undefined"},"workdir":{"Summary":"Get the path of the working directory for this repository","arguments":[],"ReturnType":"String","ReturnComment":"the path to the working dir, if it exists"}};
 
       var that = this;
-            
+
       for (var cmd in git_command_list) {
         $('<option '+((this.git_command===cmd)?'selected ':'')+'value="'+cmd+'">'+cmd+'</option>').appendTo("#node-input-git_command");
       }
-            
-      var buildGitCmdArgs = function () {
-      
-      	if(!this || !this.value) {
-				  console.log('Error building git command arguments');      	
-      	}
-      	
-      	var use_payload = $("#input_type_payload").attr("checked");
-      	
-      	var val = this.value;
-                    
-        var cmd = git_command_list[val];   
-        
-        $("#git_command-help").html('<div><b>Summary:</b> '+cmd["Summary"]+'</div>');
-        $("#git_command-comments").html('<div>Returns '+cmd["ReturnComment"]+' (Type:<b>'+cmd["ReturnType"]+'</b>)</div>');     
-        $("#git_command_arguments").html('');
-        
-        cmd["arguments"].forEach(function(arg,index,array) {
-          var inputvalue = ((that.git_command===val)?that.git_command_arguments[index]:""),
-            argname = arg["name"],
-            argtype = arg["type"],
-            placeholder = ((inputvalue.length > 0)?inputvalue:''),
-            inputid = 'node-input-argument_'+argname,
-            labelid = argname+'_label',
-            rowid = 'node-input-row-argument_'+argname,
-            payloadtype = 'msg.payload.' + argname;
 
-          $("<div>",{"class":"form-row","id":rowid}).appendTo("#git_command_arguments");
-          rowid = '#'+rowid;
-          $("<label>",{"id":labelid,"for":inputid,"text":argname}).appendTo(rowid);
-          labelid = '#'+labelid;
-          $("<i>",{"class":"icon-tag"}).appendTo(labelid);
-          $("<p>",{"class":"small","text":'('+argtype+')'}).appendTo(labelid);
-          $("<p>",{"class":"msg-label","text":payloadtype}).appendTo(labelid);
-          if (!use_payload) {
-            $("<input>",{"id":inputid,"class":"git_command-argument","type":"text",
-            "data-name":argname,"value":inputvalue,"placeholder":placeholder}).appendTo(rowid);      
+      var buildGitCmdArgs = function () {
+
+      	var val = $("#node-input-git_command").val();
+
+        console.log('getting checked value');
+
+        var intype = $("input:checked","#input_method_container").val();
+
+        console.log('got checked value = ' + intype);
+
+      	console.log('this.value='+val);
+
+        var cmd = git_command_list[val];
+
+        console.log('cmd = ' + cmd);
+
+        $("#git_command-help").html('<div><b>Summary:</b> '+(cmd["Summary"]||'Not Available')+'</div>');
+        $("#git_command-comments").html('<div>Returns '+cmd["ReturnComment"]+' (Type:<b>'+cmd["ReturnType"]+'</b>)</div>');
+        $("#git_command_arguments").html('');
+
+        if (intype === 'auto') {
+          cmd["arguments"].forEach(function(arg,index,array) {
+            var argtype = arg["type"];
+            if (argtype !== "Function") {
+              var argname = arg["name"],
+                argcomment = arg["comment"],
+                argid = "argument_"+argname;
+              $("<div>",{"id":argid,"title":argcomment}).appendTo("#git_command_arguments");
+              argid = '#'+argid;
+              if (argtype === "CloneOptions") {
+                $("<p>",{"text":"("+argtype+") "+"msg.payload."+argname+" (Note: Clone options are currently not supported. Please pass in null to avoid unpredictable behavior."}).appendTo(argid);
+              } else {
+                $("<p>",{"text":"("+argtype+") "+"msg.payload."+argname}).appendTo(argid);
+              }
+
+            }
+          });
+        } else {
+          var invalid_types = [];
+          cmd["arguments"].forEach(function(arg,index,array) {
+            var argtype = arg["type"];
+            if (argtype === "Buffer" || argtype === "Object" || argtype === "Array") {
+              invalid_types.push(argtype);
+            } else {
+              if (argtype !== "Function") {
+                var argname = arg["name"],
+                  argcomment = arg["comment"],
+                  inputid = 'node-input-argument_'+argname,
+                  rowid = 'node-input-row-argument_'+argname;
+                if (argtype === "Signature") {
+                  $("<div>",{"class":"form-row","id":rowid}).appendTo("#git_command_arguments");
+                  rowid = "#"+rowid;
+                  $("<label>",{"for":inputid,"title":argcomment,"text":'('+argtype+') '+argname+':'}).appendTo(rowid);
+                  $("<input>",{"id":inputid,"type":"text","data-name":argname,"placeholder":"{name},{email}"}).appendTo(rowid);
+                } else {
+                  if (argtype.indexOf('Oid') !== -1) {
+                    argtype = 'String';
+                  }
+                  $("<div>",{"class":"form-row","id":rowid}).appendTo("#git_command_arguments");
+                  rowid = "#"+rowid;
+                  $("<label>",{"for":inputid,"title":argcomment,"text":'('+argtype+') '+argname+':'}).appendTo(rowid);
+                  if (argtype === "CloneOptions") {
+                    $("<input>",{"id":inputid,"type":"text","data-name":argname,"disabled":"true","value":"null"}).appendTo(rowid);
+                  } else {
+                    $("<input>",{"id":inputid,"type":"text","data-name":argname}).appendTo(rowid);
+                  }
+                }
+
+
+              }
+            }
+          });
+          if (invalid_types.length > 0) {
+            var str = 'Arguments for <b>' + val + '</b> cannot be input manually.<br>Invalid Types: <b>';
+            for (var i = 0; i < invalid_types.length; i++) {
+              str += ' ' + invalid_types[i];
+            }
+            str += '</b>';
+            $("#git_command_arguments").html(str);
           }
-        });
+        }
 
       };
-                         
+
       console.log('setting on change function');
-      
+
       $("#node-input-git_command").on("change", buildGitCmdArgs);
-      
+
       console.log('setting choose input method');
-      
-      $("#input_type_payload").on("click", buildGitCmdArgs);
-      
-      $("#input_type_user").on("click", buildGitCmdArgs);
-      
-		  console.log('calling buildGitCmdArgs');      
-		
+
+      $("#input_type_auto").on("click", buildGitCmdArgs);
+
+      $("#input_type_manual").on("click", buildGitCmdArgs);
+
+		  console.log('calling buildGitCmdArgs');
+
 		  buildGitCmdArgs.call($("#node-input-git_command")[0]);
-    
+
 		},
-		
+
 		oneditsave: function () {
 			console.log('oneditsave called');
 		  var that = this;
