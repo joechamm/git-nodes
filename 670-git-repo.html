@@ -24,7 +24,7 @@
       <div id="git_command_input">
         <div id="input_method_container">
           <span title="method by which to set the arguments to selected git command">Input Method: </span>
-          <input type="radio" name="input_type" value="auto" id="input_type_auto" checked><span title="from incoming msg.payload">Auto</span>
+          <input type="radio" name="input_type" value="auto" id="input_type_auto"><span title="from incoming msg.payload">Auto</span>
           <input type="radio" name="input_type" value="manual" id="input_type_manual"><span title="from user input">Manual</span>
         </div>
         <label for="git_command_arguments">Git Command Arguments</label>
@@ -98,7 +98,8 @@
       name : {value:"Repo"},
       topic : {value:"Git"},
       git_command : {value:""},
-      git_command_arguments : {value:[]}
+      git_command_arguments : {value:[]},
+      input_method: {value:"auto"}
     },
 		inputs:1,
 		outputs:1,

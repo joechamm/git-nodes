@@ -1,0 +1,495 @@
+<!--
+  Copyright 2014 Tailored Cloud
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<script type="text/x-red" data-template-name="manual_repo">
+    <div class="form-row" id="node-input-row-git_command">
+      <label for="node-input-git_command">Command</label>
+      <select id="node-input-git_command">
+      </select>
+    </div>
+
+    <div id="git_command_input">
+      <label for="git_command_arguments"><b>Git Command Arguments</b></label>
+      <div id="git_command_arguments"></div>
+    </div>
+
+    <div class="form-row">
+      <label for=""><i class="icon-repeat"></i> Repeat</label>
+      <select id="manual_repo-time-type-select" style="width: 288px">
+        <option value="none">none</option>
+        <option value="interval">interval</option>
+        <option value="interval-time">interval between times</option>
+        <option value="time">at a specific time</option>
+      </select>
+      <input type="hidden" id="manual_repo-input-repeat" placeholder="command">
+      <input type="hidden" id="manual_repo-input-crontab" placeholder="command">
+    </div>
+
+    <div class="form-row manual_repo-time-row hidden" id="manual_repo-time-row-interval">
+      every <input id="manual_repo-time-interval-count" class="manual_repo-time-count" value="1"></input>
+            <select style="width: 100px" id="manual_repo-time-interval-units">
+              <option value="s">seconds</option>
+              <option value="m">minutes</option>
+              <option value="h">hours</option>
+            </select>
+    </div>
+
+    <div class="form-row manual_repo-time-row hidden" id="manual_repo-time-row-interval-time">
+      at every <select style="width: 90px" id="manual_repo-time-interval-time-units" class="manual_repo-time-int-count" value="1">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="10">10</option>
+          <option value="12">12</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+          <option value="30">30</option>
+        </select> minutes<br>
+        between <select id="manual_repo-time-interval-time-start" class="manual_repo-time-times"></select>
+        and <select id="manual_repo-time-interval-time-end" class="manual_repo-time-times"></select><br>
+        on <select id="manual_repo-time-interval-time-days" class="manual_repo-time-days"></select>
+    </div>
+
+    <div class="form-row manual_repo-time-row hidden" id="manual_repo-time-row-time">
+      at <input id="manual_repo-time-time" value="12:00"></input><br>
+      on <select id="manual_repo-time-time-days" class="manual_repo-time-days"></select>
+    </div>
+
+    <div class="form-row" id="manual_repo-once">
+      <label>&nbsp;</label>
+      <input type="checkbox" id="manual_repo-input-once" style="display: inline-block; width: auto; vertical-align: top;">
+      <label for="manual_repo-input-once" style="width: 70%;">Fire once at start?</label>
+    </div>
+
+    <div class="form-row" id="node-input-row-name">
+      <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+      <input type="text" id="node-input-name" placeholder="name">
+    </div>
+
+    <div class="form-row">
+      <label for="node-input-topic"><i class="icon-tasks"></i> Topic:</label>
+      <input type="text" id="node-input-topic" placeholder="topic">
+    </div>
+
+    <div class="form-tips" id="git_command-help">
+    </div>
+  <script>
+  {
+    $("#manual_repo-time-type-select").change(function(){
+      $("#manual_repo-input-crontab").val('');
+      var id = $("#manual_repo-time-type-select option:selected").val();
+      $(".manual_repo-time-row").hide();
+      $("#manual_repo-time-row-"+id).show();
+      if ((id == "none") || (id == "interval")) {
+        $("#manual_repo-once").show();
+      } else {
+        $("#manual_repo-once").hide();
+        $("#manual_repo-input-once").prop('checked',false);
+      }
+    });
+
+    var days = [
+      {v:"*",t:"every day"},
+      {v:"1-5",t:"Mondays to Fridays"},
+      {v:"0,6",t:"Saturdays and Sundays"},
+      {v:"1",t:"Mondays"},
+      {v:"2",t:"Tuesdays"},
+      {v:"3",t:"Wednesdays"},
+      {v:"4",t:"Thursdays"},
+      {v:"5",t:"Fridays"},
+      {v:"6",t:"Saturdays"},
+      {v:"0",t:"Sundays"}
+    ];
+
+    $(".manual_repo-time-days").each(function() {
+      for (var d in days) {
+        $(this).append($("<option></option>").val(days[d].v).text(days[d].t));
+      }
+    });
+
+    $(".manual_repo-time-times").each(function() {
+      for (var i = 0; i < 24; i++) {
+        var l = (i<10?"0":"")+i+":00";
+        $(this).append($("<option></option>").val(i).text(l));
+      }
+    });
+
+    $(".manual_repo-time-count").spinner({
+      min:1
+    });
+
+    $("#manual_repo-time-interval-units").change(function(){
+      var units = $("#manual_repo-time-interval-units option:selected").val();
+
+    });
+
+    $.widget("ui.manualrepotimespinner", $.ui.spinner, {
+      options: {
+        step: 60 * 1000,
+        page: 60
+      },
+      _parse: function (value) {
+        if (typeof value === "string" ) {
+          if (Number(value) == value) {
+            return Number(value);
+          }
+          var p = value.split(":");
+          var offset = new Date().getTimezoneOffset();
+          return (((Number(p[0])+1)*60)+Number(p[1])+offset)*60*1000;
+        }
+        return value;
+      },
+      _format: function (value) {
+        var d = new Date(value);
+        var h = d.getHours();
+        var m = d.getMinutes();
+        return ((h<10)?"0":"")+h+":"+((m<10)?"0":"")+m;
+      }
+    });
+
+    $("#manual_repo-time-time").manualrepotimespinner();
+  };
+  </script>
+</script>
+<style>
+  .manual_repo-time-row {
+    padding-left: 110px;
+  }
+  .manual_repo-time-row select {
+    margin: 3px 0;
+  }
+  .manual_repo-time-days {
+    width: 262px;
+  }
+  .manual_repo-time-times {
+    width: 90px;
+  }
+  .manual_repo-time-row > .ui-spinner {
+    height: 28px;
+    margin: 3px 0;
+    border-color: rgb(204,204,204);
+  }
+  #manual_repo-time-time {
+    margin-top: 3px;
+    width: 75px;
+  }
+  .manual_repo-time-count {
+    width: 40px !important;
+  }
+</style>
+
+<script type="text/x-red" data-help-name="manual_repo">
+    <p>A node to integrate the libgit2 bindings via nodegit.</p>
+    <p>Choose the git repository command you wish to call from the dropdown, then configure the incoming msg.payload object to deliver the arguments as named.</p>
+    <p>The callback function
+    <p>The output will be the msg.payload object with key=Return Type</p>
+</script>
+
+<script type="text/javascript">
+
+      var git_command_list = {"addRemote":{"Summary":"Add a remote with the default fetch refspec to the repository's configuration.  This calls git_remote_save before returning.",
+        "arguments":[{"name":"name","type":"String","comment":"the remote's name"},{"name":"url","type":"String","comment":"the remote's url"},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"ReturnType":"Remote","ReturnComment":"the resulting remote"},
+        "addSubmodule":{"Summary":"Set up a new git submodule for checkout.","arguments":[{"name":"url","type":"String","comment":"URL for the submodules remote"},{"name":"path","type":"String","comment":"Path at which the submodule should be created"},{"name":"use_gitlink","type":"Number","comment":"Should workdir contain a gitlink to the repo in .git/modules vs. repo directly in workdir."}],"ReturnType":"Submodule","ReturnComment":"The newly created submodule ready to open for clone"},"clone":{"Summary":"Clone a remote repository, and checkout the branch pointed to by the remote HEAD.","arguments":[{"name":"url","type":"String","comment":"the remote repository to clone"},{"name":"local_path","type":"String","comment":"local directory to clone to"},{"name":"options","type":"CloneOptions","comment":"configuration options for the clone. If NULL, the function works as though GIT_OPTIONS_INIT were passed."},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"ReturnType":"Repository","ReturnComment":"pointer that will receive the resulting repository object"},"createBlobFromFile":{"Summary":"Read a file from the filesystem and write its content to the Object Database as a loose blob","arguments":[{"name":"path","type":"String","comment":"file from which the blob will be created"},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"ReturnType":"Oid","ReturnComment":"return the id of the written blob"},"createReference":{"Summary":"Create a new direct reference.","arguments":[{"name":"name","type":"String","comment":"The name of the reference"},{"name":"id","type":"Oid","comment":"The object id pointed to by the reference."},{"name":"force","type":"Number","comment":"Overwrite existing references"}],"ReturnType":"Reference","ReturnComment":"Pointer to the newly created reference"},"createRevWalk":{"Summary":"Instantiate a new revision walker for browsing the Repo's history.See also Commit.prototype.history()","arguments":[{"name":"String","type":"String, Oid","comment":"sha or Oid"},{"name":"callback","type":"Function","comment":""}],"ReturnType":"RevWalk","ReturnComment":""},"createSymbolicReference":{"Summary":"Create a new symbolic reference.","arguments":[{"name":"name","type":"String","comment":"The name of the reference"},{"name":"target","type":"String","comment":"The target of the reference"},{"name":"force","type":"Number","comment":"Overwrite existing references"}],"ReturnType":"Reference","ReturnComment":"Pointer to the newly created reference"},"delete":{"Summary":"Delete an existing tag reference.","arguments":[{"name":"tag_name","type":"String","comment":"Name of the tag to be deleted; this name is validated for consistency."},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"ReturnType":"undefined","ReturnComment":"undefined"},"getBlob":{"Summary":"Retrieve the blob represented by the oid.","arguments":[{"name":"String","type":"String, Oid","comment":"sha or Oid"},{"name":"callback","type":"Function","comment":""}],"ReturnType":"Blob","ReturnComment":""},"getBranch":{"Summary":"Look up a branch's most recent commit.","arguments":[{"name":"name","type":"String","comment":"Branch name, e.g. 'master'"},{"name":"callback","type":"Function","comment":""}],"ReturnType":"Branch","ReturnComment":""},"getCommit":{"Summary":"Retrieve the commit identified by oid.","arguments":[{"name":"String","type":"String, Oid","comment":"sha or Oid"},{"name":"callback","type":"Function","comment":""}],"ReturnType":"Commit","ReturnComment":""},"getMaster":{"Summary":"Retrieve the master branch.","arguments":[{"name":"callback","type":"Function","comment":""}],"ReturnType":"Branch","ReturnComment":""},"getObject":{"Summary":"Lookup a reference to one of the objects in a repository.","arguments":[{"name":"id","type":"Oid","comment":"the unique identifier for the object"},{"name":"type","type":"Number","comment":"the type of the object"},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"ReturnType":"Object","ReturnComment":"pointer to the looked-up object"},"getReference":{"Summary":"Lookup the reference with the given name.","arguments":[{"name":"name","type":"String","comment":""},{"name":"callback","type":"Function","comment":""}],"ReturnType":"Reference","ReturnComment":""},"getReferences":{"Summary":"Fill a list with all the references that can be found in a repository.","arguments":[{"name":"list_flags","type":"Number","comment":""},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"ReturnType":"Array","ReturnComment":"Pointer to a git_strarray structure where the reference names will be stored"},"getRemote":{"Summary":"Get the information for a particular remote","arguments":[{"name":"name","type":"String","comment":"the remote's name"}],"ReturnType":"Remote","ReturnComment":"pointer to the new remote object"},"getRemotes":{"Summary":"Get a list of the configured remotes for a repo","arguments":[{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"ReturnType":"Array","ReturnComment":"a string array which receives the names of the remotes"},"getSubmodule":{"Summary":"Lookup submodule information by name or path.","arguments":[{"name":"name","type":"String","comment":"The name of the submodule. Trailing slashes will be ignored."}],"ReturnType":"Submodule","ReturnComment":"Pointer to submodule description object pointer.."},"getTag":{"Summary":"Retrieve the tag represented by the oid.","arguments":[{"name":"String","type":"String, Oid","comment":"sha or Oid"},{"name":"callback","type":"Function","comment":""}],"ReturnType":"Tag","ReturnComment":""},"getTree":{"Summary":"Retrieve the tree represented by the oid.","arguments":[{"name":"String","type":"String, Oid","comment":"sha or Oid"},{"name":"callback","type":"Function","comment":""}],"ReturnType":"Tree","ReturnComment":""},"init":{"Summary":"Creates a new Git repository in the given folder.","arguments":[{"name":"path","type":"String","comment":"the path to the repository"},{"name":"is_bare","type":"Boolean","comment":"if true, a Git repository without a working directory is created at the pointed path. If false, provided path will be considered as the working directory into which the .git directory will be created."},{"name":"callback","type":"Function","comment":"Takes error and the return
+value specified below"}],"ReturnType":"Repository","ReturnComment":"pointer to the repo which will be created or reinitialized"},"odb":{"Summary":"Get the Object Database for this repository.","arguments":[],"ReturnType":"Odb","ReturnComment":"Pointer to store the loaded ODB"},"open":{"Summary":"Open a git repository.","arguments":[{"name":"path","type":"String","comment":"the path to the repository"},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"ReturnType":"Repository","ReturnComment":"pointer to the repo which will be opened"},"openIndex":{"Summary":"Get the Index file for this repository.","arguments":[{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"ReturnType":"Index","ReturnComment":"Pointer to store the loaded index"},"path":{"Summary":"Get the path of this repository","arguments":[],"ReturnType":"String","ReturnComment":"the path to the repository"},"reloadSubmodules":{"Summary":"Reread all submodule info.","arguments":[{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"ReturnType":"undefined","ReturnComment":"undefined"},"workdir":{"Summary":"Get the path of the working directory for this repository","arguments":[],"ReturnType":"String","ReturnComment":"the path to the working dir, if it exists"}};
+
+
+  RED.nodes.registerType('manual_repo',{
+		category: 'web-nodes',
+		color:"#ff7700",
+		defaults : {
+      name : {value:"Manual Repo"},
+      topic : {value:"Git"},
+      repeat: {value:""},
+      crontab: {value:""},
+      once: {value:false},
+      git_command : {value:""},
+      git_command_arguments : {value:[],required:true},
+      git_return_type : {value:""}
+    },
+		inputs:0,
+		outputs:1,
+		icon: "leveldb.png",
+		label: function () {
+				return this.name||this.topic||this.payload||"manual_repo";
+		},
+		labelStyle: function () {
+			return this.name?"node_label_italic":"";
+		},
+		oneditprepare: function () {
+
+      var that = this;
+      var repeattype = "none";
+
+       if (this.repeat != "" && this.repeat != 0) {
+          repeattype = "interval";
+          var r = "s";
+          var c = this.repeat;
+          if (this.repeat % 60 === 0) { r = "m"; c = c/60; }
+          if (this.repeat % 1440 === 0) { r = "h"; c = c/24; }
+          $("#manual_repo-time-interval-count").val(c);
+          $("#manual_repo-time-interval-units").val(r);
+          //$("#manual_repo-time-interval-units option").filter(function() {return $(this).val() == "s";}).attr('selected',true);
+          $("#manual_repo-time-interval-days").prop("disabled","disabled");
+      } else if (this.crontab) {
+          var cronparts = this.crontab.split(" ");
+          var days = cronparts[4];
+          if (!isNaN(cronparts[0]) && !isNaN(cronparts[1])) {
+              repeattype = "time";
+              // Fixed time
+              var time = cronparts[1]+":"+cronparts[0];
+              $("#manual_repo-time-time").val(time);
+              $("#manual_repo-time-type-select option").filter(function() {return $(this).val() == "s";}).attr('selected',true);
+              $("#manual_repo-time-time-days option").filter(function() {return $(this).val() == days;}).attr('selected',true);
+
+          } else if (cronparts[0] == "0") {
+              // interval - hours
+              var hours = cronparts[1].slice(2);
+              repeattype = "interval";
+              $("#manual_repo-time-interval-days").prop("disabled",false);
+              $("#manual_repo-time-interval-days option").filter(function() {return $(this).val() == days;}).attr('selected',true);
+              $("#manual_repo-time-interval-count").val(hours)
+              $("#manual_repo-time-interval-units option").filter(function() {return $(this).val() == "h";}).attr('selected',true);
+          } else if (cronparts[1] == "*") {
+              // interval - minutes
+              var minutes = cronparts[0].slice(2);
+              repeattype = "interval";
+              $("#manual_repo-time-interval-days").prop("disabled",false);
+              $("#manual_repo-time-interval-days option").filter(function() {return $(this).val() == days;}).attr('selected',true);
+              $("#manual_repo-time-interval-count").val(minutes)
+              $("#manual_repo-time-interval-units option").filter(function() {return $(this).val() == "m";}).attr('selected',true);
+          } else {
+              repeattype = "interval-time";
+              // interval - time period
+              var minutes = cronparts[0].slice(2);
+              $("#manual_repo-time-interval-time-units").val(minutes);
+              $("#manual_repo-time-interval-time-days option").filter(function() {return $(this).val() == days;}).attr('selected',true);
+              var time = cronparts[1];
+              var timeparts = time.split(",");
+              var start;
+              var end;
+              if (timeparts.length == 1) {
+                  // 0 or 0-10
+                  var hours = timeparts[0].split("-");
+                  if (hours.length == 1) {
+                      start = hours[0];
+                      end = Number(hours[0])+1;
+                  } else {
+                      start = hours[0];
+                      end = (Number(hours[1])+1)%24;
+                  }
+              } else {
+                  // 23,0 or 17-23,0-10 or 23,0-2 or 17-23,0
+                  var startparts = timeparts[0].split("-");
+                  start = startparts[0];
+
+                  var endparts = timeparts[1].split("-");
+                  if (endparts.length == 1) {
+                      end = Number(endparts[0])+1;
+                  } else {
+                      end = Number(endparts[1])+1;
+                  }
+              }
+              $("#manual_repo-time-interval-time-start option").filter(function() {return $(this).val() == start;}).attr('selected',true);
+              $("#manual_repo-time-interval-time-end option").filter(function() {return $(this).val() == end;}).attr('selected',true);
+
+          }
+      } else {
+          $("#manual_repo-time-type-select option").filter(function() {return $(this).val() == "none";}).attr('selected',true);
+      }
+
+      $(".manual_repo-time-row").hide();
+      $("#manual_repo-time-type-select option").filter(function() {return $(this).val() == repeattype;}).attr('selected',true);
+      $("#manual_repo-time-row-"+repeattype).show();
+      $("#manual_repo-time-type-select").change();
+
+      for (var cmd in git_command_list) {
+        $('<option '+((that.git_command===cmd)?'selected ':'')+'value="'+cmd+'">'+cmd+'</option>').appendTo("#node-input-git_command");
+      }
+
+      var buildGitCmdArgs = function () {
+
+      	var val = $("#node-input-git_command").val();
+
+      	console.log('this.value='+val);
+
+        var cmd = git_command_list[val];
+
+        console.log('cmd = ' + cmd);
+
+        var summary = '<div><b>Summary:</b> '+(cmd["Summary"]||'Not Available')+'</div><div><b>Return Type</b>: '+cmd["ReturnType"]+'<br>Comments: '+cmd["ReturnComment"]+'</div>';
+        $("#git_command-help").html(summary);
+        $("#git_command_arguments").html('');
+
+        cmd["arguments"].forEach(function(arg,index,array) {
+          var argname = arg["name"],
+            argtype = arg["type"],
+            argcomment = arg["comment"],
+            inputid = 'node-input-argument_'+argname,
+            rowid = 'node-input-row-argument_'+argname;
+          switch (argtype) {
+            case "Signature":
+              $("<div>",{"class":"form-row","id":rowid}).appendTo("#git_command_arguments");
+              rowid = "#"+rowid;
+              $("<label>",{"for":inputid,"title":argcomment,"text":'('+argtype+') '+argname+':'}).appendTo(rowid);
+              $("<input>",{"class":"git_command-argument","id":inputid,"type":"text","data-name":argname,"data-type":argtype,"placeholder":"name,email"}).appendTo(rowid);
+              break;
+            case "Function":
+              $("<div>",{"class":"form-row","id":rowid}).appendTo("#git_command_arguments");
+              rowid = "#"+rowid;
+              $("<label>",{"for":inputid,"title":argcomment,"text":'('+argtype+') '+argname+':'}).appendTo(rowid);
+              $("<input>",{"class":"git_command-argument","id":inputid,"type":"text","data-name":argname,"data-type":argtype,"disabled":"true","value":"null"}).appendTo(rowid);
+              break;
+            case "CloneOptions":
+              $("<div>",{"class":"form-row","id":rowid}).appendTo("#git_command_arguments");
+              rowid = "#"+rowid;
+              $("<label>",{"for":inputid,"title":argcomment,"text":'('+argtype+') '+argname+':'}).appendTo(rowid);
+              $("<input>",{"class":"git_command-argument","id":inputid,"type":"text","data-name":argname,"data-type":argtype,"disabled":"true","value":"null"}).appendTo(rowid);
+              break;
+            default:
+              if (argtype.indexOf('Oid') !== -1) {
+                argtype = 'String';
+              }
+              $("<div>",{"class":"form-row","id":rowid}).appendTo("#git_command_arguments");
+              rowid = "#"+rowid;
+              $("<label>",{"for":inputid,"title":argcomment,"text":'('+argtype+') '+argname+':'}).appendTo(rowid);
+              $("<input>",{"class":"git_command-argument","id":inputid,"type":"text","data-name":argname,"data-type":argtype}).appendTo(rowid);
+              break;
+           }
+        });
+
+      };
+
+      console.log('setting on change function');
+
+      $("#node-input-git_command").on("change", buildGitCmdArgs);
+
+		  console.log('calling buildGitCmdArgs');
+
+		  buildGitCmdArgs.call($("#node-input-git_command")[0]);
+
+		},
+
+		oneditsave: function () {
+			console.log('oneditsave called');
+		  var that = this;
+		  var repeat = "";
+		  var crontab = "";
+		  var type = $("#manual_repo-time-type-select option:selected").val();
+		  if (type == "none") {
+                // nothing
+      } else if (type == "interval") {
+          var count = $("#manual_repo-time-interval-count").val();
+          var units = $("#manual_repo-time-interval-units option:selected").val();
+          var days = $("#manual_repo-time-interval-days option:selected").val();
+          if (units == "s") {
+              repeat = count;
+          } else {
+              if (units == "m") {
+                  //crontab = "*/"+count+" * * * "+days;
+                  repeat = count * 60;
+              } else if (units == "h") {
+                  //crontab = "0 */"+count+" * * "+days;
+                  repeat = count * 60 * 24;
+              }
+          }
+      } else if (type == "interval-time") {
+          var count = $("#manual_repo-time-interval-time-units").val();
+          var startTime = Number($("#manual_repo-time-interval-time-start option:selected").val());
+          var endTime = Number($("#manual_repo-time-interval-time-end option:selected").val());
+          var days = $("#manual_repo-time-interval-time-days option:selected").val();
+          var timerange = "";
+          if (startTime == endTime) {
+              //TODO: invalid
+              repeat = "";
+              crontab = "";
+          } else if (endTime == 0) {
+              timerange = startTime+"-23";
+          } else if (startTime+1 < endTime) {
+              timerange = startTime+"-"+(endTime-1);
+          } else if (startTime+1 == endTime) {
+              timerange = startTime;
+          } else {
+              var startpart = "";
+              var endpart = "";
+              if (startTime == 23) {
+                  startpart = "23";
+              } else {
+                  startpart = startTime+"-23";
+              }
+              if (endTime == 1) {
+                  endpart = "0";
+              } else {
+                  endpart = "0-"+(endTime-1);
+              }
+              timerange = startpart+","+endpart;
+          }
+          repeat = "";
+          crontab = "*/"+count+" "+timerange+" * * "+days;
+      } else if (type == "time") {
+          var time = $("#manual_repo-time-time").val();
+          var days = $("#manual_repo-time-time-days option:selected").val();
+          var parts = time.split(":");
+          repeat = "";
+          crontab = parts[1]+" "+parts[0]+" * * "+days;
+      }
+
+      $("#manual_repo-input-repeat").val(repeat);
+      $("#manual_repo-input-crontab").val(crontab);
+
+      var selected_value = $("#node-input-git_command option:selected").val();
+
+		  this.git_command_arguments = [];
+	//	  this.git_command_argument_names = [];
+		  this.git_return_type = git_command_list[selected_value]["ReturnType"];
+		  $(".git_command-argument").each(function () {
+		    var argument = {
+          name:$(this).attr("data-name"),
+          type:$(this).attr("data-type"),
+          value:$(this).val()
+		    };
+		    that.git_command_arguments.push(argument);
+	//	    that.git_command_argument_names.push($(this).attr("data-name"));
+	//	    that.git_command_arguments.push($(this).val());
+		  });
+		},
+		button: {
+      onclick: function () {
+        var label = (this.name||this.git_command).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+        d3.xhr('manual_repo/'+this.id).post(function(err,resp) {
+          if (err) {
+            if (err.status == 404) {
+              RED.notify('<strong>Error</strong>: manual_repo not deployed','error');
+            } else if (err.status == 500) {
+              RED.notify('<strong>Error</strong>: manual_repo failed, see log for details.','error');
+            } else if (err.status == 0) {
+              RED.notify('<strong>Error</strong>: no response from server','error');
+            } else {
+              RED.notify('<strong>Error</strong>: unexpected error: '+err.status+')'+err.response,'error');
+            }
+          } else if (resp.status == 200) {
+              RED.notify('manual_repo successfully injected: '+label,'success');
+          } else {
+              RED.notify('<strong>Error</strong>: unexpected response: ('+resp.status+') '+resp.response,'error');
+          }
+        });
+      }
+
+		}
+	});
+</script>

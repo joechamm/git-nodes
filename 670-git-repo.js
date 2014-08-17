@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright 2014 Tailored Cloud
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +16,7 @@
 
 //Require nodegit
 var nodegit = require('nodegit');
+//var fs = require('fs');
 //Require main module
 var RED = require(process.env.NODE_RED_HOME+"/red/red");
 
@@ -31,11 +32,17 @@ function GitRepoNode(n) {
 	// Store local copies of the node configuration (as defined in the .html)
 	this.topic = n.topic;
 
-  this.on("input", function(msg) { 
-    
-    
-  
-    
+  this.on("input", function(msg) {
+    var str = 'Command: '+node.git_command+'  Command Arguments: '+node.git_command_arguments;
+/*
+    for (var i = 0; i < node.git_command_arguments.length; i++) {
+      str += node.git_command_arguments[i] + ' ';
+ //     console.log('argument: ' + node.git_command_arguments[i]);
+    }
+*/
+    msg.payload = str;
+    node.send(msg);
+
 	});
 
 	this.on("close", function () {
@@ -45,4 +52,4 @@ function GitRepoNode(n) {
 	});
 }
 
-RED.nodes.registerType("GitRepoNode",GitRepoNode);	
+RED.nodes.registerType("GitRepoNode",GitRepoNode);
