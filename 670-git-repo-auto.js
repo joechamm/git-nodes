@@ -31,7 +31,9 @@ module.exports = function(RED) {
       var newmsg,
         repofunc = nodegit.Repo[node.git_command],
         has_callback = false,
-        resolved_arguments = [];
+        resolved_arguments = [],
+        cb_string,
+        cb_args;
 
       newmsg = {
         "topic":node.topic,
@@ -45,6 +47,8 @@ module.exports = function(RED) {
         switch(elem.type) {
           case "Function":
             has_callback = true;
+            cb_string = msg.payload[elem.name];
+            cb_args = msg.payload['arguments'];
             break;
           case "CloneOptions":
             resolved_arguments.push(null);
@@ -136,13 +140,17 @@ module.exports = function(RED) {
           })(node,newmsg);
           */
         } else {
-          cb = ( function (innode,inmsg) {
-            return function (err,ret) {
-              if (err) throw err;
-              inmsg.payload.return_value = ret;
-              innode.send(inmsg);
-            }
-          })(node,newmsg);
+          if (cb_string) {
+            var cb = new Function(cb_args,cb_string);
+          } else {
+            cb = ( function (innode,inmsg) {
+              return function (err,ret) {
+                if (err) throw err;
+                inmsg.payload.return_value = ret;
+                innode.send(inmsg);
+              }
+            })(node,newmsg);
+          }
         }
 
         resolved_arguments.push(cb);
