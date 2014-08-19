@@ -41,18 +41,7 @@
     </div>
   <style>
     .form-row input.git_command-argument {
-      width: 200px;
       position: relative;
-      left: -150px;
-      top: 3px;
-    }
-    .spacer.caret {
-      margin-left: 10px;
-    }
-    .dropdown-toggle p {
-      float: left;
-      padding: 0px;
-      margin: 0px;
     }
   </style>
 </script>
@@ -65,143 +54,11 @@
 </script>
 
 <script type="text/javascript">
-  var ConvenientPatch_description = {
-    "ConvenientPatch": {
-        "methods": {
-            "hunks": {
-                "signature": "hunks()",
-                "arguments": [],
-                "summary": {
-                    "comment": "The hunks in this patch",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "isAdded": {
-                "signature": "isAdded()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Is this an added patch?",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "isCopied": {
-                "signature": "isCopied()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Is this a copied patch?",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "isDeleted": {
-                "signature": "isDeleted()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Is this a deleted patch?",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "isIgnored": {
-                "signature": "isIgnored()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Is this an ignored patch?",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "isModified": {
-                "signature": "isModified()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Is this an modified patch?",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "isRenamed": {
-                "signature": "isRenamed()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Is this a renamed patch?",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "isTypeChange": {
-                "signature": "isTypeChange()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Is this a type change?",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "isUnmodified": {
-                "signature": "isUnmodified()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Is this an unmodified patch?",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "isUntracked": {
-                "signature": "isUntracked()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Is this an untracked patch?",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "newFile": {
-                "signature": "newFile()",
-                "arguments": [],
-                "summary": {
-                    "comment": "New name of the file",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "oldFile": {
-                "signature": "oldFile()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Old name of the file",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "size": {
-                "signature": "size()",
-                "arguments": [],
-                "summary": {
-                    "comment": "The number of hunks in this patch",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "status": {
-                "signature": "status()",
-                "arguments": [],
-                "summary": {
-                    "comment": "The status of this patch (unmodified, added, deleted)",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            }
-        }
-    }
-}
-;
+  var ConvenientPatch_description = {"ConvenientPatch":{"methods":{"hunks":{"signature":"hunks()","arguments":[],"summary":{"comment":"The hunks in this patch","return_type":"[ConvenientHunk]","return_comment":"an array of ConvenientHunks"}},"isAdded":{"signature":"isAdded()","arguments":[],"summary":{"comment":"Is this an added patch?","return_type":"Boolean","return_comment":"no other info"}},"isCopied":{"signature":"isCopied()","arguments":[],"summary":{"comment":"Is this a copied patch?","return_type":"Boolean","return_comment":"no other info"}},"isDeleted":{"signature":"isDeleted()","arguments":[],"summary":{"comment":"Is this a deleted patch?","return_type":"Boolean","return_comment":"no other info"}},"isIgnored":{"signature":"isIgnored()","arguments":[],"summary":{"comment":"Is this an ignored patch?","return_type":"Boolean","return_comment":"no other info"}},"isModified":{"signature":"isModified()","arguments":[],"summary":{"comment":"Is this an modified patch?","return_type":"Boolean","return_comment":"no other info"}},"isRenamed":{"signature":"isRenamed()","arguments":[],"summary":{"comment":"Is this a renamed patch?","return_type":"Boolean","return_comment":"no other info"}},"isTypeChange":{"signature":"isTypeChange()","arguments":[],"summary":{"comment":"Is this a type change?","return_type":"Boolean","return_comment":"no other info"}},"isUnmodified":{"signature":"isUnmodified()","arguments":[],"summary":{"comment":"Is this an unmodified patch?","return_type":"Boolean","return_comment":"no other info"}},"isUntracked":{"signature":"isUntracked()","arguments":[],"summary":{"comment":"Is this an untracked patch?","return_type":"Boolean","return_comment":"no other info"}},"newFile":{"signature":"newFile()","arguments":[],"summary":{"comment":"New name of the file","return_type":"String","return_comment":"no other info"}},"oldFile":{"signature":"oldFile()","arguments":[],"summary":{"comment":"Old name of the file","return_type":"String","return_comment":"no other info"}},"size":{"signature":"size()","arguments":[],"summary":{"comment":"The number of hunks in this patch","return_type":"Number","return_comment":"no other info"}},"status":{"signature":"status()","arguments":[],"summary":{"comment":"The status of this patch (unmodified, added, deleted)","return_type":"Number","return_comment":"no other info"}}}}};
 
   RED.nodes.registerType('convenientpatch_node',{
 		category: 'web-nodes',
-		color:"#881111",
+		color:"#afeca7",
 		defaults : {
       name : {value:"ConvenientPatch"},
       topic : {value:"Git"},
@@ -211,7 +68,7 @@
     },
 		inputs:1,
 		outputs:1,
-		icon: "leveldb.png",
+		icon: "libgit2logo.png",
 		label: function () {
 				return this.name||this.topic||this.payload||"convenientpatch_node";
 		},

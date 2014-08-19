@@ -41,18 +41,7 @@
     </div>
   <style>
     .form-row input.git_command-argument {
-      width: 200px;
       position: relative;
-      left: -150px;
-      top: 3px;
-    }
-    .spacer.caret {
-      margin-left: 10px;
-    }
-    .dropdown-toggle p {
-      float: left;
-      padding: 0px;
-      margin: 0px;
     }
   </style>
 </script>
@@ -65,53 +54,11 @@
 </script>
 
 <script type="text/javascript">
-  var OdbObject_description = {
-    "OdbObject": {
-        "methods": {
-            "data": {
-                "signature": "data()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Return the data of an ODB object",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "oid": {
-                "signature": "oid()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Return the OID of an ODB object",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "size": {
-                "signature": "size()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Return the size of an ODB object",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "type": {
-                "signature": "type()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Return the type of an ODB object",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            }
-        }
-    }
-}
-;
+  var OdbObject_description = {"OdbObject":{"methods":{"data":{"signature":"data()","arguments":[],"summary":{"comment":"Return the data of an ODB object","return_type":"(none)","return_comment":"a pointer to the data"}},"oid":{"signature":"oid()","arguments":[],"summary":{"comment":"Return the OID of an ODB object","return_type":"Oid","return_comment":"a pointer to the OID"}},"size":{"signature":"size()","arguments":[],"summary":{"comment":"Return the size of an ODB object","return_type":"Number","return_comment":"the size"}},"type":{"signature":"type()","arguments":[],"summary":{"comment":"Return the type of an ODB object","return_type":"Number","return_comment":"the type"}}}}};
 
   RED.nodes.registerType('odbobject_node',{
 		category: 'web-nodes',
-		color:"#881111",
+		color:"#c05a37",
 		defaults : {
       name : {value:"OdbObject"},
       topic : {value:"Git"},
@@ -121,7 +68,7 @@
     },
 		inputs:1,
 		outputs:1,
-		icon: "leveldb.png",
+		icon: "libgit2logo.png",
 		label: function () {
 				return this.name||this.topic||this.payload||"odbobject_node";
 		},

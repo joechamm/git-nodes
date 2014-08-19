@@ -41,18 +41,7 @@
     </div>
   <style>
     .form-row input.git_command-argument {
-      width: 200px;
       position: relative;
-      left: -150px;
-      top: 3px;
-    }
-    .spacer.caret {
-      margin-left: 10px;
-    }
-    .dropdown-toggle p {
-      float: left;
-      padding: 0px;
-      margin: 0px;
     }
   </style>
 </script>
@@ -65,68 +54,11 @@
 </script>
 
 <script type="text/javascript">
-  var Signature_description = {
-    "Signature": {
-        "methods": {
-            "create": {
-                "signature": "create(name, email, time, offset)",
-                "arguments": [{
-                    "name": "name",
-                    "type": "String",
-                    "comment": "name of the person"
-                }, {
-                    "name": "email",
-                    "type": "String",
-                    "comment": "email of the person"
-                }, {
-                    "name": "time",
-                    "type": "Number",
-                    "comment": "time when the action happened"
-                }, {
-                    "name": "offset",
-                    "type": "Number",
-                    "comment": "timezone offset in minutes for the time"
-                }],
-                "summary": {
-                    "comment": "Create a new action signature.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "now": {
-                "signature": "now(name, email)",
-                "arguments": [{
-                    "name": "name",
-                    "type": "String",
-                    "comment": "name of the person"
-                }, {
-                    "name": "email",
-                    "type": "String",
-                    "comment": "email of the person"
-                }],
-                "summary": {
-                    "comment": "Create a new action signature with a timestamp of 'now'.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "toString": {
-                "signature": "toString()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Standard string representation of an author.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            }
-        }
-    }
-}
-;
+  var Signature_description = {"Signature":{"methods":{"create":{"signature":"create(name, email, time, offset)","arguments":[{"name":"name","type":"String","comment":"name of the person"},{"name":"email","type":"String","comment":"email of the person"},{"name":"time","type":"Number","comment":"time when the action happened"},{"name":"offset","type":"Number","comment":"timezone offset in minutes for the time"}],"summary":{"comment":"Create a new action signature.","return_type":"Signature","return_comment":"new signature, in case of error NULL"}},"now":{"signature":"now(name, email)","arguments":[{"name":"name","type":"String","comment":"name of the person"},{"name":"email","type":"String","comment":"email of the person"}],"summary":{"comment":"Create a new action signature with a timestamp of 'now'.","return_type":"Signature","return_comment":"new signature, in case of error NULL"}},"toString":{"signature":"toString()","arguments":[],"summary":{"comment":"Standard string representation of an author.","return_type":"String","return_comment":"no other info"}}}}};
 
   RED.nodes.registerType('signature_node',{
 		category: 'web-nodes',
-		color:"#881111",
+		color:"#522885",
 		defaults : {
       name : {value:"Signature"},
       topic : {value:"Git"},
@@ -136,7 +68,7 @@
     },
 		inputs:1,
 		outputs:1,
-		icon: "leveldb.png",
+		icon: "libgit2logo.png",
 		label: function () {
 				return this.name||this.topic||this.payload||"signature_node";
 		},

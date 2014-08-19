@@ -41,18 +41,7 @@
     </div>
   <style>
     .form-row input.git_command-argument {
-      width: 200px;
       position: relative;
-      left: -150px;
-      top: 3px;
-    }
-    .spacer.caret {
-      margin-left: 10px;
-    }
-    .dropdown-toggle p {
-      float: left;
-      padding: 0px;
-      margin: 0px;
     }
   </style>
 </script>
@@ -65,35 +54,11 @@
 </script>
 
 <script type="text/javascript">
-  var Threads_description = {
-    "Threads": {
-        "methods": {
-            "init": {
-                "signature": "init()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Init the threading system.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "shutdown": {
-                "signature": "shutdown()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Shutdown the threading system.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            }
-        }
-    }
-}
-;
+  var Threads_description = {"Threads":{"methods":{"init":{"signature":"init()","arguments":[],"summary":{"comment":"Init the threading system.","return_type":"(none)","return_comment":"N/A"}},"shutdown":{"signature":"shutdown()","arguments":[],"summary":{"comment":"Shutdown the threading system.","return_type":"void","return_comment":"no other info"}}}}};
 
   RED.nodes.registerType('threads_node',{
 		category: 'web-nodes',
-		color:"#881111",
+		color:"#bcd07e",
 		defaults : {
       name : {value:"Threads"},
       topic : {value:"Git"},
@@ -103,7 +68,7 @@
     },
 		inputs:1,
 		outputs:1,
-		icon: "leveldb.png",
+		icon: "libgit2logo.png",
 		label: function () {
 				return this.name||this.topic||this.payload||"threads_node";
 		},

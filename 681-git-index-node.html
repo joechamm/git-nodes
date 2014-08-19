@@ -41,18 +41,7 @@
     </div>
   <style>
     .form-row input.git_command-argument {
-      width: 200px;
       position: relative;
-      left: -150px;
-      top: 3px;
-    }
-    .spacer.caret {
-      margin-left: 10px;
-    }
-    .dropdown-toggle p {
-      float: left;
-      padding: 0px;
-      margin: 0px;
     }
   </style>
 </script>
@@ -65,274 +54,18 @@
 </script>
 
 <script type="text/javascript">
-  var Index_description = {
-    "Index": {
-        "methods": {
-            "addByPath": {
-                "signature": "addByPath(path, callback)",
-                "arguments": [{
-                    "name": "path",
-                    "type": "String",
-                    "comment": "filename to add"
-                }, {
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": "Takes error and the return value specified below"
-                }],
-                "summary": {
-                    "comment": "Add or update an index entry from a file on disk",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "clear": {
-                "signature": "clear()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Clear the contents (all the entries) of an index object.
+  var Index_description = {"Index":{"methods":{"addByPath":{"signature":"addByPath(path, callback)","arguments":[{"name":"path","type":"String","comment":"filename to add"},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"summary":{"comment":"Add or update an index entry from a file on disk","return_type":"(none)","return_comment":"N/A"}},"clear":{"signature":"clear()","arguments":[],"summary":{"comment":"Clear the contents (all the entries) of an index object.
 This clears the index object in memory; changes must be manually
-written to disk for them to take effect.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "conflictCleanup": {
-                "signature": "conflictCleanup()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Remove all conflicts in the index (entries with a stage greater than 0.)",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "conflictRemove": {
-                "signature": "conflictRemove(path)",
-                "arguments": [{
-                    "name": "path",
-                    "type": "String",
-                    "comment": "to search"
-                }],
-                "summary": {
-                    "comment": "Removes the index entries that represent a conflict of a single file.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "entries": {
-                "signature": "entries()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Return an array of the entries in this index.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "entry": {
-                "signature": "entry(n)",
-                "arguments": [{
-                    "name": "n",
-                    "type": "Number",
-                    "comment": "the position of the entry"
-                }],
-                "summary": {
-                    "comment": "Get a pointer to one of the entries in the index",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "find": {
-                "signature": "find(at_pos, path)",
-                "arguments": [{
-                    "name": "at_pos",
-                    "type": "Number",
-                    "comment": "the address to which the position of the index entry is written (optional)"
-                }, {
-                    "name": "path",
-                    "type": "String",
-                    "comment": "path to search"
-                }],
-                "summary": {
-                    "comment": "Find the first position of any entries which point to given
-path in the Git index.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "hasConflicts": {
-                "signature": "hasConflicts()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Determine if the index contains entries representing file conflicts.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "indexToWorkdir": {
-                "signature": "indexToWorkdir(repo, index, opts, callback)",
-                "arguments": [{
-                    "name": "repo",
-                    "type": "Repository",
-                    "comment": "The repository."
-                }, {
-                    "name": "index",
-                    "type": "Index",
-                    "comment": "The index to diff from; repo index used if NULL."
-                }, {
-                    "name": "opts",
-                    "type": "DiffOptions",
-                    "comment": "Structure with options to influence diff or NULL for defaults."
-                }, {
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": "Takes error and the return value specified below"
-                }],
-                "summary": {
-                    "comment": "Create a diff list between the repository index and the workdir directory.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "open": {
-                "signature": "open(index_path, callback)",
-                "arguments": [{
-                    "name": "index_path",
-                    "type": "String",
-                    "comment": "the path to the index file in disk"
-                }, {
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": "Takes error and the return value specified below"
-                }],
-                "summary": {
-                    "comment": "Create a new bare Git index object as a memory representation
+written to disk for them to take effect.","return_type":"void","return_comment":"no other info"}},"conflictCleanup":{"signature":"conflictCleanup()","arguments":[],"summary":{"comment":"Remove all conflicts in the index (entries with a stage greater than 0.)","return_type":"void","return_comment":"no other info"}},"conflictRemove":{"signature":"conflictRemove(path)","arguments":[{"name":"path","type":"String","comment":"to search"}],"summary":{"comment":"Removes the index entries that represent a conflict of a single file.","return_type":"(none)","return_comment":"N/A"}},"entries":{"signature":"entries()","arguments":[],"summary":{"comment":"Return an array of the entries in this index.","return_type":"[IndexEntry]","return_comment":"an array of IndexEntrys"}},"entry":{"signature":"entry(n)","arguments":[{"name":"n","type":"Number","comment":"the position of the entry"}],"summary":{"comment":"Get a pointer to one of the entries in the index","return_type":"IndexEntry","return_comment":"a pointer to the entry; NULL if out of bounds"}},"find":{"signature":"find(at_pos, path)","arguments":[{"name":"at_pos","type":"Number","comment":"the address to which the position of the index entry is written (optional)"},{"name":"path","type":"String","comment":"path to search"}],"summary":{"comment":"Find the first position of any entries which point to given
+path in the Git index.","return_type":"Number","return_comment":"a zero-based position in the index if found; GIT_ENOTFOUND otherwise"}},"hasConflicts":{"signature":"hasConflicts()","arguments":[],"summary":{"comment":"Determine if the index contains entries representing file conflicts.","return_type":"Number","return_comment":"1 if at least one conflict is found, 0 otherwise."}},"indexToWorkdir":{"signature":"indexToWorkdir(repo, index, opts, callback)","arguments":[{"name":"repo","type":"Repository","comment":"The repository."},{"name":"index","type":"Index","comment":"The index to diff from; repo index used if NULL."},{"name":"opts","type":"DiffOptions","comment":"Structure with options to influence diff or NULL for defaults."},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"summary":{"comment":"Create a diff list between the repository index and the workdir directory.","return_type":"DiffList","return_comment":"Output pointer to a git_diff_list pointer to be allocated."}},"open":{"signature":"open(index_path, callback)","arguments":[{"name":"index_path","type":"String","comment":"the path to the index file in disk"},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"summary":{"comment":"Create a new bare Git index object as a memory representation
 of the Git index file in 'index_path', without a repository
-to back it.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "read": {
-                "signature": "read(callback)",
-                "arguments": [{
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": "Takes error and the return value specified below"
-                }],
-                "summary": {
-                    "comment": "Update the contents of an existing index object in memory
-by reading from the hard disk.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "readTree": {
-                "signature": "readTree(tree, callback)",
-                "arguments": [{
-                    "name": "tree",
-                    "type": "Tree",
-                    "comment": "tree to read"
-                }, {
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": "Takes error and the return value specified below"
-                }],
-                "summary": {
-                    "comment": "Read a tree into the index file with stats",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "remove": {
-                "signature": "remove(path, stage)",
-                "arguments": [{
-                    "name": "path",
-                    "type": "String",
-                    "comment": "path to search"
-                }, {
-                    "name": "stage",
-                    "type": "Number",
-                    "comment": "stage to search"
-                }],
-                "summary": {
-                    "comment": "Remove an entry from the index",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "removeByPath": {
-                "signature": "removeByPath(path)",
-                "arguments": [{
-                    "name": "path",
-                    "type": "String",
-                    "comment": "filename to remove"
-                }],
-                "summary": {
-                    "comment": "Remove an index entry corresponding to a file on disk",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "removeDirectory": {
-                "signature": "removeDirectory(dir, stage)",
-                "arguments": [{
-                    "name": "dir",
-                    "type": "String",
-                    "comment": "container directory path"
-                }, {
-                    "name": "stage",
-                    "type": "Number",
-                    "comment": "stage to search"
-                }],
-                "summary": {
-                    "comment": "Remove all entries from the index under a given directory",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "size": {
-                "signature": "size()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the count of entries currently in the index",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "write": {
-                "signature": "write(callback)",
-                "arguments": [{
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": "Takes error and the return value specified below"
-                }],
-                "summary": {
-                    "comment": "Write an existing index object from memory back to disk
-using an atomic file lock.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "writeTree": {
-                "signature": "writeTree(callback)",
-                "arguments": [{
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": "Takes error and the return value specified below"
-                }],
-                "summary": {
-                    "comment": "Write the index as a tree",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            }
-        }
-    }
-}
-;
+to back it.","return_type":"Index","return_comment":"the pointer for the new index"}},"read":{"signature":"read(callback)","arguments":[{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"summary":{"comment":"Update the contents of an existing index object in memory
+by reading from the hard disk.","return_type":"(none)","return_comment":"N/A"}},"readTree":{"signature":"readTree(tree, callback)","arguments":[{"name":"tree","type":"Tree","comment":"tree to read"},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"summary":{"comment":"Read a tree into the index file with stats","return_type":"(none)","return_comment":"N/A"}},"remove":{"signature":"remove(path, stage)","arguments":[{"name":"path","type":"String","comment":"path to search"},{"name":"stage","type":"Number","comment":"stage to search"}],"summary":{"comment":"Remove an entry from the index","return_type":"(none)","return_comment":"N/A"}},"removeByPath":{"signature":"removeByPath(path)","arguments":[{"name":"path","type":"String","comment":"filename to remove"}],"summary":{"comment":"Remove an index entry corresponding to a file on disk","return_type":"(none)","return_comment":"N/A"}},"removeDirectory":{"signature":"removeDirectory(dir, stage)","arguments":[{"name":"dir","type":"String","comment":"container directory path"},{"name":"stage","type":"Number","comment":"stage to search"}],"summary":{"comment":"Remove all entries from the index under a given directory","return_type":"(none)","return_comment":"N/A"}},"size":{"signature":"size()","arguments":[],"summary":{"comment":"Get the count of entries currently in the index","return_type":"Number","return_comment":"integer of count of current entries"}},"write":{"signature":"write(callback)","arguments":[{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"summary":{"comment":"Write an existing index object from memory back to disk
+using an atomic file lock.","return_type":"(none)","return_comment":"N/A"}},"writeTree":{"signature":"writeTree(callback)","arguments":[{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"summary":{"comment":"Write the index as a tree","return_type":"Oid","return_comment":"Pointer where to store the OID of the written tree"}}}}};
 
   RED.nodes.registerType('index_node',{
 		category: 'web-nodes',
-		color:"#881111",
+		color:"#26ef7c",
 		defaults : {
       name : {value:"Index"},
       topic : {value:"Git"},
@@ -342,7 +75,7 @@ using an atomic file lock.",
     },
 		inputs:1,
 		outputs:1,
-		icon: "leveldb.png",
+		icon: "libgit2logo.png",
 		label: function () {
 				return this.name||this.topic||this.payload||"index_node";
 		},

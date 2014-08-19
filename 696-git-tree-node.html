@@ -41,18 +41,7 @@
     </div>
   <style>
     .form-row input.git_command-argument {
-      width: 200px;
       position: relative;
-      left: -150px;
-      top: 3px;
-    }
-    .spacer.caret {
-      margin-left: 10px;
-    }
-    .dropdown-toggle p {
-      float: left;
-      padding: 0px;
-      margin: 0px;
     }
   </style>
 </script>
@@ -65,215 +54,11 @@
 </script>
 
 <script type="text/javascript">
-  var Tree_description = {
-    "Tree": {
-        "methods": {
-            "builder": {
-                "signature": "builder()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Create a new tree builder.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "diff": {
-                "signature": "diff(tree, callback)",
-                "arguments": [{
-                    "name": "tree",
-                    "type": "Tree",
-                    "comment": "to diff against"
-                }, {
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": ""
-                }],
-                "summary": {
-                    "comment": "Diff two trees",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "diffIndex": {
-                "signature": "diffIndex(repo, index, opts, callback)",
-                "arguments": [{
-                    "name": "repo",
-                    "type": "Repository",
-                    "comment": "The repository containing the tree and index."
-                }, {
-                    "name": "index",
-                    "type": "Index",
-                    "comment": "The index to diff with; repo index used if NULL."
-                }, {
-                    "name": "opts",
-                    "type": "DiffOptions",
-                    "comment": "Structure with options to influence diff or NULL for defaults."
-                }, {
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": "Takes error and the return value specified below"
-                }],
-                "summary": {
-                    "comment": "Create a diff list between a tree and repository index.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "diffTree": {
-                "signature": "diffTree(repo, new_tree, opts, callback)",
-                "arguments": [{
-                    "name": "repo",
-                    "type": "Repository",
-                    "comment": "The repository containing the trees."
-                }, {
-                    "name": "new_tree",
-                    "type": "Tree",
-                    "comment": "A git_tree object to diff to, or NULL for empty tree."
-                }, {
-                    "name": "opts",
-                    "type": "DiffOptions",
-                    "comment": "Structure with options to influence diff or NULL for defaults."
-                }, {
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": "Takes error and the return value specified below"
-                }],
-                "summary": {
-                    "comment": "Create a diff list with the difference between two tree objects.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "diffWorkDir": {
-                "signature": "diffWorkDir(repo, opts, callback)",
-                "arguments": [{
-                    "name": "repo",
-                    "type": "Repository",
-                    "comment": "The repository containing the tree."
-                }, {
-                    "name": "opts",
-                    "type": "DiffOptions",
-                    "comment": "Structure with options to influence diff or NULL for defaults."
-                }, {
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": "Takes error and the return value specified below"
-                }],
-                "summary": {
-                    "comment": "Create a diff list between a tree and the working directory.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "entries": {
-                "signature": "entries()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Return an array of the entries in this tree (excluding its children).",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "entryByIndex": {
-                "signature": "entryByIndex(i)",
-                "arguments": [{
-                    "name": "i",
-                    "type": "Number",
-                    "comment": ""
-                }],
-                "summary": {
-                    "comment": "Get an entry at the ith position.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "entryByName": {
-                "signature": "entryByName(name)",
-                "arguments": [{
-                    "name": "name",
-                    "type": "String",
-                    "comment": ""
-                }],
-                "summary": {
-                    "comment": "Get an entry by name; if the tree is a directory, the name is the filename.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "entryByOid": {
-                "signature": "entryByOid(oid)",
-                "arguments": [{
-                    "name": "oid",
-                    "type": "Oid",
-                    "comment": "the sha being looked for"
-                }],
-                "summary": {
-                    "comment": "Lookup a tree entry by SHA value.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "getEntry": {
-                "signature": "getEntry(path)",
-                "arguments": [{
-                    "name": "path",
-                    "type": "String",
-                    "comment": ""
-                }],
-                "summary": {
-                    "comment": "Get an entry at a path. Unlike by name, this takes a fullyqualified path, like /foo/bar/baz.javascript",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "oid": {
-                "signature": "oid()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the id of a tree.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "path": {
-                "signature": "path()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Return the path of this tree, like /lib/foo/bar",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "size": {
-                "signature": "size()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the number of entries listed in a tree",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "walk": {
-                "signature": "walk([blobsOnly)",
-                "arguments": [{
-                    "name": "[blobsOnly",
-                    "type": "Boolean",
-                    "comment": "= true] True to emit only blob &amp; blob executable entries."
-                }],
-                "summary": {
-                    "comment": "Recursively walk the tree in breadth-first order. Fires an event for each entry.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            }
-        }
-    }
-}
-;
+  var Tree_description = {"Tree":{"methods":{"builder":{"signature":"builder()","arguments":[],"summary":{"comment":"Create a new tree builder.","return_type":"TreeBuilder","return_comment":"Pointer where to store the tree builder"}},"diff":{"signature":"diff(tree, callback)","arguments":[{"name":"tree","type":"Tree","comment":"to diff against"},{"name":"callback","type":"Function","comment":""}],"summary":{"comment":"Diff two trees","return_type":"DiffList","return_comment":"no other info"}},"diffIndex":{"signature":"diffIndex(repo, index, opts, callback)","arguments":[{"name":"repo","type":"Repository","comment":"The repository containing the tree and index."},{"name":"index","type":"Index","comment":"The index to diff with; repo index used if NULL."},{"name":"opts","type":"DiffOptions","comment":"Structure with options to influence diff or NULL for defaults."},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"summary":{"comment":"Create a diff list between a tree and repository index.","return_type":"DiffList","return_comment":"Output pointer to a git_diff_list pointer to be allocated."}},"diffTree":{"signature":"diffTree(repo, new_tree, opts, callback)","arguments":[{"name":"repo","type":"Repository","comment":"The repository containing the trees."},{"name":"new_tree","type":"Tree","comment":"A git_tree object to diff to, or NULL for empty tree."},{"name":"opts","type":"DiffOptions","comment":"Structure with options to influence diff or NULL for defaults."},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"summary":{"comment":"Create a diff list with the difference between two tree objects.","return_type":"DiffList","return_comment":"Output pointer to a git_diff_list pointer to be allocated."}},"diffWorkDir":{"signature":"diffWorkDir(repo, opts, callback)","arguments":[{"name":"repo","type":"Repository","comment":"The repository containing the tree."},{"name":"opts","type":"DiffOptions","comment":"Structure with options to influence diff or NULL for defaults."},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"summary":{"comment":"Create a diff list between a tree and the working directory.","return_type":"DiffList","return_comment":"A pointer to a git_diff_list pointer that will be allocated."}},"entries":{"signature":"entries()","arguments":[],"summary":{"comment":"Return an array of the entries in this tree (excluding its children).","return_type":"[TreeEntry]","return_comment":"an array of TreeEntrys"}},"entryByIndex":{"signature":"entryByIndex(i)","arguments":[{"name":"i","type":"Number","comment":""}],"summary":{"comment":"Get an entry at the ith position.","return_type":"TreeEntry","return_comment":"no other info"}},"entryByName":{"signature":"entryByName(name)","arguments":[{"name":"name","type":"String","comment":""}],"summary":{"comment":"Get an entry by name; if the tree is a directory, the name is the filename.","return_type":"TreeEntry","return_comment":"no other info"}},"entryByOid":{"signature":"entryByOid(oid)","arguments":[{"name":"oid","type":"Oid","comment":"the sha being looked for"}],"summary":{"comment":"Lookup a tree entry by SHA value.","return_type":"TreeEntry","return_comment":"the tree entry; NULL if not found"}},"getEntry":{"signature":"getEntry(path)","arguments":[{"name":"path","type":"String","comment":""}],"summary":{"comment":"Get an entry at a path. Unlike by name, this takes a fullyqualified path, like /foo/bar/baz.javascript","return_type":"TreeEntry","return_comment":"no other info"}},"oid":{"signature":"oid()","arguments":[],"summary":{"comment":"Get the id of a tree.","return_type":"Oid","return_comment":"object identity for the tree."}},"path":{"signature":"path()","arguments":[],"summary":{"comment":"Return the path of this tree, like /lib/foo/bar","return_type":"String","return_comment":"no other info"}},"size":{"signature":"size()","arguments":[],"summary":{"comment":"Get the number of entries listed in a tree","return_type":"Number","return_comment":"the number of entries in the tree"}},"walk":{"signature":"walk([blobsOnly)","arguments":[{"name":"[blobsOnly","type":"Boolean","comment":"= true] True to emit only blob & blob executable entries."}],"summary":{"comment":"Recursively walk the tree in breadth-first order. Fires an event for each entry.","return_type":"EventEmitter","return_comment":"no other info"}}}}};
 
   RED.nodes.registerType('tree_node',{
 		category: 'web-nodes',
-		color:"#881111",
+		color:"#2eeb91",
 		defaults : {
       name : {value:"Tree"},
       topic : {value:"Git"},
@@ -283,7 +68,7 @@
     },
 		inputs:1,
 		outputs:1,
-		icon: "leveldb.png",
+		icon: "libgit2logo.png",
 		label: function () {
 				return this.name||this.topic||this.payload||"tree_node";
 		},

@@ -41,18 +41,7 @@
     </div>
   <style>
     .form-row input.git_command-argument {
-      width: 200px;
       position: relative;
-      left: -150px;
-      top: 3px;
-    }
-    .spacer.caret {
-      margin-left: 10px;
-    }
-    .dropdown-toggle p {
-      float: left;
-      padding: 0px;
-      margin: 0px;
     }
   </style>
 </script>
@@ -65,133 +54,11 @@
 </script>
 
 <script type="text/javascript">
-  var TreeBuilder_description = {
-    "TreeBuilder": {
-        "methods": {
-            "clear": {
-                "signature": "clear(bld)",
-                "arguments": [{
-                    "name": "bld",
-                    "type": "TreeBuilder",
-                    "comment": "Builder to clear"
-                }],
-                "summary": {
-                    "comment": "Clear all the entires in the builder",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "create": {
-                "signature": "create(source)",
-                "arguments": [{
-                    "name": "source",
-                    "type": "Tree",
-                    "comment": "Source tree to initialize the builder (optional)"
-                }],
-                "summary": {
-                    "comment": "Create a new tree builder.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "get": {
-                "signature": "get(filename)",
-                "arguments": [{
-                    "name": "filename",
-                    "type": "String",
-                    "comment": "Name of the entry"
-                }],
-                "summary": {
-                    "comment": "Get an entry from the builder from its filename",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "gitTreebuilderRemove": {
-                "signature": "gitTreebuilderRemove(filename)",
-                "arguments": [{
-                    "name": "filename",
-                    "type": "String",
-                    "comment": "Filename of the entry to remove"
-                }],
-                "summary": {
-                    "comment": "Remove an entry from the builder by its filename",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "insert": {
-                "signature": "insert(filename, oid, filemode)",
-                "arguments": [{
-                    "name": "filename",
-                    "type": "String",
-                    "comment": ""
-                }, {
-                    "name": "oid",
-                    "type": "Oid",
-                    "comment": ""
-                }, {
-                    "name": "filemode",
-                    "type": "Number",
-                    "comment": ""
-                }],
-                "summary": {
-                    "comment": "Insert an object into this tree by oid",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "insertBlob": {
-                "signature": "insertBlob(filename, blob, isExecutable)",
-                "arguments": [{
-                    "name": "filename",
-                    "type": "String",
-                    "comment": ""
-                }, {
-                    "name": "blob",
-                    "type": "Blob",
-                    "comment": ""
-                }, {
-                    "name": "isExecutable",
-                    "type": "Boolean",
-                    "comment": ""
-                }],
-                "summary": {
-                    "comment": "Insert a blob into this tree",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "size": {
-                "signature": "size()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the number of entries listed in a treebuilder",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "write": {
-                "signature": "write(callback)",
-                "arguments": [{
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": ""
-                }],
-                "summary": {
-                    "comment": "Write this tree to the repo.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            }
-        }
-    }
-}
-;
+  var TreeBuilder_description = {"TreeBuilder":{"methods":{"clear":{"signature":"clear(bld)","arguments":[{"name":"bld","type":"TreeBuilder","comment":"Builder to clear"}],"summary":{"comment":"Clear all the entires in the builder","return_type":"void","return_comment":"no other info"}},"create":{"signature":"create(source)","arguments":[{"name":"source","type":"Tree","comment":"Source tree to initialize the builder (optional)"}],"summary":{"comment":"Create a new tree builder.","return_type":"TreeBuilder","return_comment":"Pointer where to store the tree builder"}},"get":{"signature":"get(filename)","arguments":[{"name":"filename","type":"String","comment":"Name of the entry"}],"summary":{"comment":"Get an entry from the builder from its filename","return_type":"TreeEntry","return_comment":"pointer to the entry; NULL if not found"}},"gitTreebuilderRemove":{"signature":"gitTreebuilderRemove(filename)","arguments":[{"name":"filename","type":"String","comment":"Filename of the entry to remove"}],"summary":{"comment":"Remove an entry from the builder by its filename","return_type":"(none)","return_comment":"N/A"}},"insert":{"signature":"insert(filename, oid, filemode)","arguments":[{"name":"filename","type":"String","comment":""},{"name":"oid","type":"Oid","comment":""},{"name":"filemode","type":"Number","comment":""}],"summary":{"comment":"Insert an object into this tree by oid","return_type":"(none)","return_comment":"N/A"}},"insertBlob":{"signature":"insertBlob(filename, blob, isExecutable)","arguments":[{"name":"filename","type":"String","comment":""},{"name":"blob","type":"Blob","comment":""},{"name":"isExecutable","type":"Boolean","comment":""}],"summary":{"comment":"Insert a blob into this tree","return_type":"(none)","return_comment":"N/A"}},"size":{"signature":"size()","arguments":[],"summary":{"comment":"Get the number of entries listed in a treebuilder","return_type":"Number","return_comment":"the number of entries in the treebuilder"}},"write":{"signature":"write(callback)","arguments":[{"name":"callback","type":"Function","comment":""}],"summary":{"comment":"Write this tree to the repo.","return_type":"(none)","return_comment":"N/A"}}}}};
 
   RED.nodes.registerType('treebuilder_node',{
 		category: 'web-nodes',
-		color:"#881111",
+		color:"#bdd7ae",
 		defaults : {
       name : {value:"TreeBuilder"},
       topic : {value:"Git"},
@@ -201,7 +68,7 @@
     },
 		inputs:1,
 		outputs:1,
-		icon: "leveldb.png",
+		icon: "libgit2logo.png",
 		label: function () {
 				return this.name||this.topic||this.payload||"treebuilder_node";
 		},

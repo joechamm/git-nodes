@@ -41,18 +41,7 @@
     </div>
   <style>
     .form-row input.git_command-argument {
-      width: 200px;
       position: relative;
-      left: -150px;
-      top: 3px;
-    }
-    .spacer.caret {
-      margin-left: 10px;
-    }
-    .dropdown-toggle p {
-      float: left;
-      padding: 0px;
-      margin: 0px;
     }
   </style>
 </script>
@@ -65,133 +54,11 @@
 </script>
 
 <script type="text/javascript">
-  var TreeEntry_description = {
-    "TreeEntry": {
-        "methods": {
-            "filemode": {
-                "signature": "filemode()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the UNIX file attributes of a tree entry",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "getBlob": {
-                "signature": "getBlob()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Retrieve the tree for this entry. Make sure to call isTree first!",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "getObject": {
-                "signature": "getObject(repo, callback)",
-                "arguments": [{
-                    "name": "repo",
-                    "type": "Repository",
-                    "comment": "repository where to lookup the pointed object"
-                }, {
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": "Takes error and the return value specified below"
-                }],
-                "summary": {
-                    "comment": "Convert a tree entry to the git_object it points too.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "getTree": {
-                "signature": "getTree()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Retrieve the tree for this entry. Make sure to call isTree first!",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "isFile": {
-                "signature": "isFile()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Is this TreeEntry a blob? (i.e., a file)",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "isTree": {
-                "signature": "isTree()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Is this TreeEntry a tree? (i.e., a directory)",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "name": {
-                "signature": "name()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the filename of a tree entry",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "oid": {
-                "signature": "oid()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the id of the object pointed by the entry",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "path": {
-                "signature": "path()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Returns the path for this entry.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "sha": {
-                "signature": "sha()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Retrieve the SHA for this TreeEntry.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "toString": {
-                "signature": "toString()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Alias for path",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "type": {
-                "signature": "type()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the type of the object pointed by the entry",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            }
-        }
-    }
-}
-;
+  var TreeEntry_description = {"TreeEntry":{"methods":{"filemode":{"signature":"filemode()","arguments":[],"summary":{"comment":"Get the UNIX file attributes of a tree entry","return_type":"Number","return_comment":"filemode as an integer"}},"getBlob":{"signature":"getBlob()","arguments":[],"summary":{"comment":"Retrieve the tree for this entry. Make sure to call isTree first!","return_type":"Blob","return_comment":"no other info"}},"getObject":{"signature":"getObject(repo, callback)","arguments":[{"name":"repo","type":"Repository","comment":"repository where to lookup the pointed object"},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"summary":{"comment":"Convert a tree entry to the git_object it points too.","return_type":"Object","return_comment":"pointer to the converted object"}},"getTree":{"signature":"getTree()","arguments":[],"summary":{"comment":"Retrieve the tree for this entry. Make sure to call isTree first!","return_type":"Tree","return_comment":"no other info"}},"isFile":{"signature":"isFile()","arguments":[],"summary":{"comment":"Is this TreeEntry a blob? (i.e., a file)","return_type":"Boolean","return_comment":"no other info"}},"isTree":{"signature":"isTree()","arguments":[],"summary":{"comment":"Is this TreeEntry a tree? (i.e., a directory)","return_type":"Boolean","return_comment":"no other info"}},"name":{"signature":"name()","arguments":[],"summary":{"comment":"Get the filename of a tree entry","return_type":"String","return_comment":"the name of the file"}},"oid":{"signature":"oid()","arguments":[],"summary":{"comment":"Get the id of the object pointed by the entry","return_type":"Oid","return_comment":"the oid of the object"}},"path":{"signature":"path()","arguments":[],"summary":{"comment":"Returns the path for this entry.","return_type":"String","return_comment":"no other info"}},"sha":{"signature":"sha()","arguments":[],"summary":{"comment":"Retrieve the SHA for this TreeEntry.","return_type":"String","return_comment":"no other info"}},"toString":{"signature":"toString()","arguments":[],"summary":{"comment":"Alias for path","return_type":"(none)","return_comment":"N/A"}},"type":{"signature":"type()","arguments":[],"summary":{"comment":"Get the type of the object pointed by the entry","return_type":"Number","return_comment":"the type of the pointed object"}}}}};
 
   RED.nodes.registerType('treeentry_node',{
 		category: 'web-nodes',
-		color:"#881111",
+		color:"#894781",
 		defaults : {
       name : {value:"TreeEntry"},
       topic : {value:"Git"},
@@ -201,7 +68,7 @@
     },
 		inputs:1,
 		outputs:1,
-		icon: "leveldb.png",
+		icon: "libgit2logo.png",
 		label: function () {
 				return this.name||this.topic||this.payload||"treeentry_node";
 		},

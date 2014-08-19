@@ -41,18 +41,7 @@
     </div>
   <style>
     .form-row input.git_command-argument {
-      width: 200px;
       position: relative;
-      left: -150px;
-      top: 3px;
-    }
-    .spacer.caret {
-      margin-left: 10px;
-    }
-    .dropdown-toggle p {
-      float: left;
-      padding: 0px;
-      margin: 0px;
     }
   </style>
 </script>
@@ -65,230 +54,13 @@
 </script>
 
 <script type="text/javascript">
-  var Branch_description = {
-    "Branch": {
-        "methods": {
-            "create": {
-                "signature": "create(repo, branch_name, target, force)",
-                "arguments": [{
-                    "name": "repo",
-                    "type": "Repository",
-                    "comment": ""
-                }, {
-                    "name": "branch_name",
-                    "type": "String",
-                    "comment": "Name for the branch; this name is validated for consistency. It should also not conflict with an already existing branch name."
-                }, {
-                    "name": "target",
-                    "type": "Commit",
-                    "comment": "Commit to which this branch should point. This object must belong to the given `repo`."
-                }, {
-                    "name": "force",
-                    "type": "Number",
-                    "comment": "Overwrite existing branch."
-                }],
-                "summary": {
-                    "comment": "Create a new branch pointing at a target commit",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "delete": {
-                "signature": "delete(branch)",
-                "arguments": [{
-                    "name": "branch",
-                    "type": "Reference",
-                    "comment": "A valid reference representing a branch"
-                }],
-                "summary": {
-                    "comment": "Delete an existing branch reference.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "foreach": {
-                "signature": "foreach(repo, list_flags, branch_cb, payload)",
-                "arguments": [{
-                    "name": "repo",
-                    "type": "Repository",
-                    "comment": "Repository where to find the branches."
-                }, {
-                    "name": "list_flags",
-                    "type": "Number",
-                    "comment": "Filtering flags for the branch listing. Valid values are GIT_BRANCH_LOCAL, GIT_BRANCH_REMOTE or a combination of the two."
-                }, {
-                    "name": "branch_cb",
-                    "type": "BranchForeachCb",
-                    "comment": "Callback to invoke per found branch."
-                }, {
-                    "name": "payload",
-                    "type": "void",
-                    "comment": "Extra parameter to callback function."
-                }],
-                "summary": {
-                    "comment": "Loop over all the branches and issue a callback for each one.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "isHead": {
-                "signature": "isHead(branch)",
-                "arguments": [{
-                    "name": "branch",
-                    "type": "Reference",
-                    "comment": "Current underlying reference of the branch."
-                }],
-                "summary": {
-                    "comment": "Determine if the current local branch is pointed at by HEAD.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "lookup": {
-                "signature": "lookup(repo, branch_name, branch_type)",
-                "arguments": [{
-                    "name": "repo",
-                    "type": "Repository",
-                    "comment": "the repository to look up the branch"
-                }, {
-                    "name": "branch_name",
-                    "type": "String",
-                    "comment": "Name of the branch to be looked-up; this name is validated for consistency."
-                }, {
-                    "name": "branch_type",
-                    "type": "BranchT",
-                    "comment": "Type of the considered branch. This should be valued with either GIT_BRANCH_LOCAL or GIT_BRANCH_REMOTE."
-                }],
-                "summary": {
-                    "comment": "Lookup a branch by its name in a repository.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "move": {
-                "signature": "move(branch, new_branch_name, force)",
-                "arguments": [{
-                    "name": "branch",
-                    "type": "Reference",
-                    "comment": "Current underlying reference of the branch."
-                }, {
-                    "name": "new_branch_name",
-                    "type": "String",
-                    "comment": "Target name of the branch once the move is performed; this name is validated for consistency."
-                }, {
-                    "name": "force",
-                    "type": "Number",
-                    "comment": "Overwrite existing branch."
-                }],
-                "summary": {
-                    "comment": "Move/rename an existing local branch reference.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "name": {
-                "signature": "name(ref)",
-                "arguments": [{
-                    "name": "ref",
-                    "type": "Reference",
-                    "comment": "the reference ideally pointing to a branch"
-                }],
-                "summary": {
-                    "comment": "Return the name of the given local or remote branch.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "remoteName": {
-                "signature": "remoteName(remote_name_out, buffer_size, repo, canonical_branch_name)",
-                "arguments": [{
-                    "name": "remote_name_out",
-                    "type": "String",
-                    "comment": "The user-allocated buffer which will be filled with the name of the remote. Pass NULL if you just want to get the needed size of the name of the remote as the output value."
-                }, {
-                    "name": "buffer_size",
-                    "type": "Number",
-                    "comment": "Size of the `out` buffer in bytes."
-                }, {
-                    "name": "repo",
-                    "type": "Repository",
-                    "comment": "The repository where the branch lives."
-                }, {
-                    "name": "canonical_branch_name",
-                    "type": "String",
-                    "comment": "name of the remote tracking branch."
-                }],
-                "summary": {
-                    "comment": "Return the name of remote that the remote tracking branch belongs to.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "setUpstream": {
-                "signature": "setUpstream(branch, upstream_name)",
-                "arguments": [{
-                    "name": "branch",
-                    "type": "Reference",
-                    "comment": "the branch to configure"
-                }, {
-                    "name": "upstream_name",
-                    "type": "String",
-                    "comment": "remote-tracking or local branch to set as upstream. Pass NULL to unset."
-                }],
-                "summary": {
-                    "comment": "Set the upstream configuration for a given local branch",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "upstream": {
-                "signature": "upstream(branch)",
-                "arguments": [{
-                    "name": "branch",
-                    "type": "Reference",
-                    "comment": "Current underlying reference of the branch."
-                }],
-                "summary": {
-                    "comment": "Return the reference supporting the remote tracking branch,
-given a local branch reference.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "upstreamName": {
-                "signature": "upstreamName(tracking_branch_name_out, buffer_size, repo, canonical_branch_name)",
-                "arguments": [{
-                    "name": "tracking_branch_name_out",
-                    "type": "String",
-                    "comment": "The user-allocated buffer which will be filled with the name of the reference. Pass NULL if you just want to get the needed size of the name of the reference as the output value."
-                }, {
-                    "name": "buffer_size",
-                    "type": "Number",
-                    "comment": "Size of the `out` buffer in bytes."
-                }, {
-                    "name": "repo",
-                    "type": "Repository",
-                    "comment": "the repository where the branches live"
-                }, {
-                    "name": "canonical_branch_name",
-                    "type": "String",
-                    "comment": "name of the local branch."
-                }],
-                "summary": {
-                    "comment": "Return the name of the reference supporting the remote tracking branch,
-given the name of a local branch reference.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            }
-        }
-    }
-}
-;
+  var Branch_description = {"Branch":{"methods":{"create":{"signature":"create(repo, branch_name, target, force)","arguments":[{"name":"repo","type":"Repository","comment":""},{"name":"branch_name","type":"String","comment":"Name for the branch; this name is validated for consistency. It should also not conflict with an already existing branch name."},{"name":"target","type":"Commit","comment":"Commit to which this branch should point. This object must belong to the given `repo`."},{"name":"force","type":"Number","comment":"Overwrite existing branch."}],"summary":{"comment":"Create a new branch pointing at a target commit","return_type":"Reference","return_comment":"Pointer where to store the underlying reference."}},"delete":{"signature":"delete(branch)","arguments":[{"name":"branch","type":"Reference","comment":"A valid reference representing a branch"}],"summary":{"comment":"Delete an existing branch reference.","return_type":"(none)","return_comment":"N/A"}},"foreach":{"signature":"foreach(repo, list_flags, branch_cb, payload)","arguments":[{"name":"repo","type":"Repository","comment":"Repository where to find the branches."},{"name":"list_flags","type":"Number","comment":"Filtering flags for the branch listing. Valid values are GIT_BRANCH_LOCAL, GIT_BRANCH_REMOTE or a combination of the two."},{"name":"branch_cb","type":"BranchForeachCb","comment":"Callback to invoke per found branch."},{"name":"payload","type":"void","comment":"Extra parameter to callback function."}],"summary":{"comment":"Loop over all the branches and issue a callback for each one.","return_type":"(none)","return_comment":"N/A"}},"isHead":{"signature":"isHead(branch)","arguments":[{"name":"branch","type":"Reference","comment":"Current underlying reference of the branch."}],"summary":{"comment":"Determine if the current local branch is pointed at by HEAD.","return_type":"(none)","return_comment":"N/A"}},"lookup":{"signature":"lookup(repo, branch_name, branch_type)","arguments":[{"name":"repo","type":"Repository","comment":"the repository to look up the branch"},{"name":"branch_name","type":"String","comment":"Name of the branch to be looked-up; this name is validated for consistency."},{"name":"branch_type","type":"BranchT","comment":"Type of the considered branch. This should be valued with either GIT_BRANCH_LOCAL or GIT_BRANCH_REMOTE."}],"summary":{"comment":"Lookup a branch by its name in a repository.","return_type":"Reference","return_comment":"pointer to the looked-up branch reference"}},"move":{"signature":"move(branch, new_branch_name, force)","arguments":[{"name":"branch","type":"Reference","comment":"Current underlying reference of the branch."},{"name":"new_branch_name","type":"String","comment":"Target name of the branch once the move is performed; this name is validated for consistency."},{"name":"force","type":"Number","comment":"Overwrite existing branch."}],"summary":{"comment":"Move/rename an existing local branch reference.","return_type":"Reference","return_comment":"no other info"}},"name":{"signature":"name(ref)","arguments":[{"name":"ref","type":"Reference","comment":"the reference ideally pointing to a branch"}],"summary":{"comment":"Return the name of the given local or remote branch.","return_type":"String","return_comment":"where the pointer of branch name is stored; this is valid as long as the ref is not freed."}},"remoteName":{"signature":"remoteName(remote_name_out, buffer_size, repo, canonical_branch_name)","arguments":[{"name":"remote_name_out","type":"String","comment":"The user-allocated buffer which will be filled with the name of the remote. Pass NULL if you just want to get the needed size of the name of the remote as the output value."},{"name":"buffer_size","type":"Number","comment":"Size of the `out` buffer in bytes."},{"name":"repo","type":"Repository","comment":"The repository where the branch lives."},{"name":"canonical_branch_name","type":"String","comment":"name of the remote tracking branch."}],"summary":{"comment":"Return the name of remote that the remote tracking branch belongs to.","return_type":"(none)","return_comment":"N/A"}},"setUpstream":{"signature":"setUpstream(branch, upstream_name)","arguments":[{"name":"branch","type":"Reference","comment":"the branch to configure"},{"name":"upstream_name","type":"String","comment":"remote-tracking or local branch to set as upstream. Pass NULL to unset."}],"summary":{"comment":"Set the upstream configuration for a given local branch","return_type":"(none)","return_comment":"N/A"}},"upstream":{"signature":"upstream(branch)","arguments":[{"name":"branch","type":"Reference","comment":"Current underlying reference of the branch."}],"summary":{"comment":"Return the reference supporting the remote tracking branch,
+given a local branch reference.","return_type":"Reference","return_comment":"Pointer where to store the retrieved reference."}},"upstreamName":{"signature":"upstreamName(tracking_branch_name_out, buffer_size, repo, canonical_branch_name)","arguments":[{"name":"tracking_branch_name_out","type":"String","comment":"The user-allocated buffer which will be filled with the name of the reference. Pass NULL if you just want to get the needed size of the name of the reference as the output value."},{"name":"buffer_size","type":"Number","comment":"Size of the `out` buffer in bytes."},{"name":"repo","type":"Repository","comment":"the repository where the branches live"},{"name":"canonical_branch_name","type":"String","comment":"name of the local branch."}],"summary":{"comment":"Return the name of the reference supporting the remote tracking branch,
+given the name of a local branch reference.","return_type":"(none)","return_comment":"N/A"}}}}};
 
   RED.nodes.registerType('branch_node',{
 		category: 'web-nodes',
-		color:"#881111",
+		color:"#a42f0d",
 		defaults : {
       name : {value:"Branch"},
       topic : {value:"Git"},
@@ -298,7 +70,7 @@ given the name of a local branch reference.",
     },
 		inputs:1,
 		outputs:1,
-		icon: "leveldb.png",
+		icon: "libgit2logo.png",
 		label: function () {
 				return this.name||this.topic||this.payload||"branch_node";
 		},

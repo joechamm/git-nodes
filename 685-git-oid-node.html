@@ -41,18 +41,7 @@
     </div>
   <style>
     .form-row input.git_command-argument {
-      width: 200px;
       position: relative;
-      left: -150px;
-      top: 3px;
-    }
-    .spacer.caret {
-      margin-left: 10px;
-    }
-    .dropdown-toggle p {
-      float: left;
-      padding: 0px;
-      margin: 0px;
     }
   </style>
 </script>
@@ -65,48 +54,11 @@
 </script>
 
 <script type="text/javascript">
-  var Oid_description = {
-    "Oid": {
-        "methods": {
-            "fromString": {
-                "signature": "fromString(str)",
-                "arguments": [{
-                    "name": "str",
-                    "type": "String",
-                    "comment": "input hex string; must be pointing at the start of the hex sequence and have at least the number of bytes needed for an oid encoded in hex (40 bytes)."
-                }],
-                "summary": {
-                    "comment": "Parse a hex formatted object id into a git_oid.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "sha": {
-                "signature": "sha()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Format a git_oid into a newly allocated c-string.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "toString": {
-                "signature": "toString()",
-                "arguments": [],
-                "summary": {
-                    "comment": "The hex representation of the SHA",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            }
-        }
-    }
-}
-;
+  var Oid_description = {"Oid":{"methods":{"fromString":{"signature":"fromString(str)","arguments":[{"name":"str","type":"String","comment":"input hex string; must be pointing at the start of the hex sequence and have at least the number of bytes needed for an oid encoded in hex (40 bytes)."}],"summary":{"comment":"Parse a hex formatted object id into a git_oid.","return_type":"Oid","return_comment":"oid structure the result is written into."}},"sha":{"signature":"sha()","arguments":[],"summary":{"comment":"Format a git_oid into a newly allocated c-string.","return_type":"String","return_comment":"the c-string; NULL if memory is exhausted. Caller must deallocate the string with git__free()."}},"toString":{"signature":"toString()","arguments":[],"summary":{"comment":"The hex representation of the SHA","return_type":"String","return_comment":"no other info"}}}}};
 
   RED.nodes.registerType('oid_node',{
 		category: 'web-nodes',
-		color:"#881111",
+		color:"#76290a",
 		defaults : {
       name : {value:"Oid"},
       topic : {value:"Git"},
@@ -116,7 +68,7 @@
     },
 		inputs:1,
 		outputs:1,
-		icon: "leveldb.png",
+		icon: "libgit2logo.png",
 		label: function () {
 				return this.name||this.topic||this.payload||"oid_node";
 		},

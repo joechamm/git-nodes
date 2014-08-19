@@ -41,18 +41,7 @@
     </div>
   <style>
     .form-row input.git_command-argument {
-      width: 200px;
       position: relative;
-      left: -150px;
-      top: 3px;
-    }
-    .spacer.caret {
-      margin-left: 10px;
-    }
-    .dropdown-toggle p {
-      float: left;
-      padding: 0px;
-      margin: 0px;
     }
   </style>
 </script>
@@ -65,97 +54,11 @@
 </script>
 
 <script type="text/javascript">
-  var Tag_description = {
-    "Tag": {
-        "methods": {
-            "getTarget": {
-                "signature": "getTarget(callback)",
-                "arguments": [{
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": "Takes error and the return value specified below"
-                }],
-                "summary": {
-                    "comment": "Get the tagged object of a tag",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "message": {
-                "signature": "message()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the message of a tag",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "name": {
-                "signature": "name()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the name of a tag",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "oid": {
-                "signature": "oid()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the id of a tag.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "peel": {
-                "signature": "peel(tag)",
-                "arguments": [{
-                    "name": "tag",
-                    "type": "Tag",
-                    "comment": "_target_out Pointer to the peeled git_object"
-                }],
-                "summary": {
-                    "comment": "Recursively peel a tag until a non tag git_object is found",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "tagger": {
-                "signature": "tagger()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the tagger (author) of a tag",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "targetId": {
-                "signature": "targetId()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the OID of the tagged object of a tag",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "targetType": {
-                "signature": "targetType()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the type of a tag's tagged object",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            }
-        }
-    }
-}
-;
+  var Tag_description = {"Tag":{"methods":{"getTarget":{"signature":"getTarget(callback)","arguments":[{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"summary":{"comment":"Get the tagged object of a tag","return_type":"Object","return_comment":"pointer where to store the target"}},"message":{"signature":"message()","arguments":[],"summary":{"comment":"Get the message of a tag","return_type":"String","return_comment":"message of the tag or NULL when unspecified"}},"name":{"signature":"name()","arguments":[],"summary":{"comment":"Get the name of a tag","return_type":"String","return_comment":"name of the tag"}},"oid":{"signature":"oid()","arguments":[],"summary":{"comment":"Get the id of a tag.","return_type":"Oid","return_comment":"object identity for the tag."}},"peel":{"signature":"peel(tag)","arguments":[{"name":"tag","type":"Tag","comment":"_target_out Pointer to the peeled git_object"}],"summary":{"comment":"Recursively peel a tag until a non tag git_object is found","return_type":"Object","return_comment":"Pointer to the peeled git_object"}},"tagger":{"signature":"tagger()","arguments":[],"summary":{"comment":"Get the tagger (author) of a tag","return_type":"Signature","return_comment":"reference to the tag's author or NULL when unspecified"}},"targetId":{"signature":"targetId()","arguments":[],"summary":{"comment":"Get the OID of the tagged object of a tag","return_type":"Oid","return_comment":"pointer to the OID"}},"targetType":{"signature":"targetType()","arguments":[],"summary":{"comment":"Get the type of a tag's tagged object","return_type":"Number","return_comment":"type of the tagged object"}}}}};
 
   RED.nodes.registerType('tag_node',{
 		category: 'web-nodes',
-		color:"#881111",
+		color:"#d9ccd1",
 		defaults : {
       name : {value:"Tag"},
       topic : {value:"Git"},
@@ -165,7 +68,7 @@
     },
 		inputs:1,
 		outputs:1,
-		icon: "leveldb.png",
+		icon: "libgit2logo.png",
 		label: function () {
 				return this.name||this.topic||this.payload||"tag_node";
 		},

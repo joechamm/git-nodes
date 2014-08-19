@@ -41,18 +41,7 @@
     </div>
   <style>
     .form-row input.git_command-argument {
-      width: 200px;
       position: relative;
-      left: -150px;
-      top: 3px;
-    }
-    .spacer.caret {
-      margin-left: 10px;
-    }
-    .dropdown-toggle p {
-      float: left;
-      padding: 0px;
-      margin: 0px;
     }
   </style>
 </script>
@@ -65,197 +54,11 @@
 </script>
 
 <script type="text/javascript">
-  var RevWalk_description = {
-    "RevWalk": {
-        "methods": {
-            "hide": {
-                "signature": "hide(commit_id, callback)",
-                "arguments": [{
-                    "name": "commit_id",
-                    "type": "Oid",
-                    "comment": "the oid of commit that will be ignored during the traversal"
-                }, {
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": "Takes error and the return value specified below"
-                }],
-                "summary": {
-                    "comment": "Mark a commit (and its ancestors) uninteresting for the output.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "hideGlob": {
-                "signature": "hideGlob(glob, callback)",
-                "arguments": [{
-                    "name": "glob",
-                    "type": "String",
-                    "comment": "the glob pattern references should match"
-                }, {
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": "Takes error and the return value specified below"
-                }],
-                "summary": {
-                    "comment": "Hide matching references.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "hideHead": {
-                "signature": "hideHead(callback)",
-                "arguments": [{
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": "Takes error and the return value specified below"
-                }],
-                "summary": {
-                    "comment": "Hide the repository's HEAD",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "hideRef": {
-                "signature": "hideRef(refname, callback)",
-                "arguments": [{
-                    "name": "refname",
-                    "type": "String",
-                    "comment": "the reference to hide"
-                }, {
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": "Takes error and the return value specified below"
-                }],
-                "summary": {
-                    "comment": "Hide the OID pointed to by a reference",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "next": {
-                "signature": "next(callback)",
-                "arguments": [{
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": "Takes error and the return value specified below"
-                }],
-                "summary": {
-                    "comment": "Get the next commit from the revision walk.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "push": {
-                "signature": "push(id, callback)",
-                "arguments": [{
-                    "name": "id",
-                    "type": "Oid",
-                    "comment": "the oid of the commit to start from."
-                }, {
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": "Takes error and the return value specified below"
-                }],
-                "summary": {
-                    "comment": "Mark a commit to start traversal from.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "pushGlob": {
-                "signature": "pushGlob(glob, callback)",
-                "arguments": [{
-                    "name": "glob",
-                    "type": "String",
-                    "comment": "the glob pattern references should match"
-                }, {
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": "Takes error and the return value specified below"
-                }],
-                "summary": {
-                    "comment": "Push matching references",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "pushHead": {
-                "signature": "pushHead(callback)",
-                "arguments": [{
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": "Takes error and the return value specified below"
-                }],
-                "summary": {
-                    "comment": "Push the repository's HEAD",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "pushRef": {
-                "signature": "pushRef(refname, callback)",
-                "arguments": [{
-                    "name": "refname",
-                    "type": "String",
-                    "comment": "the reference to push"
-                }, {
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": "Takes error and the return value specified below"
-                }],
-                "summary": {
-                    "comment": "Push the OID pointed to by a reference",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "reset": {
-                "signature": "reset()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Reset the revision walker for reuse.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "sorting": {
-                "signature": "sorting()",
-                "arguments": [{
-                    "name": "",
-                    "type": "Number",
-                    "comment": ""
-                }],
-                "summary": {
-                    "comment": "Set the sort order for the revwalk. This function takes variable argumentslike revwalk.sorting(git.RevWalk.Topological, git.RevWalk.Reverse).",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "walk": {
-                "signature": "walk(oid, callback)",
-                "arguments": [{
-                    "name": "oid",
-                    "type": "Oid",
-                    "comment": ""
-                }, {
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": ""
-                }],
-                "summary": {
-                    "comment": "Walk the history from the given oid. The callback is invoked for each commit;When the walk is over, the callback is invoked with (null, null).",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            }
-        }
-    }
-}
-;
+  var RevWalk_description = {"RevWalk":{"methods":{"hide":{"signature":"hide(commit_id, callback)","arguments":[{"name":"commit_id","type":"Oid","comment":"the oid of commit that will be ignored during the traversal"},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"summary":{"comment":"Mark a commit (and its ancestors) uninteresting for the output.","return_type":"(none)","return_comment":"N/A"}},"hideGlob":{"signature":"hideGlob(glob, callback)","arguments":[{"name":"glob","type":"String","comment":"the glob pattern references should match"},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"summary":{"comment":"Hide matching references.","return_type":"(none)","return_comment":"N/A"}},"hideHead":{"signature":"hideHead(callback)","arguments":[{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"summary":{"comment":"Hide the repository's HEAD","return_type":"(none)","return_comment":"N/A"}},"hideRef":{"signature":"hideRef(refname, callback)","arguments":[{"name":"refname","type":"String","comment":"the reference to hide"},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"summary":{"comment":"Hide the OID pointed to by a reference","return_type":"(none)","return_comment":"N/A"}},"next":{"signature":"next(callback)","arguments":[{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"summary":{"comment":"Get the next commit from the revision walk.","return_type":"Oid","return_comment":"Pointer where to store the oid of the next commit"}},"push":{"signature":"push(id, callback)","arguments":[{"name":"id","type":"Oid","comment":"the oid of the commit to start from."},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"summary":{"comment":"Mark a commit to start traversal from.","return_type":"(none)","return_comment":"N/A"}},"pushGlob":{"signature":"pushGlob(glob, callback)","arguments":[{"name":"glob","type":"String","comment":"the glob pattern references should match"},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"summary":{"comment":"Push matching references","return_type":"(none)","return_comment":"N/A"}},"pushHead":{"signature":"pushHead(callback)","arguments":[{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"summary":{"comment":"Push the repository's HEAD","return_type":"(none)","return_comment":"N/A"}},"pushRef":{"signature":"pushRef(refname, callback)","arguments":[{"name":"refname","type":"String","comment":"the reference to push"},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"summary":{"comment":"Push the OID pointed to by a reference","return_type":"(none)","return_comment":"N/A"}},"reset":{"signature":"reset()","arguments":[],"summary":{"comment":"Reset the revision walker for reuse.","return_type":"void","return_comment":"no other info"}},"sorting":{"signature":"sorting()","arguments":[{"name":"","type":"Number","comment":""}],"summary":{"comment":"Set the sort order for the revwalk. This function takes variable argumentslike revwalk.sorting(git.RevWalk.Topological, git.RevWalk.Reverse).","return_type":"(none)","return_comment":"N/A"}},"walk":{"signature":"walk(oid, callback)","arguments":[{"name":"oid","type":"Oid","comment":""},{"name":"callback","type":"Function","comment":""}],"summary":{"comment":"Walk the history from the given oid. The callback is invoked for each commit;When the walk is over, the callback is invoked with (null, null).","return_type":"Commit","return_comment":"no other info"}}}}};
 
   RED.nodes.registerType('revwalk_node',{
 		category: 'web-nodes',
-		color:"#881111",
+		color:"#cbab28",
 		defaults : {
       name : {value:"RevWalk"},
       topic : {value:"Git"},
@@ -265,7 +68,7 @@
     },
 		inputs:1,
 		outputs:1,
-		icon: "leveldb.png",
+		icon: "libgit2logo.png",
 		label: function () {
 				return this.name||this.topic||this.payload||"revwalk_node";
 		},

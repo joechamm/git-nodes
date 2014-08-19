@@ -41,18 +41,7 @@
     </div>
   <style>
     .form-row input.git_command-argument {
-      width: 200px;
       position: relative;
-      left: -150px;
-      top: 3px;
-    }
-    .spacer.caret {
-      margin-left: 10px;
-    }
-    .dropdown-toggle p {
-      float: left;
-      padding: 0px;
-      margin: 0px;
     }
   </style>
 </script>
@@ -65,16 +54,11 @@
 </script>
 
 <script type="text/javascript">
-  var RefDb_description = {
-    "RefDb": {
-        "methods": {}
-    }
-}
-;
+  var RefDb_description = {"RefDb":{"methods":{}}};
 
   RED.nodes.registerType('refdb_node',{
 		category: 'web-nodes',
-		color:"#881111",
+		color:"#6e2ced",
 		defaults : {
       name : {value:"RefDb"},
       topic : {value:"Git"},
@@ -84,7 +68,7 @@
     },
 		inputs:1,
 		outputs:1,
-		icon: "leveldb.png",
+		icon: "libgit2logo.png",
 		label: function () {
 				return this.name||this.topic||this.payload||"refdb_node";
 		},

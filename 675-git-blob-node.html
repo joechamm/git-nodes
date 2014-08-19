@@ -41,18 +41,7 @@
     </div>
   <style>
     .form-row input.git_command-argument {
-      width: 200px;
       position: relative;
-      left: -150px;
-      top: 3px;
-    }
-    .spacer.caret {
-      margin-left: 10px;
-    }
-    .dropdown-toggle p {
-      float: left;
-      padding: 0px;
-      margin: 0px;
     }
   </style>
 </script>
@@ -65,71 +54,11 @@
 </script>
 
 <script type="text/javascript">
-  var Blob_description = {
-    "Blob": {
-        "methods": {
-            "content": {
-                "signature": "content()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Retrieve the content of the blob.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "filemode": {
-                "signature": "filemode()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Retrieve the blob's type.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "isBinary": {
-                "signature": "isBinary()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Determine if the blob content is most certainly binary or not.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "oid": {
-                "signature": "oid()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the id of a blob.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "size": {
-                "signature": "size()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the size in bytes of the contents of a blob",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "toString": {
-                "signature": "toString()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Retrieve the blob's content as String.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            }
-        }
-    }
-}
-;
+  var Blob_description = {"Blob":{"methods":{"content":{"signature":"content()","arguments":[],"summary":{"comment":"Retrieve the content of the blob.","return_type":"Buffer","return_comment":"content"}},"filemode":{"signature":"filemode()","arguments":[],"summary":{"comment":"Retrieve the blob's type.","return_type":"(none)","return_comment":"N/A"}},"isBinary":{"signature":"isBinary()","arguments":[],"summary":{"comment":"Determine if the blob content is most certainly binary or not.","return_type":"Boolean","return_comment":"1 if the content of the blob is detected as binary; 0 otherwise."}},"oid":{"signature":"oid()","arguments":[],"summary":{"comment":"Get the id of a blob.","return_type":"Oid","return_comment":"SHA1 hash for this blob."}},"size":{"signature":"size()","arguments":[],"summary":{"comment":"Get the size in bytes of the contents of a blob","return_type":"Number","return_comment":"size on bytes"}},"toString":{"signature":"toString()","arguments":[],"summary":{"comment":"Retrieve the blob's content as String.","return_type":"(none)","return_comment":"N/A"}}}}};
 
   RED.nodes.registerType('blob_node',{
 		category: 'web-nodes',
-		color:"#881111",
+		color:"#a62245",
 		defaults : {
       name : {value:"Blob"},
       topic : {value:"Git"},
@@ -139,7 +68,7 @@
     },
 		inputs:1,
 		outputs:1,
-		icon: "leveldb.png",
+		icon: "libgit2logo.png",
 		label: function () {
 				return this.name||this.topic||this.payload||"blob_node";
 		},

@@ -41,18 +41,7 @@
     </div>
   <style>
     .form-row input.git_command-argument {
-      width: 200px;
       position: relative;
-      left: -150px;
-      top: 3px;
-    }
-    .spacer.caret {
-      margin-left: 10px;
-    }
-    .dropdown-toggle p {
-      float: left;
-      padding: 0px;
-      margin: 0px;
     }
   </style>
 </script>
@@ -65,241 +54,18 @@
 </script>
 
 <script type="text/javascript">
-  var Commit_description = {
-    "Commit": {
-        "methods": {
-            "author": {
-                "signature": "author()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the author of a commit.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "committer": {
-                "signature": "committer()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the committer of a commit.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "date": {
-                "signature": "date()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Retrieve the commit time as a Date object.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "getDiff": {
-                "signature": "getDiff(callback)",
-                "arguments": [{
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": ""
-                }],
-                "summary": {
-                    "comment": "Generate an array of diff trees showing changes between this commit and its parent(s).",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "getEntry": {
-                "signature": "getEntry(path, callback)",
-                "arguments": [{
-                    "name": "path",
-                    "type": "String",
-                    "comment": ""
-                }, {
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": ""
-                }],
-                "summary": {
-                    "comment": "Retrieve the entry represented by path for this commit.Path must be relative to repository root.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "getParents": {
-                "signature": "getParents(callback)",
-                "arguments": [{
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": ""
-                }],
-                "summary": {
-                    "comment": "Retrieve the commit's parents -- as commit objects.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "getTree": {
-                "signature": "getTree()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the tree associated with this commit.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "history": {
-                "signature": "history()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Walk the history from this commit backwards.An EventEmitter is returned that will emit a 'commit' event for each commit in the history, and one 'end' event when the walk is completed.Don't forget to call start() on the returned event.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "message": {
-                "signature": "message()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the full message of a commit.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "messageEncoding": {
-                "signature": "messageEncoding()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the encoding for the message of a commit,
-as a string representing a standard encoding name.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "nthGenAncestor": {
-                "signature": "nthGenAncestor(n)",
-                "arguments": [{
-                    "name": "n",
-                    "type": "Number",
-                    "comment": "the requested generation"
-                }],
-                "summary": {
-                    "comment": "Get the commit object that is the th generation ancestor
+  var Commit_description = {"Commit":{"methods":{"author":{"signature":"author()","arguments":[],"summary":{"comment":"Get the author of a commit.","return_type":"Signature","return_comment":"the author of a commit"}},"committer":{"signature":"committer()","arguments":[],"summary":{"comment":"Get the committer of a commit.","return_type":"Signature","return_comment":"the committer of a commit"}},"date":{"signature":"date()","arguments":[],"summary":{"comment":"Retrieve the commit time as a Date object.","return_type":"Date","return_comment":"no other info"}},"getDiff":{"signature":"getDiff(callback)","arguments":[{"name":"callback","type":"Function","comment":""}],"summary":{"comment":"Generate an array of diff trees showing changes between this commit and its parent(s).","return_type":"[DiffList]","return_comment":"an array of difflists"}},"getEntry":{"signature":"getEntry(path, callback)","arguments":[{"name":"path","type":"String","comment":""},{"name":"callback","type":"Function","comment":""}],"summary":{"comment":"Retrieve the entry represented by path for this commit.Path must be relative to repository root.","return_type":"TreeEntry","return_comment":"no other info"}},"getParents":{"signature":"getParents(callback)","arguments":[{"name":"callback","type":"Function","comment":""}],"summary":{"comment":"Retrieve the commit's parents -- as commit objects.","return_type":"[Commit]","return_comment":"array of commits"}},"getTree":{"signature":"getTree()","arguments":[],"summary":{"comment":"Get the tree associated with this commit.","return_type":"Tree","return_comment":"no other info"}},"history":{"signature":"history()","arguments":[],"summary":{"comment":"Walk the history from this commit backwards.An EventEmitter is returned that will emit a 'commit' event for each commit in the history, and one 'end' event when the walk is completed.Don't forget to call start() on the returned event.","return_type":"EventEmitter","return_comment":"no other info"}},"message":{"signature":"message()","arguments":[],"summary":{"comment":"Get the full message of a commit.","return_type":"String","return_comment":"the message of a commit"}},"messageEncoding":{"signature":"messageEncoding()","arguments":[],"summary":{"comment":"Get the encoding for the message of a commit,
+as a string representing a standard encoding name.","return_type":"String","return_comment":"NULL, or the encoding"}},"nthGenAncestor":{"signature":"nthGenAncestor(n)","arguments":[{"name":"n","type":"Number","comment":"the requested generation"}],"summary":{"comment":"Get the commit object that is the th generation ancestor
 of the named commit object, following only the first parents.
-The returned commit has to be freed by the caller.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "offset": {
-                "signature": "offset()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the commit timezone offset (i.e. committer's preferred timezone) of a commit.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "oid": {
-                "signature": "oid()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the id of a commit.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "parentCount": {
-                "signature": "parentCount()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the number of parents of this commit",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "parentId": {
-                "signature": "parentId(n)",
-                "arguments": [{
-                    "name": "n",
-                    "type": "Number",
-                    "comment": "the position of the parent (from 0 to `parentcount`)"
-                }],
-                "summary": {
-                    "comment": "Get the oid of a specified parent for a commit. This is different from
+The returned commit has to be freed by the caller.","return_type":"Commit","return_comment":"Pointer where to store the ancestor commit"}},"offset":{"signature":"offset()","arguments":[],"summary":{"comment":"Get the commit timezone offset (i.e. committer's preferred timezone) of a commit.","return_type":"Number","return_comment":"positive or negative timezone offset, in minutes from UTC"}},"oid":{"signature":"oid()","arguments":[],"summary":{"comment":"Get the id of a commit.","return_type":"Oid","return_comment":"object identity for the commit."}},"parentCount":{"signature":"parentCount()","arguments":[],"summary":{"comment":"Get the number of parents of this commit","return_type":"Number","return_comment":"integer of count of parents"}},"parentId":{"signature":"parentId(n)","arguments":[{"name":"n","type":"Number","comment":"the position of the parent (from 0 to `parentcount`)"}],"summary":{"comment":"Get the oid of a specified parent for a commit. This is different from
 git_commit_parent, which will attempt to load the parent commit from
-the ODB.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "parents": {
-                "signature": "parents(callback)",
-                "arguments": [{
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": ""
-                }],
-                "summary": {
-                    "comment": "Retrieve the commit's parent shas.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "sha": {
-                "signature": "sha()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Retrieve the SHA.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "time": {
-                "signature": "time()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the commit time (i.e. committer time) of a commit.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "timeMs": {
-                "signature": "timeMs()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Retrieve the commit time as a unix timestamp.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "toString": {
-                "signature": "toString()",
-                "arguments": [],
-                "summary": {
-                    "comment": "The sha of this commit",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "treeId": {
-                "signature": "treeId()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the id of the tree pointed to by a commit. This differs from
+the ODB.","return_type":"Oid","return_comment":"the id of the parent, NULL on error."}},"parents":{"signature":"parents(callback)","arguments":[{"name":"callback","type":"Function","comment":""}],"summary":{"comment":"Retrieve the commit's parent shas.","return_type":"[Oid]","return_comment":"array of oids"}},"sha":{"signature":"sha()","arguments":[],"summary":{"comment":"Retrieve the SHA.","return_type":"String","return_comment":"no other info"}},"time":{"signature":"time()","arguments":[],"summary":{"comment":"Get the commit time (i.e. committer time) of a commit.","return_type":"Number","return_comment":"the time of a commit"}},"timeMs":{"signature":"timeMs()","arguments":[],"summary":{"comment":"Retrieve the commit time as a unix timestamp.","return_type":"Number","return_comment":"no other info"}},"toString":{"signature":"toString()","arguments":[],"summary":{"comment":"The sha of this commit","return_type":"String","return_comment":"no other info"}},"treeId":{"signature":"treeId()","arguments":[],"summary":{"comment":"Get the id of the tree pointed to by a commit. This differs from
 git_commit_tree in that no attempts are made to fetch an object
-from the ODB.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            }
-        }
-    }
-}
-;
+from the ODB.","return_type":"Oid","return_comment":"the id of tree pointed to by commit."}}}}};
 
   RED.nodes.registerType('commit_node',{
 		category: 'web-nodes',
-		color:"#881111",
+		color:"#7b96a7",
 		defaults : {
       name : {value:"Commit"},
       topic : {value:"Git"},
@@ -309,7 +75,7 @@ from the ODB.",
     },
 		inputs:1,
 		outputs:1,
-		icon: "leveldb.png",
+		icon: "libgit2logo.png",
 		label: function () {
 				return this.name||this.topic||this.payload||"commit_node";
 		},

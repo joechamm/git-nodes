@@ -41,18 +41,7 @@
     </div>
   <style>
     .form-row input.git_command-argument {
-      width: 200px;
       position: relative;
-      left: -150px;
-      top: 3px;
-    }
-    .spacer.caret {
-      margin-left: 10px;
-    }
-    .dropdown-toggle p {
-      float: left;
-      padding: 0px;
-      margin: 0px;
     }
   </style>
 </script>
@@ -65,87 +54,11 @@
 </script>
 
 <script type="text/javascript">
-  var Patch_description = {
-    "Patch": {
-        "methods": {
-            "delta": {
-                "signature": "delta()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the delta associated with a patch",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "hunk": {
-                "signature": "hunk(hunk_idx)",
-                "arguments": [{
-                    "name": "hunk_idx",
-                    "type": "Number",
-                    "comment": "Input index of hunk to get information about"
-                }],
-                "summary": {
-                    "comment": "Get the information about a hunk in a patch",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "line": {
-                "signature": "line(hunk_idx, line_of_hunk)",
-                "arguments": [{
-                    "name": "hunk_idx",
-                    "type": "Number",
-                    "comment": "The index of the hunk"
-                }, {
-                    "name": "line_of_hunk",
-                    "type": "Number",
-                    "comment": "The index of the line in the hunk"
-                }],
-                "summary": {
-                    "comment": "Get data about a line in a hunk of a patch.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "lines": {
-                "signature": "lines(hunk_idx)",
-                "arguments": [{
-                    "name": "hunk_idx",
-                    "type": "Number",
-                    "comment": "Index of the hunk"
-                }],
-                "summary": {
-                    "comment": "Get the number of lines in a hunk.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "size": {
-                "signature": "size()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the number of hunks in a patch",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "stats": {
-                "signature": "stats()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get line counts of each type in a patch.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            }
-        }
-    }
-}
-;
+  var Patch_description = {"Patch":{"methods":{"delta":{"signature":"delta()","arguments":[],"summary":{"comment":"Get the delta associated with a patch","return_type":"Delta","return_comment":"no other info"}},"hunk":{"signature":"hunk(hunk_idx)","arguments":[{"name":"hunk_idx","type":"Number","comment":"Input index of hunk to get information about"}],"summary":{"comment":"Get the information about a hunk in a patch","return_type":"DiffRange","return_comment":"range"}},"line":{"signature":"line(hunk_idx, line_of_hunk)","arguments":[{"name":"hunk_idx","type":"Number","comment":"The index of the hunk"},{"name":"line_of_hunk","type":"Number","comment":"The index of the line in the hunk"}],"summary":{"comment":"Get data about a line in a hunk of a patch.","return_type":"Number","return_comment":"line_origin"}},"lines":{"signature":"lines(hunk_idx)","arguments":[{"name":"hunk_idx","type":"Number","comment":"Index of the hunk"}],"summary":{"comment":"Get the number of lines in a hunk.","return_type":"Number","return_comment":"Number of lines in hunk or -1 if invalid hunk index"}},"size":{"signature":"size()","arguments":[],"summary":{"comment":"Get the number of hunks in a patch","return_type":"Number","return_comment":"no other info"}},"stats":{"signature":"stats()","arguments":[],"summary":{"comment":"Get line counts of each type in a patch.","return_type":"Number","return_comment":"total_context"}}}}};
 
   RED.nodes.registerType('patch_node',{
 		category: 'web-nodes',
-		color:"#881111",
+		color:"#5a71cf",
 		defaults : {
       name : {value:"Patch"},
       topic : {value:"Git"},
@@ -155,7 +68,7 @@
     },
 		inputs:1,
 		outputs:1,
-		icon: "leveldb.png",
+		icon: "libgit2logo.png",
 		label: function () {
 				return this.name||this.topic||this.payload||"patch_node";
 		},

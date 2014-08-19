@@ -41,18 +41,7 @@
     </div>
   <style>
     .form-row input.git_command-argument {
-      width: 200px;
       position: relative;
-      left: -150px;
-      top: 3px;
-    }
-    .spacer.caret {
-      margin-left: 10px;
-    }
-    .dropdown-toggle p {
-      float: left;
-      padding: 0px;
-      margin: 0px;
     }
   </style>
 </script>
@@ -65,52 +54,11 @@
 </script>
 
 <script type="text/javascript">
-  var Object_description = {
-    "Object": {
-        "methods": {
-            "oid": {
-                "signature": "oid()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the id (SHA1) of a repository object",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "peel": {
-                "signature": "peel(target_type, callback)",
-                "arguments": [{
-                    "name": "target_type",
-                    "type": "Number",
-                    "comment": "The type of the requested object (GIT_OBJ_COMMIT, GIT_OBJ_TAG, GIT_OBJ_TREE, GIT_OBJ_BLOB or GIT_OBJ_ANY)."
-                }, {
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": "Takes error and the return value specified below"
-                }],
-                "summary": {
-                    "comment": "Recursively peel an object until an object of the specified type is met.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "type": {
-                "signature": "type()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the object type of an object",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            }
-        }
-    }
-}
-;
+  var Object_description = {"Object":{"methods":{"oid":{"signature":"oid()","arguments":[],"summary":{"comment":"Get the id (SHA1) of a repository object","return_type":"Oid","return_comment":"the SHA1 id"}},"peel":{"signature":"peel(target_type, callback)","arguments":[{"name":"target_type","type":"Number","comment":"The type of the requested object (GIT_OBJ_COMMIT, GIT_OBJ_TAG, GIT_OBJ_TREE, GIT_OBJ_BLOB or GIT_OBJ_ANY)."},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"summary":{"comment":"Recursively peel an object until an object of the specified type is met.","return_type":"Object","return_comment":"Pointer to the peeled git_object"}},"type":{"signature":"type()","arguments":[],"summary":{"comment":"Get the object type of an object","return_type":"Number","return_comment":"the object's type"}}}}};
 
   RED.nodes.registerType('object_node',{
 		category: 'web-nodes',
-		color:"#881111",
+		color:"#8c03bf",
 		defaults : {
       name : {value:"Object"},
       topic : {value:"Git"},
@@ -120,7 +68,7 @@
     },
 		inputs:1,
 		outputs:1,
-		icon: "leveldb.png",
+		icon: "libgit2logo.png",
 		label: function () {
 				return this.name||this.topic||this.payload||"object_node";
 		},

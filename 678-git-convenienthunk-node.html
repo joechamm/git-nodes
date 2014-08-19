@@ -41,18 +41,7 @@
     </div>
   <style>
     .form-row input.git_command-argument {
-      width: 200px;
       position: relative;
-      left: -150px;
-      top: 3px;
-    }
-    .spacer.caret {
-      margin-left: 10px;
-    }
-    .dropdown-toggle p {
-      float: left;
-      padding: 0px;
-      margin: 0px;
     }
   </style>
 </script>
@@ -65,44 +54,11 @@
 </script>
 
 <script type="text/javascript">
-  var ConvenientHunk_description = {
-    "ConvenientHunk": {
-        "methods": {
-            "header": {
-                "signature": "header()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Diff header string that represents the context of this hunkof the diff. Something like @@ -169,14 +167,12 @@ ...",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "lines": {
-                "signature": "lines()",
-                "arguments": [],
-                "summary": {
-                    "comment": "The lines in this hunk",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "size": {
-                "signature": "size()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Number of lines in this hunk",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            }
-        }
-    }
-}
-;
+  var ConvenientHunk_description = {"ConvenientHunk":{"methods":{"header":{"signature":"header()","arguments":[],"summary":{"comment":"Diff header string that represents the context of this hunkof the diff. Something like @@ -169,14 +167,12 @@ ...","return_type":"String","return_comment":"no other info"}},"lines":{"signature":"lines()","arguments":[],"summary":{"comment":"The lines in this hunk","return_type":"[String]","return_comment":"array of strings"}},"size":{"signature":"size()","arguments":[],"summary":{"comment":"Number of lines in this hunk","return_type":"Number","return_comment":"no other info"}}}}};
 
   RED.nodes.registerType('convenienthunk_node',{
 		category: 'web-nodes',
-		color:"#881111",
+		color:"#14bbeb",
 		defaults : {
       name : {value:"ConvenientHunk"},
       topic : {value:"Git"},
@@ -112,7 +68,7 @@
     },
 		inputs:1,
 		outputs:1,
-		icon: "leveldb.png",
+		icon: "libgit2logo.png",
 		label: function () {
 				return this.name||this.topic||this.payload||"convenienthunk_node";
 		},

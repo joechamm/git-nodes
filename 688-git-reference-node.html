@@ -41,18 +41,7 @@
     </div>
   <style>
     .form-row input.git_command-argument {
-      width: 200px;
       position: relative;
-      left: -150px;
-      top: 3px;
-    }
-    .spacer.caret {
-      margin-left: 10px;
-    }
-    .dropdown-toggle p {
-      float: left;
-      padding: 0px;
-      margin: 0px;
     }
   </style>
 </script>
@@ -65,222 +54,15 @@
 </script>
 
 <script type="text/javascript">
-  var Reference_description = {
-    "Reference": {
-        "methods": {
-            "delete": {
-                "signature": "delete(callback)",
-                "arguments": [{
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": "Takes error and the return value specified below"
-                }],
-                "summary": {
-                    "comment": "Delete an existing reference.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "isBranch": {
-                "signature": "isBranch()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Check if a reference is a local branch.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "isConcrete": {
-                "signature": "isConcrete()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Returns true if this reference is not symbolic",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "isRemote": {
-                "signature": "isRemote()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Check if a reference is a remote tracking branch",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "isSymbolic": {
-                "signature": "isSymbolic()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Returns true if this reference is symbolic",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "isValidName": {
-                "signature": "isValidName(refname)",
-                "arguments": [{
-                    "name": "refname",
-                    "type": "String",
-                    "comment": "name to be checked."
-                }],
-                "summary": {
-                    "comment": "Ensure the reference name is well-formed.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "name": {
-                "signature": "name()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the full name of a reference.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "oidForName": {
-                "signature": "oidForName(repo, name, callback)",
-                "arguments": [{
-                    "name": "repo",
-                    "type": "Repository",
-                    "comment": "The repository in which to look up the reference"
-                }, {
-                    "name": "name",
-                    "type": "String",
-                    "comment": "The long name for the reference (e.g. HEAD, refs/heads/master, refs/tags/v0.1.0, ...)"
-                }, {
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": "Takes error and the return value specified below"
-                }],
-                "summary": {
-                    "comment": "Lookup a reference by name and resolve immediately to OID.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "peel": {
-                "signature": "peel(type)",
-                "arguments": [{
-                    "name": "type",
-                    "type": "Number",
-                    "comment": "The type of the requested object (GIT_OBJ_COMMIT, GIT_OBJ_TAG, GIT_OBJ_TREE, GIT_OBJ_BLOB or GIT_OBJ_ANY)."
-                }],
-                "summary": {
-                    "comment": "Recursively peel reference until object of the specified type is found.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "rename": {
-                "signature": "rename(new_name, force, callback)",
-                "arguments": [{
-                    "name": "new_name",
-                    "type": "String",
-                    "comment": "The new name for the reference"
-                }, {
-                    "name": "force",
-                    "type": "Number",
-                    "comment": "Overwrite an existing reference"
-                }, {
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": "Takes error and the return value specified below"
-                }],
-                "summary": {
-                    "comment": "Rename an existing reference.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "resolve": {
-                "signature": "resolve(callback)",
-                "arguments": [{
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": "Takes error and the return value specified below"
-                }],
-                "summary": {
-                    "comment": "Resolve a symbolic reference to a direct reference.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "setSymbolicTarget": {
-                "signature": "setSymbolicTarget(target)",
-                "arguments": [{
-                    "name": "target",
-                    "type": "String",
-                    "comment": "The new target for the reference"
-                }],
-                "summary": {
-                    "comment": "Create a new reference with the same name as the given reference but a
+  var Reference_description = {"Reference":{"methods":{"delete":{"signature":"delete(callback)","arguments":[{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"summary":{"comment":"Delete an existing reference.","return_type":"(none)","return_comment":"N/A"}},"isBranch":{"signature":"isBranch()","arguments":[],"summary":{"comment":"Check if a reference is a local branch.","return_type":"(none)","return_comment":"N/A"}},"isConcrete":{"signature":"isConcrete()","arguments":[],"summary":{"comment":"Returns true if this reference is not symbolic","return_type":"Boolean","return_comment":"no other info"}},"isRemote":{"signature":"isRemote()","arguments":[],"summary":{"comment":"Check if a reference is a remote tracking branch","return_type":"(none)","return_comment":"N/A"}},"isSymbolic":{"signature":"isSymbolic()","arguments":[],"summary":{"comment":"Returns true if this reference is symbolic","return_type":"Boolean","return_comment":"no other info"}},"isValidName":{"signature":"isValidName(refname)","arguments":[{"name":"refname","type":"String","comment":"name to be checked."}],"summary":{"comment":"Ensure the reference name is well-formed.","return_type":"(none)","return_comment":"N/A"}},"name":{"signature":"name()","arguments":[],"summary":{"comment":"Get the full name of a reference.","return_type":"String","return_comment":"the full name for the ref"}},"oidForName":{"signature":"oidForName(repo, name, callback)","arguments":[{"name":"repo","type":"Repository","comment":"The repository in which to look up the reference"},{"name":"name","type":"String","comment":"The long name for the reference (e.g. HEAD, refs/heads/master, refs/tags/v0.1.0, ...)"},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"summary":{"comment":"Lookup a reference by name and resolve immediately to OID.","return_type":"Oid","return_comment":"Pointer to oid to be filled in"}},"peel":{"signature":"peel(type)","arguments":[{"name":"type","type":"Number","comment":"The type of the requested object (GIT_OBJ_COMMIT, GIT_OBJ_TAG, GIT_OBJ_TREE, GIT_OBJ_BLOB or GIT_OBJ_ANY)."}],"summary":{"comment":"Recursively peel reference until object of the specified type is found.","return_type":"Object","return_comment":"Pointer to the peeled git_object"}},"rename":{"signature":"rename(new_name, force, callback)","arguments":[{"name":"new_name","type":"String","comment":"The new name for the reference"},{"name":"force","type":"Number","comment":"Overwrite an existing reference"},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"summary":{"comment":"Rename an existing reference.","return_type":"Reference","return_comment":"no other info"}},"resolve":{"signature":"resolve(callback)","arguments":[{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"summary":{"comment":"Resolve a symbolic reference to a direct reference.","return_type":"Reference","return_comment":"Pointer to the peeled reference"}},"setSymbolicTarget":{"signature":"setSymbolicTarget(target)","arguments":[{"name":"target","type":"String","comment":"The new target for the reference"}],"summary":{"comment":"Create a new reference with the same name as the given reference but a
 different symbolic target. The reference must be a symbolic reference,
-otherwise this will fail.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "setTarget": {
-                "signature": "setTarget(id)",
-                "arguments": [{
-                    "name": "id",
-                    "type": "Oid",
-                    "comment": "The new target OID for the reference"
-                }],
-                "summary": {
-                    "comment": "Create a new reference with the same name as the given reference but a
+otherwise this will fail.","return_type":"Reference","return_comment":"Pointer to the newly created reference"}},"setTarget":{"signature":"setTarget(id)","arguments":[{"name":"id","type":"Oid","comment":"The new target OID for the reference"}],"summary":{"comment":"Create a new reference with the same name as the given reference but a
 different OID target. The reference must be a direct reference, otherwise
-this will fail.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "symbolicTarget": {
-                "signature": "symbolicTarget()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Returns the target of this symbolic reference.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "target": {
-                "signature": "target()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Returns the oid of this non-symbolic reference.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "toString": {
-                "signature": "toString()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Returns the name of the reference.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "type": {
-                "signature": "type()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the type of a reference.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            }
-        }
-    }
-}
-;
+this will fail.","return_type":"Reference","return_comment":"Pointer to the newly created reference"}},"symbolicTarget":{"signature":"symbolicTarget()","arguments":[],"summary":{"comment":"Returns the target of this symbolic reference.","return_type":"Reference","return_comment":"no other info"}},"target":{"signature":"target()","arguments":[],"summary":{"comment":"Returns the oid of this non-symbolic reference.","return_type":"Oid","return_comment":"no other info"}},"toString":{"signature":"toString()","arguments":[],"summary":{"comment":"Returns the name of the reference.","return_type":"String","return_comment":"no other info"}},"type":{"signature":"type()","arguments":[],"summary":{"comment":"Get the type of a reference.","return_type":"Number","return_comment":"the type"}}}}};
 
   RED.nodes.registerType('reference_node',{
 		category: 'web-nodes',
-		color:"#881111",
+		color:"#f805b4",
 		defaults : {
       name : {value:"Reference"},
       topic : {value:"Git"},
@@ -290,7 +72,7 @@ this will fail.",
     },
 		inputs:1,
 		outputs:1,
-		icon: "leveldb.png",
+		icon: "libgit2logo.png",
 		label: function () {
 				return this.name||this.topic||this.payload||"reference_node";
 		},

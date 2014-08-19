@@ -41,18 +41,7 @@
     </div>
   <style>
     .form-row input.git_command-argument {
-      width: 200px;
       position: relative;
-      left: -150px;
-      top: 3px;
-    }
-    .spacer.caret {
-      margin-left: 10px;
-    }
-    .dropdown-toggle p {
-      float: left;
-      padding: 0px;
-      margin: 0px;
     }
   </style>
 </script>
@@ -65,219 +54,12 @@
 </script>
 
 <script type="text/javascript">
-  var Remote_description = {
-    "Remote": {
-        "methods": {
-            "checkCert": {
-                "signature": "checkCert(check)",
-                "arguments": [{
-                    "name": "check",
-                    "type": "Number",
-                    "comment": "whether to check the server's certificate (defaults to yes)"
-                }],
-                "summary": {
-                    "comment": "Choose whether to check the server's certificate (applies to HTTPS only)",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "connect": {
-                "signature": "connect(direction, callback)",
-                "arguments": [{
-                    "name": "direction",
-                    "type": "Number",
-                    "comment": "GIT_DIRECTION_FETCH if you want to fetch or GIT_DIRECTION_PUSH if you want to push"
-                }, {
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": "Takes error and the return value specified below"
-                }],
-                "summary": {
-                    "comment": "Open a connection to a remote",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "connected": {
-                "signature": "connected()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Check whether the remote is connected",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "disconnect": {
-                "signature": "disconnect(callback)",
-                "arguments": [{
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": "Takes error and the return value specified below"
-                }],
-                "summary": {
-                    "comment": "Disconnect from the remote",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "download": {
-                "signature": "download(progress_cb, callback)",
-                "arguments": [{
-                    "name": "progress_cb",
-                    "type": "Function",
-                    "comment": "function to call with progress information. Be aware that this is called inline with network and indexing operations, so performance may be affected."
-                }, {
-                    "name": "callback",
-                    "type": "Function",
-                    "comment": "Takes error and the return value specified below"
-                }],
-                "summary": {
-                    "comment": "Download the packfile",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "isValidName": {
-                "signature": "isValidName(remote_name)",
-                "arguments": [{
-                    "name": "remote_name",
-                    "type": "String",
-                    "comment": "name to be checked."
-                }],
-                "summary": {
-                    "comment": "Ensure the remote name is well-formed.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "name": {
-                "signature": "name()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the remote's name",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "pushUrl": {
-                "signature": "pushUrl()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the remote's url for pushing",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "setPushUrl": {
-                "signature": "setPushUrl(url)",
-                "arguments": [{
-                    "name": "url",
-                    "type": "String",
-                    "comment": "the url to set or NULL to clear the pushurl"
-                }],
-                "summary": {
-                    "comment": "Set the remote's url for pushing",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "setUpdateFetchhead": {
-                "signature": "setUpdateFetchhead(value)",
-                "arguments": [{
-                    "name": "value",
-                    "type": "Number",
-                    "comment": "0 to disable updating FETCH_HEAD"
-                }],
-                "summary": {
-                    "comment": "Sets the update FETCH_HEAD setting.  By default, FETCH_HEAD will be
-updated on every fetch.  Set to 0 to disable.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "setUrl": {
-                "signature": "setUrl(url)",
-                "arguments": [{
-                    "name": "url",
-                    "type": "String",
-                    "comment": "the url to set"
-                }],
-                "summary": {
-                    "comment": "Set the remote's url",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "stop": {
-                "signature": "stop()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Cancel the operation",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "supportedUrl": {
-                "signature": "supportedUrl(url)",
-                "arguments": [{
-                    "name": "url",
-                    "type": "String",
-                    "comment": "the url to check"
-                }],
-                "summary": {
-                    "comment": "Return whether the passed URL is supported by this version of the library.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "updateFetchhead": {
-                "signature": "updateFetchhead()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Retrieve the update FETCH_HEAD setting.",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "updateTips": {
-                "signature": "updateTips()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Update the tips to the new state",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "url": {
-                "signature": "url()",
-                "arguments": [],
-                "summary": {
-                    "comment": "Get the remote's url",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            },
-            "validUrl": {
-                "signature": "validUrl(url)",
-                "arguments": [{
-                    "name": "url",
-                    "type": "String",
-                    "comment": "the url to check"
-                }],
-                "summary": {
-                    "comment": "Return whether a string is a valid remote URL",
-                    "return_type": "(none)",
-                    "return_comment": "(none)"
-                }
-            }
-        }
-    }
-}
-;
+  var Remote_description = {"Remote":{"methods":{"checkCert":{"signature":"checkCert(check)","arguments":[{"name":"check","type":"Number","comment":"whether to check the server's certificate (defaults to yes)"}],"summary":{"comment":"Choose whether to check the server's certificate (applies to HTTPS only)","return_type":"void","return_comment":"no other info"}},"connect":{"signature":"connect(direction, callback)","arguments":[{"name":"direction","type":"Number","comment":"GIT_DIRECTION_FETCH if you want to fetch or GIT_DIRECTION_PUSH if you want to push"},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"summary":{"comment":"Open a connection to a remote","return_type":"(none)","return_comment":"N/A"}},"connected":{"signature":"connected()","arguments":[],"summary":{"comment":"Check whether the remote is connected","return_type":"(none)","return_comment":"N/A"}},"disconnect":{"signature":"disconnect(callback)","arguments":[{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"summary":{"comment":"Disconnect from the remote","return_type":"void","return_comment":"no other info"}},"download":{"signature":"download(progress_cb, callback)","arguments":[{"name":"progress_cb","type":"Function","comment":"function to call with progress information. Be aware that this is called inline with network and indexing operations, so performance may be affected."},{"name":"callback","type":"Function","comment":"Takes error and the return value specified below"}],"summary":{"comment":"Download the packfile","return_type":"(none)","return_comment":"N/A"}},"isValidName":{"signature":"isValidName(remote_name)","arguments":[{"name":"remote_name","type":"String","comment":"name to be checked."}],"summary":{"comment":"Ensure the remote name is well-formed.","return_type":"(none)","return_comment":"N/A"}},"name":{"signature":"name()","arguments":[],"summary":{"comment":"Get the remote's name","return_type":"String","return_comment":"a pointer to the name or NULL for in-memory remotes"}},"pushUrl":{"signature":"pushUrl()","arguments":[],"summary":{"comment":"Get the remote's url for pushing","return_type":"String","return_comment":"a pointer to the url or NULL if no special url for pushing is set"}},"setPushUrl":{"signature":"setPushUrl(url)","arguments":[{"name":"url","type":"String","comment":"the url to set or NULL to clear the pushurl"}],"summary":{"comment":"Set the remote's url for pushing","return_type":"(none)","return_comment":"N/A"}},"setUpdateFetchhead":{"signature":"setUpdateFetchhead(value)","arguments":[{"name":"value","type":"Number","comment":"0 to disable updating FETCH_HEAD"}],"summary":{"comment":"Sets the update FETCH_HEAD setting.  By default, FETCH_HEAD will be
+updated on every fetch.  Set to 0 to disable.","return_type":"void","return_comment":"no other info"}},"setUrl":{"signature":"setUrl(url)","arguments":[{"name":"url","type":"String","comment":"the url to set"}],"summary":{"comment":"Set the remote's url","return_type":"(none)","return_comment":"N/A"}},"stop":{"signature":"stop()","arguments":[],"summary":{"comment":"Cancel the operation","return_type":"void","return_comment":"no other info"}},"supportedUrl":{"signature":"supportedUrl(url)","arguments":[{"name":"url","type":"String","comment":"the url to check"}],"summary":{"comment":"Return whether the passed URL is supported by this version of the library.","return_type":"(none)","return_comment":"N/A"}},"updateFetchhead":{"signature":"updateFetchhead()","arguments":[],"summary":{"comment":"Retrieve the update FETCH_HEAD setting.","return_type":"(none)","return_comment":"N/A"}},"updateTips":{"signature":"updateTips()","arguments":[],"summary":{"comment":"Update the tips to the new state","return_type":"(none)","return_comment":"N/A"}},"url":{"signature":"url()","arguments":[],"summary":{"comment":"Get the remote's url","return_type":"String","return_comment":"a pointer to the url"}},"validUrl":{"signature":"validUrl(url)","arguments":[{"name":"url","type":"String","comment":"the url to check"}],"summary":{"comment":"Return whether a string is a valid remote URL","return_type":"(none)","return_comment":"N/A"}}}}};
 
   RED.nodes.registerType('remote_node',{
 		category: 'web-nodes',
-		color:"#881111",
+		color:"#3a6b2d",
 		defaults : {
       name : {value:"Remote"},
       topic : {value:"Git"},
@@ -287,7 +69,7 @@ updated on every fetch.  Set to 0 to disable.",
     },
 		inputs:1,
 		outputs:1,
-		icon: "leveldb.png",
+		icon: "libgit2logo.png",
 		label: function () {
 				return this.name||this.topic||this.payload||"remote_node";
 		},
