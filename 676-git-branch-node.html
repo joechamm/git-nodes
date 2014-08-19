@@ -1,0 +1,384 @@
+<!--
+  Copyright 2014 Tailored Cloud
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<script type="text/x-red" data-template-name="branch_node">
+      <div class="form-row" id="node-input-row-git_command">
+        <label for="node-input-git_command">Command</label>
+        <select id="node-input-git_command">
+        </select>
+      </div>
+
+      <div id="git_command_input">
+        <label for="git_command_arguments">Git Command Arguments</label>
+        <div class="form-row" id="git_command_arguments"></div>
+      </div>
+
+      <div class="form-row" id="node-input-row-name">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="name">
+      </div>
+
+      <div class="form-row">
+        <label for="node-input-topic"><i class="icon-tasks"></i> Topic:</label>
+        <input type="text" id="node-input-topic" placeholder="topic">
+      </div>
+    </div>
+
+    <div class="form-tips" id="git_command-help">
+    </div>
+  <style>
+    .form-row input.git_command-argument {
+      width: 200px;
+      position: relative;
+      left: -150px;
+      top: 3px;
+    }
+    .spacer.caret {
+      margin-left: 10px;
+    }
+    .dropdown-toggle p {
+      float: left;
+      padding: 0px;
+      margin: 0px;
+    }
+  </style>
+</script>
+
+<script type="text/x-red" data-help-name="branch_node">
+    <p>A node to integrate the libgit2 bindings via nodegit.</p>
+    <p>Choose the git repository command you wish to call from the dropdown, then configure the incoming msg.payload object to deliver the arguments as named.</p>
+    <p>The callback function
+    <p>The output will be the msg.payload object with key=Return Type</p>
+</script>
+
+<script type="text/javascript">
+  var Branch_description = {
+    "Branch": {
+        "methods": {
+            "create": {
+                "signature": "create(repo, branch_name, target, force)",
+                "arguments": [{
+                    "name": "repo",
+                    "type": "Repository",
+                    "comment": ""
+                }, {
+                    "name": "branch_name",
+                    "type": "String",
+                    "comment": "Name for the branch; this name is validated for consistency. It should also not conflict with an already existing branch name."
+                }, {
+                    "name": "target",
+                    "type": "Commit",
+                    "comment": "Commit to which this branch should point. This object must belong to the given `repo`."
+                }, {
+                    "name": "force",
+                    "type": "Number",
+                    "comment": "Overwrite existing branch."
+                }],
+                "summary": {
+                    "comment": "Create a new branch pointing at a target commit",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "delete": {
+                "signature": "delete(branch)",
+                "arguments": [{
+                    "name": "branch",
+                    "type": "Reference",
+                    "comment": "A valid reference representing a branch"
+                }],
+                "summary": {
+                    "comment": "Delete an existing branch reference.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "foreach": {
+                "signature": "foreach(repo, list_flags, branch_cb, payload)",
+                "arguments": [{
+                    "name": "repo",
+                    "type": "Repository",
+                    "comment": "Repository where to find the branches."
+                }, {
+                    "name": "list_flags",
+                    "type": "Number",
+                    "comment": "Filtering flags for the branch listing. Valid values are GIT_BRANCH_LOCAL, GIT_BRANCH_REMOTE or a combination of the two."
+                }, {
+                    "name": "branch_cb",
+                    "type": "BranchForeachCb",
+                    "comment": "Callback to invoke per found branch."
+                }, {
+                    "name": "payload",
+                    "type": "void",
+                    "comment": "Extra parameter to callback function."
+                }],
+                "summary": {
+                    "comment": "Loop over all the branches and issue a callback for each one.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "isHead": {
+                "signature": "isHead(branch)",
+                "arguments": [{
+                    "name": "branch",
+                    "type": "Reference",
+                    "comment": "Current underlying reference of the branch."
+                }],
+                "summary": {
+                    "comment": "Determine if the current local branch is pointed at by HEAD.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "lookup": {
+                "signature": "lookup(repo, branch_name, branch_type)",
+                "arguments": [{
+                    "name": "repo",
+                    "type": "Repository",
+                    "comment": "the repository to look up the branch"
+                }, {
+                    "name": "branch_name",
+                    "type": "String",
+                    "comment": "Name of the branch to be looked-up; this name is validated for consistency."
+                }, {
+                    "name": "branch_type",
+                    "type": "BranchT",
+                    "comment": "Type of the considered branch. This should be valued with either GIT_BRANCH_LOCAL or GIT_BRANCH_REMOTE."
+                }],
+                "summary": {
+                    "comment": "Lookup a branch by its name in a repository.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "move": {
+                "signature": "move(branch, new_branch_name, force)",
+                "arguments": [{
+                    "name": "branch",
+                    "type": "Reference",
+                    "comment": "Current underlying reference of the branch."
+                }, {
+                    "name": "new_branch_name",
+                    "type": "String",
+                    "comment": "Target name of the branch once the move is performed; this name is validated for consistency."
+                }, {
+                    "name": "force",
+                    "type": "Number",
+                    "comment": "Overwrite existing branch."
+                }],
+                "summary": {
+                    "comment": "Move/rename an existing local branch reference.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "name": {
+                "signature": "name(ref)",
+                "arguments": [{
+                    "name": "ref",
+                    "type": "Reference",
+                    "comment": "the reference ideally pointing to a branch"
+                }],
+                "summary": {
+                    "comment": "Return the name of the given local or remote branch.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "remoteName": {
+                "signature": "remoteName(remote_name_out, buffer_size, repo, canonical_branch_name)",
+                "arguments": [{
+                    "name": "remote_name_out",
+                    "type": "String",
+                    "comment": "The user-allocated buffer which will be filled with the name of the remote. Pass NULL if you just want to get the needed size of the name of the remote as the output value."
+                }, {
+                    "name": "buffer_size",
+                    "type": "Number",
+                    "comment": "Size of the `out` buffer in bytes."
+                }, {
+                    "name": "repo",
+                    "type": "Repository",
+                    "comment": "The repository where the branch lives."
+                }, {
+                    "name": "canonical_branch_name",
+                    "type": "String",
+                    "comment": "name of the remote tracking branch."
+                }],
+                "summary": {
+                    "comment": "Return the name of remote that the remote tracking branch belongs to.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "setUpstream": {
+                "signature": "setUpstream(branch, upstream_name)",
+                "arguments": [{
+                    "name": "branch",
+                    "type": "Reference",
+                    "comment": "the branch to configure"
+                }, {
+                    "name": "upstream_name",
+                    "type": "String",
+                    "comment": "remote-tracking or local branch to set as upstream. Pass NULL to unset."
+                }],
+                "summary": {
+                    "comment": "Set the upstream configuration for a given local branch",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "upstream": {
+                "signature": "upstream(branch)",
+                "arguments": [{
+                    "name": "branch",
+                    "type": "Reference",
+                    "comment": "Current underlying reference of the branch."
+                }],
+                "summary": {
+                    "comment": "Return the reference supporting the remote tracking branch,
+given a local branch reference.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "upstreamName": {
+                "signature": "upstreamName(tracking_branch_name_out, buffer_size, repo, canonical_branch_name)",
+                "arguments": [{
+                    "name": "tracking_branch_name_out",
+                    "type": "String",
+                    "comment": "The user-allocated buffer which will be filled with the name of the reference. Pass NULL if you just want to get the needed size of the name of the reference as the output value."
+                }, {
+                    "name": "buffer_size",
+                    "type": "Number",
+                    "comment": "Size of the `out` buffer in bytes."
+                }, {
+                    "name": "repo",
+                    "type": "Repository",
+                    "comment": "the repository where the branches live"
+                }, {
+                    "name": "canonical_branch_name",
+                    "type": "String",
+                    "comment": "name of the local branch."
+                }],
+                "summary": {
+                    "comment": "Return the name of the reference supporting the remote tracking branch,
+given the name of a local branch reference.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            }
+        }
+    }
+}
+;
+
+  RED.nodes.registerType('branch_node',{
+		category: 'web-nodes',
+		color:"#881111",
+		defaults : {
+      name : {value:"Branch"},
+      topic : {value:"Git"},
+      git_command : {value:""},
+      git_command_arguments : {value:[]},
+      git_return_type : {value:""}
+    },
+		inputs:1,
+		outputs:1,
+		icon: "leveldb.png",
+		label: function () {
+				return this.name||this.topic||this.payload||"branch_node";
+		},
+		oneditprepare: function () {
+
+      var that = this;
+
+      for (var method in Branch_description["Branch"]["methods"]) {
+        $('<option '+((this.git_command===method)?'selected ':'')+'value="'+method+'">'+method+'</option>').appendTo("#node-input-git_command");
+      }
+
+      var buildGitCmdArgs = function () {
+
+      	var val = $("#node-input-git_command").val();
+
+        console.log('getting checked value');
+
+        var intype = $("input:checked","#input_method_container").val();
+
+        console.log('got checked value = ' + intype);
+
+      	console.log('this.value='+val);
+
+        var method = Branch_description["Branch"]["methods"][val];
+        var summary = method["summary"];
+
+        console.log('method = ' + method);
+
+        var summary = '<div><b>summary:</b> '+summary["comment"]+'</div><div><b>returns </b>: '+summary["return_type"]+' ('+summary["return_comment"]+')</div>';
+        $("#git_command-help").html(summary);
+        $("#git_command_arguments").html('');
+
+        method["arguments"].forEach(function(arg,index,array) {
+          var argname = arg["name"],
+            argtype = arg["type"],
+            argcomment = arg["comment"],
+            argid = "argument_"+argname;
+          $("<div>",{"id":argid,"title":argcomment}).appendTo("#git_command_arguments");
+          argid = '#'+argid;
+          switch (argtype) {
+            case "Function":
+              $("<p>",{"class":"git_command-argument","data-name":argname,"data-type":argtype,"text":"("+argtype+") "+"msg.payload."+argname+" (Note: User defined callbacks are currently not supported."}).appendTo(argid);
+              break;
+            case "CloneOptions":
+              $("<p>",{"class":"git_command-argument","data-name":argname,"data-type":argtype,"text":"("+argtype+") "+"msg.payload."+argname+" (Note: Clone options are currently not supported."}).appendTo(argid);
+              break;
+            default:
+              $("<p>",{"class":"git_command-argument","data-name":argname,"data-type":argtype,"text":"("+argtype+") "+"msg.payload."+argname}).appendTo(argid);
+              break;
+          }
+        });
+      };
+
+      console.log('setting on change function');
+
+      $("#node-input-git_command").on("change", buildGitCmdArgs);
+
+      console.log('setting choose input method');
+
+		  console.log('calling buildGitCmdArgs');
+
+		  buildGitCmdArgs.call($("#node-input-git_command")[0]);
+		},
+
+		oneditsave: function () {
+			console.log('oneditsave called');
+		  var that = this;
+      var selected_value = $("#node-input-git_command option:selected").val();
+		  this.git_command_arguments = [];
+		  this.git_return_type = Branch_description["Branch"]["methods"][selected_value]["summary"]["return_type"];
+		  $(".git_command-argument").each(function () {
+		    var argument = {
+          name:$(this).attr('data-name'),
+          type:$(this).attr('data-type')
+		    };
+		    that.git_command_arguments.push(argument);
+		  });
+		},
+		labelStyle: function () {
+			return this.name?"node_label_italic":"";
+		}
+	});
+</script>

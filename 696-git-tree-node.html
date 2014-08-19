@@ -1,0 +1,369 @@
+<!--
+  Copyright 2014 Tailored Cloud
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<script type="text/x-red" data-template-name="tree_node">
+      <div class="form-row" id="node-input-row-git_command">
+        <label for="node-input-git_command">Command</label>
+        <select id="node-input-git_command">
+        </select>
+      </div>
+
+      <div id="git_command_input">
+        <label for="git_command_arguments">Git Command Arguments</label>
+        <div class="form-row" id="git_command_arguments"></div>
+      </div>
+
+      <div class="form-row" id="node-input-row-name">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="name">
+      </div>
+
+      <div class="form-row">
+        <label for="node-input-topic"><i class="icon-tasks"></i> Topic:</label>
+        <input type="text" id="node-input-topic" placeholder="topic">
+      </div>
+    </div>
+
+    <div class="form-tips" id="git_command-help">
+    </div>
+  <style>
+    .form-row input.git_command-argument {
+      width: 200px;
+      position: relative;
+      left: -150px;
+      top: 3px;
+    }
+    .spacer.caret {
+      margin-left: 10px;
+    }
+    .dropdown-toggle p {
+      float: left;
+      padding: 0px;
+      margin: 0px;
+    }
+  </style>
+</script>
+
+<script type="text/x-red" data-help-name="tree_node">
+    <p>A node to integrate the libgit2 bindings via nodegit.</p>
+    <p>Choose the git repository command you wish to call from the dropdown, then configure the incoming msg.payload object to deliver the arguments as named.</p>
+    <p>The callback function
+    <p>The output will be the msg.payload object with key=Return Type</p>
+</script>
+
+<script type="text/javascript">
+  var Tree_description = {
+    "Tree": {
+        "methods": {
+            "builder": {
+                "signature": "builder()",
+                "arguments": [],
+                "summary": {
+                    "comment": "Create a new tree builder.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "diff": {
+                "signature": "diff(tree, callback)",
+                "arguments": [{
+                    "name": "tree",
+                    "type": "Tree",
+                    "comment": "to diff against"
+                }, {
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": ""
+                }],
+                "summary": {
+                    "comment": "Diff two trees",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "diffIndex": {
+                "signature": "diffIndex(repo, index, opts, callback)",
+                "arguments": [{
+                    "name": "repo",
+                    "type": "Repository",
+                    "comment": "The repository containing the tree and index."
+                }, {
+                    "name": "index",
+                    "type": "Index",
+                    "comment": "The index to diff with; repo index used if NULL."
+                }, {
+                    "name": "opts",
+                    "type": "DiffOptions",
+                    "comment": "Structure with options to influence diff or NULL for defaults."
+                }, {
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": "Takes error and the return value specified below"
+                }],
+                "summary": {
+                    "comment": "Create a diff list between a tree and repository index.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "diffTree": {
+                "signature": "diffTree(repo, new_tree, opts, callback)",
+                "arguments": [{
+                    "name": "repo",
+                    "type": "Repository",
+                    "comment": "The repository containing the trees."
+                }, {
+                    "name": "new_tree",
+                    "type": "Tree",
+                    "comment": "A git_tree object to diff to, or NULL for empty tree."
+                }, {
+                    "name": "opts",
+                    "type": "DiffOptions",
+                    "comment": "Structure with options to influence diff or NULL for defaults."
+                }, {
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": "Takes error and the return value specified below"
+                }],
+                "summary": {
+                    "comment": "Create a diff list with the difference between two tree objects.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "diffWorkDir": {
+                "signature": "diffWorkDir(repo, opts, callback)",
+                "arguments": [{
+                    "name": "repo",
+                    "type": "Repository",
+                    "comment": "The repository containing the tree."
+                }, {
+                    "name": "opts",
+                    "type": "DiffOptions",
+                    "comment": "Structure with options to influence diff or NULL for defaults."
+                }, {
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": "Takes error and the return value specified below"
+                }],
+                "summary": {
+                    "comment": "Create a diff list between a tree and the working directory.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "entries": {
+                "signature": "entries()",
+                "arguments": [],
+                "summary": {
+                    "comment": "Return an array of the entries in this tree (excluding its children).",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "entryByIndex": {
+                "signature": "entryByIndex(i)",
+                "arguments": [{
+                    "name": "i",
+                    "type": "Number",
+                    "comment": ""
+                }],
+                "summary": {
+                    "comment": "Get an entry at the ith position.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "entryByName": {
+                "signature": "entryByName(name)",
+                "arguments": [{
+                    "name": "name",
+                    "type": "String",
+                    "comment": ""
+                }],
+                "summary": {
+                    "comment": "Get an entry by name; if the tree is a directory, the name is the filename.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "entryByOid": {
+                "signature": "entryByOid(oid)",
+                "arguments": [{
+                    "name": "oid",
+                    "type": "Oid",
+                    "comment": "the sha being looked for"
+                }],
+                "summary": {
+                    "comment": "Lookup a tree entry by SHA value.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "getEntry": {
+                "signature": "getEntry(path)",
+                "arguments": [{
+                    "name": "path",
+                    "type": "String",
+                    "comment": ""
+                }],
+                "summary": {
+                    "comment": "Get an entry at a path. Unlike by name, this takes a fullyqualified path, like /foo/bar/baz.javascript",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "oid": {
+                "signature": "oid()",
+                "arguments": [],
+                "summary": {
+                    "comment": "Get the id of a tree.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "path": {
+                "signature": "path()",
+                "arguments": [],
+                "summary": {
+                    "comment": "Return the path of this tree, like /lib/foo/bar",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "size": {
+                "signature": "size()",
+                "arguments": [],
+                "summary": {
+                    "comment": "Get the number of entries listed in a tree",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "walk": {
+                "signature": "walk([blobsOnly)",
+                "arguments": [{
+                    "name": "[blobsOnly",
+                    "type": "Boolean",
+                    "comment": "= true] True to emit only blob &amp; blob executable entries."
+                }],
+                "summary": {
+                    "comment": "Recursively walk the tree in breadth-first order. Fires an event for each entry.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            }
+        }
+    }
+}
+;
+
+  RED.nodes.registerType('tree_node',{
+		category: 'web-nodes',
+		color:"#881111",
+		defaults : {
+      name : {value:"Tree"},
+      topic : {value:"Git"},
+      git_command : {value:""},
+      git_command_arguments : {value:[]},
+      git_return_type : {value:""}
+    },
+		inputs:1,
+		outputs:1,
+		icon: "leveldb.png",
+		label: function () {
+				return this.name||this.topic||this.payload||"tree_node";
+		},
+		oneditprepare: function () {
+
+      var that = this;
+
+      for (var method in Tree_description["Tree"]["methods"]) {
+        $('<option '+((this.git_command===method)?'selected ':'')+'value="'+method+'">'+method+'</option>').appendTo("#node-input-git_command");
+      }
+
+      var buildGitCmdArgs = function () {
+
+      	var val = $("#node-input-git_command").val();
+
+        console.log('getting checked value');
+
+        var intype = $("input:checked","#input_method_container").val();
+
+        console.log('got checked value = ' + intype);
+
+      	console.log('this.value='+val);
+
+        var method = Tree_description["Tree"]["methods"][val];
+        var summary = method["summary"];
+
+        console.log('method = ' + method);
+
+        var summary = '<div><b>summary:</b> '+summary["comment"]+'</div><div><b>returns </b>: '+summary["return_type"]+' ('+summary["return_comment"]+')</div>';
+        $("#git_command-help").html(summary);
+        $("#git_command_arguments").html('');
+
+        method["arguments"].forEach(function(arg,index,array) {
+          var argname = arg["name"],
+            argtype = arg["type"],
+            argcomment = arg["comment"],
+            argid = "argument_"+argname;
+          $("<div>",{"id":argid,"title":argcomment}).appendTo("#git_command_arguments");
+          argid = '#'+argid;
+          switch (argtype) {
+            case "Function":
+              $("<p>",{"class":"git_command-argument","data-name":argname,"data-type":argtype,"text":"("+argtype+") "+"msg.payload."+argname+" (Note: User defined callbacks are currently not supported."}).appendTo(argid);
+              break;
+            case "CloneOptions":
+              $("<p>",{"class":"git_command-argument","data-name":argname,"data-type":argtype,"text":"("+argtype+") "+"msg.payload."+argname+" (Note: Clone options are currently not supported."}).appendTo(argid);
+              break;
+            default:
+              $("<p>",{"class":"git_command-argument","data-name":argname,"data-type":argtype,"text":"("+argtype+") "+"msg.payload."+argname}).appendTo(argid);
+              break;
+          }
+        });
+      };
+
+      console.log('setting on change function');
+
+      $("#node-input-git_command").on("change", buildGitCmdArgs);
+
+      console.log('setting choose input method');
+
+		  console.log('calling buildGitCmdArgs');
+
+		  buildGitCmdArgs.call($("#node-input-git_command")[0]);
+		},
+
+		oneditsave: function () {
+			console.log('oneditsave called');
+		  var that = this;
+      var selected_value = $("#node-input-git_command option:selected").val();
+		  this.git_command_arguments = [];
+		  this.git_return_type = Tree_description["Tree"]["methods"][selected_value]["summary"]["return_type"];
+		  $(".git_command-argument").each(function () {
+		    var argument = {
+          name:$(this).attr('data-name'),
+          type:$(this).attr('data-type')
+		    };
+		    that.git_command_arguments.push(argument);
+		  });
+		},
+		labelStyle: function () {
+			return this.name?"node_label_italic":"";
+		}
+	});
+</script>

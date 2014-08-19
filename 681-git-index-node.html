@@ -1,0 +1,428 @@
+<!--
+  Copyright 2014 Tailored Cloud
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<script type="text/x-red" data-template-name="index_node">
+      <div class="form-row" id="node-input-row-git_command">
+        <label for="node-input-git_command">Command</label>
+        <select id="node-input-git_command">
+        </select>
+      </div>
+
+      <div id="git_command_input">
+        <label for="git_command_arguments">Git Command Arguments</label>
+        <div class="form-row" id="git_command_arguments"></div>
+      </div>
+
+      <div class="form-row" id="node-input-row-name">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="name">
+      </div>
+
+      <div class="form-row">
+        <label for="node-input-topic"><i class="icon-tasks"></i> Topic:</label>
+        <input type="text" id="node-input-topic" placeholder="topic">
+      </div>
+    </div>
+
+    <div class="form-tips" id="git_command-help">
+    </div>
+  <style>
+    .form-row input.git_command-argument {
+      width: 200px;
+      position: relative;
+      left: -150px;
+      top: 3px;
+    }
+    .spacer.caret {
+      margin-left: 10px;
+    }
+    .dropdown-toggle p {
+      float: left;
+      padding: 0px;
+      margin: 0px;
+    }
+  </style>
+</script>
+
+<script type="text/x-red" data-help-name="index_node">
+    <p>A node to integrate the libgit2 bindings via nodegit.</p>
+    <p>Choose the git repository command you wish to call from the dropdown, then configure the incoming msg.payload object to deliver the arguments as named.</p>
+    <p>The callback function
+    <p>The output will be the msg.payload object with key=Return Type</p>
+</script>
+
+<script type="text/javascript">
+  var Index_description = {
+    "Index": {
+        "methods": {
+            "addByPath": {
+                "signature": "addByPath(path, callback)",
+                "arguments": [{
+                    "name": "path",
+                    "type": "String",
+                    "comment": "filename to add"
+                }, {
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": "Takes error and the return value specified below"
+                }],
+                "summary": {
+                    "comment": "Add or update an index entry from a file on disk",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "clear": {
+                "signature": "clear()",
+                "arguments": [],
+                "summary": {
+                    "comment": "Clear the contents (all the entries) of an index object.
+This clears the index object in memory; changes must be manually
+written to disk for them to take effect.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "conflictCleanup": {
+                "signature": "conflictCleanup()",
+                "arguments": [],
+                "summary": {
+                    "comment": "Remove all conflicts in the index (entries with a stage greater than 0.)",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "conflictRemove": {
+                "signature": "conflictRemove(path)",
+                "arguments": [{
+                    "name": "path",
+                    "type": "String",
+                    "comment": "to search"
+                }],
+                "summary": {
+                    "comment": "Removes the index entries that represent a conflict of a single file.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "entries": {
+                "signature": "entries()",
+                "arguments": [],
+                "summary": {
+                    "comment": "Return an array of the entries in this index.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "entry": {
+                "signature": "entry(n)",
+                "arguments": [{
+                    "name": "n",
+                    "type": "Number",
+                    "comment": "the position of the entry"
+                }],
+                "summary": {
+                    "comment": "Get a pointer to one of the entries in the index",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "find": {
+                "signature": "find(at_pos, path)",
+                "arguments": [{
+                    "name": "at_pos",
+                    "type": "Number",
+                    "comment": "the address to which the position of the index entry is written (optional)"
+                }, {
+                    "name": "path",
+                    "type": "String",
+                    "comment": "path to search"
+                }],
+                "summary": {
+                    "comment": "Find the first position of any entries which point to given
+path in the Git index.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "hasConflicts": {
+                "signature": "hasConflicts()",
+                "arguments": [],
+                "summary": {
+                    "comment": "Determine if the index contains entries representing file conflicts.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "indexToWorkdir": {
+                "signature": "indexToWorkdir(repo, index, opts, callback)",
+                "arguments": [{
+                    "name": "repo",
+                    "type": "Repository",
+                    "comment": "The repository."
+                }, {
+                    "name": "index",
+                    "type": "Index",
+                    "comment": "The index to diff from; repo index used if NULL."
+                }, {
+                    "name": "opts",
+                    "type": "DiffOptions",
+                    "comment": "Structure with options to influence diff or NULL for defaults."
+                }, {
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": "Takes error and the return value specified below"
+                }],
+                "summary": {
+                    "comment": "Create a diff list between the repository index and the workdir directory.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "open": {
+                "signature": "open(index_path, callback)",
+                "arguments": [{
+                    "name": "index_path",
+                    "type": "String",
+                    "comment": "the path to the index file in disk"
+                }, {
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": "Takes error and the return value specified below"
+                }],
+                "summary": {
+                    "comment": "Create a new bare Git index object as a memory representation
+of the Git index file in 'index_path', without a repository
+to back it.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "read": {
+                "signature": "read(callback)",
+                "arguments": [{
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": "Takes error and the return value specified below"
+                }],
+                "summary": {
+                    "comment": "Update the contents of an existing index object in memory
+by reading from the hard disk.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "readTree": {
+                "signature": "readTree(tree, callback)",
+                "arguments": [{
+                    "name": "tree",
+                    "type": "Tree",
+                    "comment": "tree to read"
+                }, {
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": "Takes error and the return value specified below"
+                }],
+                "summary": {
+                    "comment": "Read a tree into the index file with stats",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "remove": {
+                "signature": "remove(path, stage)",
+                "arguments": [{
+                    "name": "path",
+                    "type": "String",
+                    "comment": "path to search"
+                }, {
+                    "name": "stage",
+                    "type": "Number",
+                    "comment": "stage to search"
+                }],
+                "summary": {
+                    "comment": "Remove an entry from the index",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "removeByPath": {
+                "signature": "removeByPath(path)",
+                "arguments": [{
+                    "name": "path",
+                    "type": "String",
+                    "comment": "filename to remove"
+                }],
+                "summary": {
+                    "comment": "Remove an index entry corresponding to a file on disk",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "removeDirectory": {
+                "signature": "removeDirectory(dir, stage)",
+                "arguments": [{
+                    "name": "dir",
+                    "type": "String",
+                    "comment": "container directory path"
+                }, {
+                    "name": "stage",
+                    "type": "Number",
+                    "comment": "stage to search"
+                }],
+                "summary": {
+                    "comment": "Remove all entries from the index under a given directory",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "size": {
+                "signature": "size()",
+                "arguments": [],
+                "summary": {
+                    "comment": "Get the count of entries currently in the index",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "write": {
+                "signature": "write(callback)",
+                "arguments": [{
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": "Takes error and the return value specified below"
+                }],
+                "summary": {
+                    "comment": "Write an existing index object from memory back to disk
+using an atomic file lock.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "writeTree": {
+                "signature": "writeTree(callback)",
+                "arguments": [{
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": "Takes error and the return value specified below"
+                }],
+                "summary": {
+                    "comment": "Write the index as a tree",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            }
+        }
+    }
+}
+;
+
+  RED.nodes.registerType('index_node',{
+		category: 'web-nodes',
+		color:"#881111",
+		defaults : {
+      name : {value:"Index"},
+      topic : {value:"Git"},
+      git_command : {value:""},
+      git_command_arguments : {value:[]},
+      git_return_type : {value:""}
+    },
+		inputs:1,
+		outputs:1,
+		icon: "leveldb.png",
+		label: function () {
+				return this.name||this.topic||this.payload||"index_node";
+		},
+		oneditprepare: function () {
+
+      var that = this;
+
+      for (var method in Index_description["Index"]["methods"]) {
+        $('<option '+((this.git_command===method)?'selected ':'')+'value="'+method+'">'+method+'</option>').appendTo("#node-input-git_command");
+      }
+
+      var buildGitCmdArgs = function () {
+
+      	var val = $("#node-input-git_command").val();
+
+        console.log('getting checked value');
+
+        var intype = $("input:checked","#input_method_container").val();
+
+        console.log('got checked value = ' + intype);
+
+      	console.log('this.value='+val);
+
+        var method = Index_description["Index"]["methods"][val];
+        var summary = method["summary"];
+
+        console.log('method = ' + method);
+
+        var summary = '<div><b>summary:</b> '+summary["comment"]+'</div><div><b>returns </b>: '+summary["return_type"]+' ('+summary["return_comment"]+')</div>';
+        $("#git_command-help").html(summary);
+        $("#git_command_arguments").html('');
+
+        method["arguments"].forEach(function(arg,index,array) {
+          var argname = arg["name"],
+            argtype = arg["type"],
+            argcomment = arg["comment"],
+            argid = "argument_"+argname;
+          $("<div>",{"id":argid,"title":argcomment}).appendTo("#git_command_arguments");
+          argid = '#'+argid;
+          switch (argtype) {
+            case "Function":
+              $("<p>",{"class":"git_command-argument","data-name":argname,"data-type":argtype,"text":"("+argtype+") "+"msg.payload."+argname+" (Note: User defined callbacks are currently not supported."}).appendTo(argid);
+              break;
+            case "CloneOptions":
+              $("<p>",{"class":"git_command-argument","data-name":argname,"data-type":argtype,"text":"("+argtype+") "+"msg.payload."+argname+" (Note: Clone options are currently not supported."}).appendTo(argid);
+              break;
+            default:
+              $("<p>",{"class":"git_command-argument","data-name":argname,"data-type":argtype,"text":"("+argtype+") "+"msg.payload."+argname}).appendTo(argid);
+              break;
+          }
+        });
+      };
+
+      console.log('setting on change function');
+
+      $("#node-input-git_command").on("change", buildGitCmdArgs);
+
+      console.log('setting choose input method');
+
+		  console.log('calling buildGitCmdArgs');
+
+		  buildGitCmdArgs.call($("#node-input-git_command")[0]);
+		},
+
+		oneditsave: function () {
+			console.log('oneditsave called');
+		  var that = this;
+      var selected_value = $("#node-input-git_command option:selected").val();
+		  this.git_command_arguments = [];
+		  this.git_return_type = Index_description["Index"]["methods"][selected_value]["summary"]["return_type"];
+		  $(".git_command-argument").each(function () {
+		    var argument = {
+          name:$(this).attr('data-name'),
+          type:$(this).attr('data-type')
+		    };
+		    that.git_command_arguments.push(argument);
+		  });
+		},
+		labelStyle: function () {
+			return this.name?"node_label_italic":"";
+		}
+	});
+</script>

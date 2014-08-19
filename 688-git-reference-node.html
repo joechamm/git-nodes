@@ -1,0 +1,376 @@
+<!--
+  Copyright 2014 Tailored Cloud
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<script type="text/x-red" data-template-name="reference_node">
+      <div class="form-row" id="node-input-row-git_command">
+        <label for="node-input-git_command">Command</label>
+        <select id="node-input-git_command">
+        </select>
+      </div>
+
+      <div id="git_command_input">
+        <label for="git_command_arguments">Git Command Arguments</label>
+        <div class="form-row" id="git_command_arguments"></div>
+      </div>
+
+      <div class="form-row" id="node-input-row-name">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="name">
+      </div>
+
+      <div class="form-row">
+        <label for="node-input-topic"><i class="icon-tasks"></i> Topic:</label>
+        <input type="text" id="node-input-topic" placeholder="topic">
+      </div>
+    </div>
+
+    <div class="form-tips" id="git_command-help">
+    </div>
+  <style>
+    .form-row input.git_command-argument {
+      width: 200px;
+      position: relative;
+      left: -150px;
+      top: 3px;
+    }
+    .spacer.caret {
+      margin-left: 10px;
+    }
+    .dropdown-toggle p {
+      float: left;
+      padding: 0px;
+      margin: 0px;
+    }
+  </style>
+</script>
+
+<script type="text/x-red" data-help-name="reference_node">
+    <p>A node to integrate the libgit2 bindings via nodegit.</p>
+    <p>Choose the git repository command you wish to call from the dropdown, then configure the incoming msg.payload object to deliver the arguments as named.</p>
+    <p>The callback function
+    <p>The output will be the msg.payload object with key=Return Type</p>
+</script>
+
+<script type="text/javascript">
+  var Reference_description = {
+    "Reference": {
+        "methods": {
+            "delete": {
+                "signature": "delete(callback)",
+                "arguments": [{
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": "Takes error and the return value specified below"
+                }],
+                "summary": {
+                    "comment": "Delete an existing reference.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "isBranch": {
+                "signature": "isBranch()",
+                "arguments": [],
+                "summary": {
+                    "comment": "Check if a reference is a local branch.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "isConcrete": {
+                "signature": "isConcrete()",
+                "arguments": [],
+                "summary": {
+                    "comment": "Returns true if this reference is not symbolic",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "isRemote": {
+                "signature": "isRemote()",
+                "arguments": [],
+                "summary": {
+                    "comment": "Check if a reference is a remote tracking branch",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "isSymbolic": {
+                "signature": "isSymbolic()",
+                "arguments": [],
+                "summary": {
+                    "comment": "Returns true if this reference is symbolic",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "isValidName": {
+                "signature": "isValidName(refname)",
+                "arguments": [{
+                    "name": "refname",
+                    "type": "String",
+                    "comment": "name to be checked."
+                }],
+                "summary": {
+                    "comment": "Ensure the reference name is well-formed.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "name": {
+                "signature": "name()",
+                "arguments": [],
+                "summary": {
+                    "comment": "Get the full name of a reference.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "oidForName": {
+                "signature": "oidForName(repo, name, callback)",
+                "arguments": [{
+                    "name": "repo",
+                    "type": "Repository",
+                    "comment": "The repository in which to look up the reference"
+                }, {
+                    "name": "name",
+                    "type": "String",
+                    "comment": "The long name for the reference (e.g. HEAD, refs/heads/master, refs/tags/v0.1.0, ...)"
+                }, {
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": "Takes error and the return value specified below"
+                }],
+                "summary": {
+                    "comment": "Lookup a reference by name and resolve immediately to OID.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "peel": {
+                "signature": "peel(type)",
+                "arguments": [{
+                    "name": "type",
+                    "type": "Number",
+                    "comment": "The type of the requested object (GIT_OBJ_COMMIT, GIT_OBJ_TAG, GIT_OBJ_TREE, GIT_OBJ_BLOB or GIT_OBJ_ANY)."
+                }],
+                "summary": {
+                    "comment": "Recursively peel reference until object of the specified type is found.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "rename": {
+                "signature": "rename(new_name, force, callback)",
+                "arguments": [{
+                    "name": "new_name",
+                    "type": "String",
+                    "comment": "The new name for the reference"
+                }, {
+                    "name": "force",
+                    "type": "Number",
+                    "comment": "Overwrite an existing reference"
+                }, {
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": "Takes error and the return value specified below"
+                }],
+                "summary": {
+                    "comment": "Rename an existing reference.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "resolve": {
+                "signature": "resolve(callback)",
+                "arguments": [{
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": "Takes error and the return value specified below"
+                }],
+                "summary": {
+                    "comment": "Resolve a symbolic reference to a direct reference.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "setSymbolicTarget": {
+                "signature": "setSymbolicTarget(target)",
+                "arguments": [{
+                    "name": "target",
+                    "type": "String",
+                    "comment": "The new target for the reference"
+                }],
+                "summary": {
+                    "comment": "Create a new reference with the same name as the given reference but a
+different symbolic target. The reference must be a symbolic reference,
+otherwise this will fail.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "setTarget": {
+                "signature": "setTarget(id)",
+                "arguments": [{
+                    "name": "id",
+                    "type": "Oid",
+                    "comment": "The new target OID for the reference"
+                }],
+                "summary": {
+                    "comment": "Create a new reference with the same name as the given reference but a
+different OID target. The reference must be a direct reference, otherwise
+this will fail.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "symbolicTarget": {
+                "signature": "symbolicTarget()",
+                "arguments": [],
+                "summary": {
+                    "comment": "Returns the target of this symbolic reference.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "target": {
+                "signature": "target()",
+                "arguments": [],
+                "summary": {
+                    "comment": "Returns the oid of this non-symbolic reference.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "toString": {
+                "signature": "toString()",
+                "arguments": [],
+                "summary": {
+                    "comment": "Returns the name of the reference.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "type": {
+                "signature": "type()",
+                "arguments": [],
+                "summary": {
+                    "comment": "Get the type of a reference.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            }
+        }
+    }
+}
+;
+
+  RED.nodes.registerType('reference_node',{
+		category: 'web-nodes',
+		color:"#881111",
+		defaults : {
+      name : {value:"Reference"},
+      topic : {value:"Git"},
+      git_command : {value:""},
+      git_command_arguments : {value:[]},
+      git_return_type : {value:""}
+    },
+		inputs:1,
+		outputs:1,
+		icon: "leveldb.png",
+		label: function () {
+				return this.name||this.topic||this.payload||"reference_node";
+		},
+		oneditprepare: function () {
+
+      var that = this;
+
+      for (var method in Reference_description["Reference"]["methods"]) {
+        $('<option '+((this.git_command===method)?'selected ':'')+'value="'+method+'">'+method+'</option>').appendTo("#node-input-git_command");
+      }
+
+      var buildGitCmdArgs = function () {
+
+      	var val = $("#node-input-git_command").val();
+
+        console.log('getting checked value');
+
+        var intype = $("input:checked","#input_method_container").val();
+
+        console.log('got checked value = ' + intype);
+
+      	console.log('this.value='+val);
+
+        var method = Reference_description["Reference"]["methods"][val];
+        var summary = method["summary"];
+
+        console.log('method = ' + method);
+
+        var summary = '<div><b>summary:</b> '+summary["comment"]+'</div><div><b>returns </b>: '+summary["return_type"]+' ('+summary["return_comment"]+')</div>';
+        $("#git_command-help").html(summary);
+        $("#git_command_arguments").html('');
+
+        method["arguments"].forEach(function(arg,index,array) {
+          var argname = arg["name"],
+            argtype = arg["type"],
+            argcomment = arg["comment"],
+            argid = "argument_"+argname;
+          $("<div>",{"id":argid,"title":argcomment}).appendTo("#git_command_arguments");
+          argid = '#'+argid;
+          switch (argtype) {
+            case "Function":
+              $("<p>",{"class":"git_command-argument","data-name":argname,"data-type":argtype,"text":"("+argtype+") "+"msg.payload."+argname+" (Note: User defined callbacks are currently not supported."}).appendTo(argid);
+              break;
+            case "CloneOptions":
+              $("<p>",{"class":"git_command-argument","data-name":argname,"data-type":argtype,"text":"("+argtype+") "+"msg.payload."+argname+" (Note: Clone options are currently not supported."}).appendTo(argid);
+              break;
+            default:
+              $("<p>",{"class":"git_command-argument","data-name":argname,"data-type":argtype,"text":"("+argtype+") "+"msg.payload."+argname}).appendTo(argid);
+              break;
+          }
+        });
+      };
+
+      console.log('setting on change function');
+
+      $("#node-input-git_command").on("change", buildGitCmdArgs);
+
+      console.log('setting choose input method');
+
+		  console.log('calling buildGitCmdArgs');
+
+		  buildGitCmdArgs.call($("#node-input-git_command")[0]);
+		},
+
+		oneditsave: function () {
+			console.log('oneditsave called');
+		  var that = this;
+      var selected_value = $("#node-input-git_command option:selected").val();
+		  this.git_command_arguments = [];
+		  this.git_return_type = Reference_description["Reference"]["methods"][selected_value]["summary"]["return_type"];
+		  $(".git_command-argument").each(function () {
+		    var argument = {
+          name:$(this).attr('data-name'),
+          type:$(this).attr('data-type')
+		    };
+		    that.git_command_arguments.push(argument);
+		  });
+		},
+		labelStyle: function () {
+			return this.name?"node_label_italic":"";
+		}
+	});
+</script>

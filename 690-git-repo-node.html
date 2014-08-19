@@ -1,0 +1,729 @@
+<!--
+  Copyright 2014 Tailored Cloud
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<script type="text/x-red" data-template-name="repo_node">
+      <div class="form-row" id="node-input-row-git_command">
+        <label for="node-input-git_command">Command</label>
+        <select id="node-input-git_command">
+        </select>
+      </div>
+
+      <div id="git_command_input">
+        <label for="git_command_arguments">Git Command Arguments</label>
+        <div class="form-row" id="git_command_arguments"></div>
+      </div>
+
+      <div class="form-row" id="node-input-row-name">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="name">
+      </div>
+
+      <div class="form-row">
+        <label for="node-input-topic"><i class="icon-tasks"></i> Topic:</label>
+        <input type="text" id="node-input-topic" placeholder="topic">
+      </div>
+    </div>
+
+    <div class="form-tips" id="git_command-help">
+    </div>
+  <style>
+    .form-row input.git_command-argument {
+      width: 200px;
+      position: relative;
+      left: -150px;
+      top: 3px;
+    }
+    .spacer.caret {
+      margin-left: 10px;
+    }
+    .dropdown-toggle p {
+      float: left;
+      padding: 0px;
+      margin: 0px;
+    }
+  </style>
+</script>
+
+<script type="text/x-red" data-help-name="repo_node">
+    <p>A node to integrate the libgit2 bindings via nodegit.</p>
+    <p>Choose the git repository command you wish to call from the dropdown, then configure the incoming msg.payload object to deliver the arguments as named.</p>
+    <p>The callback function
+    <p>The output will be the msg.payload object with key=Return Type</p>
+</script>
+
+<script type="text/javascript">
+  var Repo_description = {
+    "Repo": {
+        "methods": {
+            "addRemote": {
+                "signature": "addRemote(name, url, callback)",
+                "arguments": [{
+                    "name": "name",
+                    "type": "String",
+                    "comment": "the remote's name"
+                }, {
+                    "name": "url",
+                    "type": "String",
+                    "comment": "the remote's url"
+                }, {
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": "Takes error and the return value specified below"
+                }],
+                "summary": {
+                    "comment": "Add a remote with the default fetch refspec to the repository's configuration.  This
+calls git_remote_save before returning.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "addSubmodule": {
+                "signature": "addSubmodule(url, path, use_gitlink)",
+                "arguments": [{
+                    "name": "url",
+                    "type": "String",
+                    "comment": "URL for the submodules remote"
+                }, {
+                    "name": "path",
+                    "type": "String",
+                    "comment": "Path at which the submodule should be created"
+                }, {
+                    "name": "use_gitlink",
+                    "type": "Number",
+                    "comment": "Should workdir contain a gitlink to the repo in .git/modules vs. repo directly in workdir."
+                }],
+                "summary": {
+                    "comment": "Set up a new git submodule for checkout.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "clone": {
+                "signature": "clone(url, local_path, options, callback)",
+                "arguments": [{
+                    "name": "url",
+                    "type": "String",
+                    "comment": "the remote repository to clone"
+                }, {
+                    "name": "local_path",
+                    "type": "String",
+                    "comment": "local directory to clone to"
+                }, {
+                    "name": "options",
+                    "type": "CloneOptions",
+                    "comment": "configuration options for the clone. If NULL, the function works as though GIT_OPTIONS_INIT were passed."
+                }, {
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": "Takes error and the return value specified below"
+                }],
+                "summary": {
+                    "comment": "Clone a remote repository, and checkout the branch pointed to by the remote
+HEAD.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "createBlobFromBuffer": {
+                "signature": "createBlobFromBuffer(buffer, callback)",
+                "arguments": [{
+                    "name": "buffer",
+                    "type": "Buffer",
+                    "comment": ""
+                }, {
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": ""
+                }],
+                "summary": {
+                    "comment": "Create a blob from a buffer",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "createBlobFromFile": {
+                "signature": "createBlobFromFile(path, callback)",
+                "arguments": [{
+                    "name": "path",
+                    "type": "String",
+                    "comment": "file from which the blob will be created"
+                }, {
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": "Takes error and the return value specified below"
+                }],
+                "summary": {
+                    "comment": "Read a file from the filesystem and write its content
+to the Object Database as a loose blob",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "createCommit": {
+                "signature": "createCommit(updateRef, author, commiter, message, Tree, parents, callback)",
+                "arguments": [{
+                    "name": "updateRef",
+                    "type": "String",
+                    "comment": ""
+                }, {
+                    "name": "author",
+                    "type": "Signature",
+                    "comment": ""
+                }, {
+                    "name": "commiter",
+                    "type": "Signature",
+                    "comment": ""
+                }, {
+                    "name": "message",
+                    "type": "String",
+                    "comment": ""
+                }, {
+                    "name": "Tree",
+                    "type": "Tree, Oid, String",
+                    "comment": ""
+                }, {
+                    "name": "parents",
+                    "type": "Array",
+                    "comment": ""
+                }, {
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": ""
+                }],
+                "summary": {
+                    "comment": "Create a commit",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "createLightweightTag": {
+                "signature": "createLightweightTag(tag_name, target, force, callback)",
+                "arguments": [{
+                    "name": "tag_name",
+                    "type": "String",
+                    "comment": "Name for the tag; this name is validated for consistency. It should also not conflict with an already existing tag name"
+                }, {
+                    "name": "target",
+                    "type": "Object",
+                    "comment": "Object to which this tag points. This object must belong to the given `repo`."
+                }, {
+                    "name": "force",
+                    "type": "Number",
+                    "comment": "Overwrite existing references"
+                }, {
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": "Takes error and the return value specified below"
+                }],
+                "summary": {
+                    "comment": "Create a new lightweight tag pointing at a target object",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "createReference": {
+                "signature": "createReference(name, id, force)",
+                "arguments": [{
+                    "name": "name",
+                    "type": "String",
+                    "comment": "The name of the reference"
+                }, {
+                    "name": "id",
+                    "type": "Oid",
+                    "comment": "The object id pointed to by the reference."
+                }, {
+                    "name": "force",
+                    "type": "Number",
+                    "comment": "Overwrite existing references"
+                }],
+                "summary": {
+                    "comment": "Create a new direct reference.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "createRevWalk": {
+                "signature": "createRevWalk(String, callback)",
+                "arguments": [{
+                    "name": "String",
+                    "type": "String, Oid",
+                    "comment": "sha or Oid"
+                }, {
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": ""
+                }],
+                "summary": {
+                    "comment": "Instantiate a new revision walker for browsing the Repo's history.See also Commit.prototype.history()",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "createSymbolicReference": {
+                "signature": "createSymbolicReference(name, target, force)",
+                "arguments": [{
+                    "name": "name",
+                    "type": "String",
+                    "comment": "The name of the reference"
+                }, {
+                    "name": "target",
+                    "type": "String",
+                    "comment": "The target of the reference"
+                }, {
+                    "name": "force",
+                    "type": "Number",
+                    "comment": "Overwrite existing references"
+                }],
+                "summary": {
+                    "comment": "Create a new symbolic reference.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "createTag": {
+                "signature": "createTag(tag_name, target, tagger, message, force, callback)",
+                "arguments": [{
+                    "name": "tag_name",
+                    "type": "String",
+                    "comment": "Name for the tag; this name is validated for consistency. It should also not conflict with an already existing tag name"
+                }, {
+                    "name": "target",
+                    "type": "Object",
+                    "comment": "Object to which this tag points. This object must belong to the given `repo`."
+                }, {
+                    "name": "tagger",
+                    "type": "Signature",
+                    "comment": "Signature of the tagger for this tag, and of the tagging time"
+                }, {
+                    "name": "message",
+                    "type": "String",
+                    "comment": "Full message for this tag"
+                }, {
+                    "name": "force",
+                    "type": "Number",
+                    "comment": "Overwrite existing references"
+                }, {
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": "Takes error and the return value specified below"
+                }],
+                "summary": {
+                    "comment": "Create a new tag in the repository from an object",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "delete": {
+                "signature": "delete(tag_name, callback)",
+                "arguments": [{
+                    "name": "tag_name",
+                    "type": "String",
+                    "comment": "Name of the tag to be deleted; this name is validated for consistency."
+                }, {
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": "Takes error and the return value specified below"
+                }],
+                "summary": {
+                    "comment": "Delete an existing tag reference.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "getBlob": {
+                "signature": "getBlob(String, callback)",
+                "arguments": [{
+                    "name": "String",
+                    "type": "String, Oid",
+                    "comment": "sha or Oid"
+                }, {
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": ""
+                }],
+                "summary": {
+                    "comment": "Retrieve the blob represented by the oid.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "getBranch": {
+                "signature": "getBranch(name, callback)",
+                "arguments": [{
+                    "name": "name",
+                    "type": "String",
+                    "comment": "Branch name, e.g. 'master'"
+                }, {
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": ""
+                }],
+                "summary": {
+                    "comment": "Look up a branch's most recent commit.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "getCommit": {
+                "signature": "getCommit(String, callback)",
+                "arguments": [{
+                    "name": "String",
+                    "type": "String, Oid",
+                    "comment": "sha or Oid"
+                }, {
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": ""
+                }],
+                "summary": {
+                    "comment": "Retrieve the commit identified by oid.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "getMaster": {
+                "signature": "getMaster(callback)",
+                "arguments": [{
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": ""
+                }],
+                "summary": {
+                    "comment": "Retrieve the master branch.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "getObject": {
+                "signature": "getObject(id, type, callback)",
+                "arguments": [{
+                    "name": "id",
+                    "type": "Oid",
+                    "comment": "the unique identifier for the object"
+                }, {
+                    "name": "type",
+                    "type": "Number",
+                    "comment": "the type of the object"
+                }, {
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": "Takes error and the return value specified below"
+                }],
+                "summary": {
+                    "comment": "Lookup a reference to one of the objects in a repository.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "getReference": {
+                "signature": "getReference(name, callback)",
+                "arguments": [{
+                    "name": "name",
+                    "type": "String",
+                    "comment": ""
+                }, {
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": ""
+                }],
+                "summary": {
+                    "comment": "Lookup the reference with the given name.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "getReferences": {
+                "signature": "getReferences(list_flags, callback)",
+                "arguments": [{
+                    "name": "list_flags",
+                    "type": "Number",
+                    "comment": ""
+                }, {
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": "Takes error and the return value specified below"
+                }],
+                "summary": {
+                    "comment": "Fill a list with all the references that can be found in a repository.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "getRemote": {
+                "signature": "getRemote(name)",
+                "arguments": [{
+                    "name": "name",
+                    "type": "String",
+                    "comment": "the remote's name"
+                }],
+                "summary": {
+                    "comment": "Get the information for a particular remote",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "getRemotes": {
+                "signature": "getRemotes(callback)",
+                "arguments": [{
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": "Takes error and the return value specified below"
+                }],
+                "summary": {
+                    "comment": "Get a list of the configured remotes for a repo",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "getSubmodule": {
+                "signature": "getSubmodule(name)",
+                "arguments": [{
+                    "name": "name",
+                    "type": "String",
+                    "comment": "The name of the submodule. Trailing slashes will be ignored."
+                }],
+                "summary": {
+                    "comment": "Lookup submodule information by name or path.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "getTag": {
+                "signature": "getTag(String, callback)",
+                "arguments": [{
+                    "name": "String",
+                    "type": "String, Oid",
+                    "comment": "sha or Oid"
+                }, {
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": ""
+                }],
+                "summary": {
+                    "comment": "Retrieve the tag represented by the oid.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "getTree": {
+                "signature": "getTree(String, callback)",
+                "arguments": [{
+                    "name": "String",
+                    "type": "String, Oid",
+                    "comment": "sha or Oid"
+                }, {
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": ""
+                }],
+                "summary": {
+                    "comment": "Retrieve the tree represented by the oid.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "init": {
+                "signature": "init(path, is_bare, callback)",
+                "arguments": [{
+                    "name": "path",
+                    "type": "String",
+                    "comment": "the path to the repository"
+                }, {
+                    "name": "is_bare",
+                    "type": "Boolean",
+                    "comment": "if true, a Git repository without a working directory is created at the pointed path. If false, provided path will be considered as the working directory into which the .git directory will be created."
+                }, {
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": "Takes error and the return value specified below"
+                }],
+                "summary": {
+                    "comment": "Creates a new Git repository in the given folder.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "odb": {
+                "signature": "odb()",
+                "arguments": [],
+                "summary": {
+                    "comment": "Get the Object Database for this repository.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "open": {
+                "signature": "open(path, callback)",
+                "arguments": [{
+                    "name": "path",
+                    "type": "String",
+                    "comment": "the path to the repository"
+                }, {
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": "Takes error and the return value specified below"
+                }],
+                "summary": {
+                    "comment": "Open a git repository.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "openIndex": {
+                "signature": "openIndex(callback)",
+                "arguments": [{
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": "Takes error and the return value specified below"
+                }],
+                "summary": {
+                    "comment": "Get the Index file for this repository.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "path": {
+                "signature": "path()",
+                "arguments": [],
+                "summary": {
+                    "comment": "Get the path of this repository",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "reloadSubmodules": {
+                "signature": "reloadSubmodules(callback)",
+                "arguments": [{
+                    "name": "callback",
+                    "type": "Function",
+                    "comment": "Takes error and the return value specified below"
+                }],
+                "summary": {
+                    "comment": "Reread all submodule info.",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            },
+            "workdir": {
+                "signature": "workdir()",
+                "arguments": [],
+                "summary": {
+                    "comment": "Get the path of the working directory for this repository",
+                    "return_type": "(none)",
+                    "return_comment": "(none)"
+                }
+            }
+        }
+    }
+}
+;
+
+  RED.nodes.registerType('repo_node',{
+		category: 'web-nodes',
+		color:"#881111",
+		defaults : {
+      name : {value:"Repo"},
+      topic : {value:"Git"},
+      git_command : {value:""},
+      git_command_arguments : {value:[]},
+      git_return_type : {value:""}
+    },
+		inputs:1,
+		outputs:1,
+		icon: "leveldb.png",
+		label: function () {
+				return this.name||this.topic||this.payload||"repo_node";
+		},
+		oneditprepare: function () {
+
+      var that = this;
+
+      for (var method in Repo_description["Repo"]["methods"]) {
+        $('<option '+((this.git_command===method)?'selected ':'')+'value="'+method+'">'+method+'</option>').appendTo("#node-input-git_command");
+      }
+
+      var buildGitCmdArgs = function () {
+
+      	var val = $("#node-input-git_command").val();
+
+        console.log('getting checked value');
+
+        var intype = $("input:checked","#input_method_container").val();
+
+        console.log('got checked value = ' + intype);
+
+      	console.log('this.value='+val);
+
+        var method = Repo_description["Repo"]["methods"][val];
+        var summary = method["summary"];
+
+        console.log('method = ' + method);
+
+        var summary = '<div><b>summary:</b> '+summary["comment"]+'</div><div><b>returns </b>: '+summary["return_type"]+' ('+summary["return_comment"]+')</div>';
+        $("#git_command-help").html(summary);
+        $("#git_command_arguments").html('');
+
+        method["arguments"].forEach(function(arg,index,array) {
+          var argname = arg["name"],
+            argtype = arg["type"],
+            argcomment = arg["comment"],
+            argid = "argument_"+argname;
+          $("<div>",{"id":argid,"title":argcomment}).appendTo("#git_command_arguments");
+          argid = '#'+argid;
+          switch (argtype) {
+            case "Function":
+              $("<p>",{"class":"git_command-argument","data-name":argname,"data-type":argtype,"text":"("+argtype+") "+"msg.payload."+argname+" (Note: User defined callbacks are currently not supported."}).appendTo(argid);
+              break;
+            case "CloneOptions":
+              $("<p>",{"class":"git_command-argument","data-name":argname,"data-type":argtype,"text":"("+argtype+") "+"msg.payload."+argname+" (Note: Clone options are currently not supported."}).appendTo(argid);
+              break;
+            default:
+              $("<p>",{"class":"git_command-argument","data-name":argname,"data-type":argtype,"text":"("+argtype+") "+"msg.payload."+argname}).appendTo(argid);
+              break;
+          }
+        });
+      };
+
+      console.log('setting on change function');
+
+      $("#node-input-git_command").on("change", buildGitCmdArgs);
+
+      console.log('setting choose input method');
+
+		  console.log('calling buildGitCmdArgs');
+
+		  buildGitCmdArgs.call($("#node-input-git_command")[0]);
+		},
+
+		oneditsave: function () {
+			console.log('oneditsave called');
+		  var that = this;
+      var selected_value = $("#node-input-git_command option:selected").val();
+		  this.git_command_arguments = [];
+		  this.git_return_type = Repo_description["Repo"]["methods"][selected_value]["summary"]["return_type"];
+		  $(".git_command-argument").each(function () {
+		    var argument = {
+          name:$(this).attr('data-name'),
+          type:$(this).attr('data-type')
+		    };
+		    that.git_command_arguments.push(argument);
+		  });
+		},
+		labelStyle: function () {
+			return this.name?"node_label_italic":"";
+		}
+	});
+</script>
