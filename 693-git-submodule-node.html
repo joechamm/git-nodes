@@ -1,0 +1,333 @@
+<!--
+  Copyright 2014 Tailored Cloud
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<script type="text/x-red" data-template-name="submodule_node">
+      <div class="form-row" id="node-input-row-git_command">
+        <label for="node-input-git_command">Command</label>
+        <select id="node-input-git_command">
+        </select>
+      </div>
+
+      <div id="git_command_input">
+        <label for="git_command_arguments">Git Command Arguments</label>
+        <div class="form-row" id="git_command_arguments"></div>
+      </div>
+
+      <div class="form-row" id="node-input-row-name">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="name">
+      </div>
+
+      <div class="form-row">
+        <label for="node-input-topic"><i class="icon-tasks"></i> Topic:</label>
+        <input type="text" id="node-input-topic" placeholder="topic">
+      </div>
+    </div>
+
+    <div class="form-tips" id="git_command-help">
+    </div>
+  <style>
+    .form-row input.git_command-argument {
+      position: relative;
+    }
+  </style>
+</script>
+
+<script type="text/x-red" data-help-name="submodule_node">
+    <p>A node to integrate the libgit2 bindings via nodegit.</p>
+    <p>Choose the git repository command you wish to call from the dropdown, then configure the incoming msg.payload object to deliver the arguments as named.</p>
+    <p>The callback function
+    <p>The output will be the msg.payload object with key=Return Type</p>
+</script>
+
+<script type="text/javascript">
+  var Submodule_description = {
+    "Submodule": {
+      "methods": {
+        "addFinalize": {
+          "signature": "addFinalize(callback)",
+          "arguments": [{
+            "name": "callback",
+            "type": "Function",
+            "comment": "Takes error and the return value specified below"
+          }],
+          "summary": {
+            "comment": "Resolve the setup of a new git submodule.",
+            "return_type": "(none)",
+            "return_comment": "N/A"
+          }
+        },
+        "addToIndex": {
+          "signature": "addToIndex(write_index, callback)",
+          "arguments": [{
+            "name": "write_index",
+            "type": "Number",
+            "comment": "Boolean if this should immediately write the index file. If you pass this as false, you will have to get the git_index and explicitly call `git_index_write()` on it to save the change."
+          }, {
+            "name": "callback",
+            "type": "Function",
+            "comment": "Takes error and the return value specified below"
+          }],
+          "summary": {
+            "comment": "Add current submodule HEAD commit to index of superproject.",
+            "return_type": "(none)",
+            "return_comment": "N/A"
+          }
+        },
+        "headId": {
+          "signature": "headId()",
+          "arguments": [],
+          "summary": {
+            "comment": "Get the OID for the submodule in the current HEAD tree.",
+            "return_type": "Oid",
+            "return_comment": "Pointer to git_oid or NULL if submodule is not in the HEAD."
+          }
+        },
+        "indexId": {
+          "signature": "indexId()",
+          "arguments": [],
+          "summary": {
+            "comment": "Get the OID for the submodule in the index.",
+            "return_type": "Oid",
+            "return_comment": "Pointer to git_oid or NULL if submodule is not in index."
+          }
+        },
+        "init": {
+          "signature": "init(overwrite, callback)",
+          "arguments": [{
+            "name": "overwrite",
+            "type": "Number",
+            "comment": "By default, existing entries will not be overwritten, but setting this to true forces them to be updated."
+          }, {
+            "name": "callback",
+            "type": "Function",
+            "comment": "Takes error and the return value specified below"
+          }],
+          "summary": {
+            "comment": "Copy submodule info into .git / config file.",
+            "return_type": "(none)",
+            "return_comment": "N/A"
+          }
+        },
+        "name": {
+          "signature": "name()",
+          "arguments": [],
+          "summary": {
+            "comment": "Get the name of submodule.",
+            "return_type": "String",
+            "return_comment": "Pointer to the submodule name"
+          }
+        },
+        "open": {
+          "signature": "open(callback)",
+          "arguments": [{
+            "name": "callback",
+            "type": "Function",
+            "comment": "Takes error and the return value specified below"
+          }],
+          "summary": {
+            "comment": "Open the repository for a submodule.",
+            "return_type": "Repository",
+            "return_comment": "Pointer to the submodule repo which was opened"
+          }
+        },
+        "path": {
+          "signature": "path()",
+          "arguments": [],
+          "summary": {
+            "comment": "Get the path to the submodule.",
+            "return_type": "String",
+            "return_comment": "Pointer to the submodule path"
+          }
+        },
+        "reload": {
+          "signature": "reload(callback)",
+          "arguments": [{
+            "name": "callback",
+            "type": "Function",
+            "comment": "Takes error and the return value specified below"
+          }],
+          "summary": {
+            "comment": "Reread submodule info from config, index, and HEAD.",
+            "return_type": "(none)",
+            "return_comment": "N/A"
+          }
+        },
+        "save": {
+          "signature": "save(callback)",
+          "arguments": [{
+            "name": "callback",
+            "type": "Function",
+            "comment": "Takes error and the return value specified below"
+          }],
+          "summary": {
+            "comment": "Write submodule settings to .gitmodules file.",
+            "return_type": "(none)",
+            "return_comment": "N/A"
+          }
+        },
+        "setUrl": {
+          "signature": "setUrl(url)",
+          "arguments": [{
+            "name": "url",
+            "type": "String",
+            "comment": "URL that should be used for the submodule"
+          }],
+          "summary": {
+            "comment": "Set the URL for the submodule.",
+            "return_type": "(none)",
+            "return_comment": "N/A"
+          }
+        },
+        "status": {
+          "signature": "status(status, callback)",
+          "arguments": [{
+            "name": "status",
+            "type": "Number",
+            "comment": "Combination of `GIT_SUBMODULE_STATUS` flags"
+          }, {
+            "name": "callback",
+            "type": "Function",
+            "comment": "Takes error and the return value specified below"
+          }],
+          "summary": {
+            "comment": "Get the status for a submodule.",
+            "return_type": "(none)",
+            "return_comment": "N/A"
+          }
+        },
+        "sync": {
+          "signature": "sync(callback)",
+          "arguments": [{
+            "name": "callback",
+            "type": "Function",
+            "comment": "Takes error and the return value specified below"
+          }],
+          "summary": {
+            "comment": "Copy submodule remote info into submodule repo.",
+            "return_type": "(none)",
+            "return_comment": "N/A"
+          }
+        },
+        "url": {
+          "signature": "url()",
+          "arguments": [],
+          "summary": {
+            "comment": "Get the URL for the submodule.",
+            "return_type": "String",
+            "return_comment": "Pointer to the submodule url"
+          }
+        }
+      }
+    }
+  };
+
+  RED.nodes.registerType('submodule_node',{
+		category: 'web-nodes',
+		color:"#0f328a",
+		defaults : {
+      name : {value:"Submodule"},
+      topic : {value:"Git"},
+      git_command : {value:""},
+      git_command_arguments : {value:[]},
+      git_return_type : {value:""}
+    },
+		inputs:1,
+		outputs:1,
+		icon: "libgit2logo.png",
+		label: function () {
+				return this.name||this.topic||this.payload||"submodule_node";
+		},
+		oneditprepare: function () {
+
+      var that = this;
+
+      for (var method in Submodule_description["Submodule"]["methods"]) {
+        $('<option '+((this.git_command===method)?'selected ':'')+'value="'+method+'">'+method+'</option>').appendTo("#node-input-git_command");
+      }
+
+      var buildGitCmdArgs = function () {
+
+      	var val = $("#node-input-git_command").val();
+
+        console.log('getting checked value');
+
+        var intype = $("input:checked","#input_method_container").val();
+
+        console.log('got checked value = ' + intype);
+
+      	console.log('this.value='+val);
+
+        var method = Submodule_description["Submodule"]["methods"][val];
+        var summary = method["summary"];
+
+        console.log('method = ' + method);
+
+        var summary = '<div><b>summary:</b> '+summary["comment"]+'</div><div><b>returns </b>: '+summary["return_type"]+' ('+summary["return_comment"]+')</div>';
+        $("#git_command-help").html(summary);
+        $("#git_command_arguments").html('');
+
+        method["arguments"].forEach(function(arg,index,array) {
+          var argname = arg["name"],
+            argtype = arg["type"],
+            argcomment = arg["comment"],
+            argid = "argument_"+argname;
+          $("<div>",{"id":argid,"title":argcomment}).appendTo("#git_command_arguments");
+          argid = '#'+argid;
+          switch (argtype) {
+            case "Function":
+              $("<p>",{"class":"git_command-argument","data-name":argname,"data-type":argtype,"text":"("+argtype+") "+"msg.payload."+argname+" (Note: User defined callbacks are currently not supported."}).appendTo(argid);
+              break;
+            case "CloneOptions":
+              $("<p>",{"class":"git_command-argument","data-name":argname,"data-type":argtype,"text":"("+argtype+") "+"msg.payload."+argname+" (Note: Clone options are currently not supported."}).appendTo(argid);
+              break;
+            default:
+              $("<p>",{"class":"git_command-argument","data-name":argname,"data-type":argtype,"text":"("+argtype+") "+"msg.payload."+argname}).appendTo(argid);
+              break;
+          }
+        });
+      };
+
+      console.log('setting on change function');
+
+      $("#node-input-git_command").on("change", buildGitCmdArgs);
+
+      console.log('setting choose input method');
+
+		  console.log('calling buildGitCmdArgs');
+
+		  buildGitCmdArgs.call($("#node-input-git_command")[0]);
+		},
+
+		oneditsave: function () {
+			console.log('oneditsave called');
+		  var that = this;
+      var selected_value = $("#node-input-git_command option:selected").val();
+		  this.git_command_arguments = [];
+		  this.git_return_type = Submodule_description["Submodule"]["methods"][selected_value]["summary"]["return_type"];
+		  $(".git_command-argument").each(function () {
+		    var argument = {
+          name:$(this).attr('data-name'),
+          type:$(this).attr('data-type')
+		    };
+		    that.git_command_arguments.push(argument);
+		  });
+		},
+		labelStyle: function () {
+			return this.name?"node_label_italic":"";
+		}
+	});
+</script>

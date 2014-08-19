@@ -1,0 +1,342 @@
+<!--
+  Copyright 2014 Tailored Cloud
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<script type="text/x-red" data-template-name="odb_node">
+      <div class="form-row" id="node-input-row-git_command">
+        <label for="node-input-git_command">Command</label>
+        <select id="node-input-git_command">
+        </select>
+      </div>
+
+      <div id="git_command_input">
+        <label for="git_command_arguments">Git Command Arguments</label>
+        <div class="form-row" id="git_command_arguments"></div>
+      </div>
+
+      <div class="form-row" id="node-input-row-name">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="name">
+      </div>
+
+      <div class="form-row">
+        <label for="node-input-topic"><i class="icon-tasks"></i> Topic:</label>
+        <input type="text" id="node-input-topic" placeholder="topic">
+      </div>
+    </div>
+
+    <div class="form-tips" id="git_command-help">
+    </div>
+  <style>
+    .form-row input.git_command-argument {
+      position: relative;
+    }
+  </style>
+</script>
+
+<script type="text/x-red" data-help-name="odb_node">
+    <p>A node to integrate the libgit2 bindings via nodegit.</p>
+    <p>Choose the git repository command you wish to call from the dropdown, then configure the incoming msg.payload object to deliver the arguments as named.</p>
+    <p>The callback function
+    <p>The output will be the msg.payload object with key=Return Type</p>
+</script>
+
+<script type="text/javascript">
+var Odb_description = {
+  "Odb": {
+    "methods": {
+      "addDiskAlternate": {
+        "signature": "addDiskAlternate(path)",
+        "arguments": [{
+          "name": "path",
+          "type": "String",
+          "comment": "path to the objects folder for the alternate"
+        }],
+        "summary": {
+          "comment": "Add an on-disk alternate to an existing Object DB.",
+          "return_type": "(none)",
+          "return_comment": "N/A"
+        }
+      },
+      "create()": {
+        "signature": "create()()",
+        "arguments": [],
+        "summary": {
+          "comment": "Create a new object database with no backends.",
+          "return_type": "Odb",
+          "return_comment": "location to store the database pointer, if opened. Set to NULL if the open failed."
+        }
+      },
+      "exists": {
+        "signature": "exists(id)",
+        "arguments": [{
+          "name": "id",
+          "type": "Oid",
+          "comment": "the object to search for."
+        }],
+        "summary": {
+          "comment": "Determine if the given object can be found in the object database.",
+          "return_type": "(none)",
+          "return_comment": "N/A"
+        }
+      },
+      "hash": {
+        "signature": "hash(data, len, type)",
+        "arguments": [{
+          "name": "data",
+          "type": "Buffer",
+          "comment": "data to hash"
+        }, {
+          "name": "len",
+          "type": "Number",
+          "comment": "size of the data"
+        }, {
+          "name": "type",
+          "type": "Number",
+          "comment": "of the data to hash"
+        }],
+        "summary": {
+          "comment": "Determine the object-ID (sha1 hash) of a data buffer",
+          "return_type": "Oid",
+          "return_comment": "the resulting object-ID."
+        }
+      },
+      "hashfile": {
+        "signature": "hashfile(path, type)",
+        "arguments": [{
+          "name": "path",
+          "type": "String",
+          "comment": "file to read and determine object id for"
+        }, {
+          "name": "type",
+          "type": "Number",
+          "comment": "the type of the object that will be hashed"
+        }],
+        "summary": {
+          "comment": "Read a file from disk and fill a git_oid with the object id that the file would have if it were written to the Object Database as an object of the given type (w/o applying filters). Similar functionality to git.git's git hash-object without the -w flag, however, with the --no-filters flag. If you need filters, see git_repository_hashfile.",
+          "return_type": "Oid",
+          "return_comment": "oid structure the result is written into."
+        }
+      },
+      "open": {
+        "signature": "open(objects_dir)",
+        "arguments": [{
+          "name": "objects_dir",
+          "type": "String",
+          "comment": "path of the backends objects directory."
+        }],
+        "summary": {
+          "comment": "Create a new object database and automatically add the two default backends:",
+          "return_type": "Odb",
+          "return_comment": "location to store the database pointer, if opened. Set to NULL if the open failed."
+        }
+      },
+      "read": {
+        "signature": "read(id, callback)",
+        "arguments": [{
+          "name": "id",
+          "type": "Oid",
+          "comment": "identity of the object to read."
+        }, {
+          "name": "callback",
+          "type": "Function",
+          "comment": "Takes error and the return value specified below"
+        }],
+        "summary": {
+          "comment": "Read an object from the database.",
+          "return_type": "OdbObject",
+          "return_comment": "pointer where to store the read object"
+        }
+      },
+      "readHeader": {
+        "signature": "readHeader(len_out, type_out, db, id)",
+        "arguments": [{
+          "name": "len_out",
+          "type": "Number",
+          "comment": "pointer where to store the length"
+        }, {
+          "name": "type_out",
+          "type": "Number",
+          "comment": "pointer where to store the type"
+        }, {
+          "name": "db",
+          "type": "Odb",
+          "comment": "database to search for the object in."
+        }, {
+          "name": "id",
+          "type": "Oid",
+          "comment": "identity of the object to read."
+        }],
+        "summary": {
+          "comment": "Read the header of an object from the database, without reading its full contents.",
+          "return_type": "(none)",
+          "return_comment": "N/A"
+        }
+      },
+      "readPrefix": {
+        "signature": "readPrefix(db, short_id, len)",
+        "arguments": [{
+          "name": "db",
+          "type": "Odb",
+          "comment": "database to search for the object in."
+        }, {
+          "name": "short_id",
+          "type": "Oid",
+          "comment": "a prefix of the id of the object to read."
+        }, {
+          "name": "len",
+          "type": "Number",
+          "comment": "the length of the prefix"
+        }],
+        "summary": {
+          "comment": "Read an object from the database, given a prefix of its identifier.",
+          "return_type": "OdbObject",
+          "return_comment": "pointer where to store the read object"
+        }
+      },
+      "refresh": {
+        "signature": "refresh()",
+        "arguments": [],
+        "summary": {
+          "comment": "Refresh the object database to load newly added files.",
+          "return_type": "(none)",
+          "return_comment": "N/A"
+        }
+      },
+      "write": {
+        "signature": "write(data, len, type, callback)",
+        "arguments": [{
+          "name": "data",
+          "type": "String",
+          "comment": "buffer with the data to store"
+        }, {
+          "name": "len",
+          "type": "Number",
+          "comment": "size of the buffer"
+        }, {
+          "name": "type",
+          "type": "Number",
+          "comment": "type of the data to store"
+        }, {
+          "name": "callback",
+          "type": "Function",
+          "comment": "Takes error and the return value specified below"
+        }],
+        "summary": {
+          "comment": "Write an object directly into the ODB",
+          "return_type": "Oid",
+          "return_comment": "pointer to store the OID result of the write"
+        }
+      }
+    }
+  }
+};
+
+  RED.nodes.registerType('odb_node',{
+		category: 'web-nodes',
+		color:"#cf91d1",
+		defaults : {
+      name : {value:"Odb"},
+      topic : {value:"Git"},
+      git_command : {value:""},
+      git_command_arguments : {value:[]},
+      git_return_type : {value:""}
+    },
+		inputs:1,
+		outputs:1,
+		icon: "libgit2logo.png",
+		label: function () {
+				return this.name||this.topic||this.payload||"odb_node";
+		},
+		oneditprepare: function () {
+
+      var that = this;
+
+      for (var method in Odb_description["Odb"]["methods"]) {
+        $('<option '+((this.git_command===method)?'selected ':'')+'value="'+method+'">'+method+'</option>').appendTo("#node-input-git_command");
+      }
+
+      var buildGitCmdArgs = function () {
+
+      	var val = $("#node-input-git_command").val();
+
+        console.log('getting checked value');
+
+        var intype = $("input:checked","#input_method_container").val();
+
+        console.log('got checked value = ' + intype);
+
+      	console.log('this.value='+val);
+
+        var method = Odb_description["Odb"]["methods"][val];
+        var summary = method["summary"];
+
+        console.log('method = ' + method);
+
+        var summary = '<div><b>summary:</b> '+summary["comment"]+'</div><div><b>returns </b>: '+summary["return_type"]+' ('+summary["return_comment"]+')</div>';
+        $("#git_command-help").html(summary);
+        $("#git_command_arguments").html('');
+
+        method["arguments"].forEach(function(arg,index,array) {
+          var argname = arg["name"],
+            argtype = arg["type"],
+            argcomment = arg["comment"],
+            argid = "argument_"+argname;
+          $("<div>",{"id":argid,"title":argcomment}).appendTo("#git_command_arguments");
+          argid = '#'+argid;
+          switch (argtype) {
+            case "Function":
+              $("<p>",{"class":"git_command-argument","data-name":argname,"data-type":argtype,"text":"("+argtype+") "+"msg.payload."+argname+" (Note: User defined callbacks are currently not supported."}).appendTo(argid);
+              break;
+            case "CloneOptions":
+              $("<p>",{"class":"git_command-argument","data-name":argname,"data-type":argtype,"text":"("+argtype+") "+"msg.payload."+argname+" (Note: Clone options are currently not supported."}).appendTo(argid);
+              break;
+            default:
+              $("<p>",{"class":"git_command-argument","data-name":argname,"data-type":argtype,"text":"("+argtype+") "+"msg.payload."+argname}).appendTo(argid);
+              break;
+          }
+        });
+      };
+
+      console.log('setting on change function');
+
+      $("#node-input-git_command").on("change", buildGitCmdArgs);
+
+      console.log('setting choose input method');
+
+		  console.log('calling buildGitCmdArgs');
+
+		  buildGitCmdArgs.call($("#node-input-git_command")[0]);
+		},
+
+		oneditsave: function () {
+			console.log('oneditsave called');
+		  var that = this;
+      var selected_value = $("#node-input-git_command option:selected").val();
+		  this.git_command_arguments = [];
+		  this.git_return_type = Odb_description["Odb"]["methods"][selected_value]["summary"]["return_type"];
+		  $(".git_command-argument").each(function () {
+		    var argument = {
+          name:$(this).attr('data-name'),
+          type:$(this).attr('data-type')
+		    };
+		    that.git_command_arguments.push(argument);
+		  });
+		},
+		labelStyle: function () {
+			return this.name?"node_label_italic":"";
+		}
+	});
+</script>
